@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/lily/OneDrive/documents/visual studio 2015/Projects/Game1/Game1/Content/File.spritefont</File>
+    <File>C:/Users/lily/OneDrive/documents/visual studio 2015/Projects/Game1/Game1/Content/img/grass2.png</File>
+    <File>C:/Users/lily/OneDrive/documents/visual studio 2015/Projects/Game1/Game1/Content/img/blep.PNG</File>
+    <File>C:/Users/lily/OneDrive/documents/visual studio 2015/Projects/Game1/Game1/Content/img/grass3.png</File>
+    <File>C:/Users/lily/OneDrive/documents/visual studio 2015/Projects/Game1/Game1/Content/img/bg_tiles (1).png</File>
+    <File>C:/Users/lily/OneDrive/documents/visual studio 2015/Projects/Game1/Game1/Content/img/spr_chara_right_1.png</File>
+    <File>C:/Users/lily/OneDrive/documents/visual studio 2015/Projects/Game1/Game1/Content/img/spr_chara_left_1.png</File>
+    <File>C:/Users/lily/OneDrive/documents/visual studio 2015/Projects/Game1/Game1/Content/img/spr_chara_left_0.png</File>
+    <File>C:/Users/lily/OneDrive/documents/visual studio 2015/Projects/Game1/Game1/Content/img/spr_chara_right_0.png</File>
+  </SourceFiles>
+</SourceFileCollection>
