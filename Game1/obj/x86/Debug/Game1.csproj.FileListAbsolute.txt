@@ -30,3 +30,36 @@ C:\Users\lily\OneDrive\documents\visual studio 2015\Projects\Game1\Game1\bin\Win
 C:\Users\lily\OneDrive\documents\visual studio 2015\Projects\Game1\Game1\bin\Windows\x86\Debug\Content\img\spr_chara_left_1.xnb
 C:\Users\lily\OneDrive\documents\visual studio 2015\Projects\Game1\Game1\bin\Windows\x86\Debug\Content\img\spr_chara_right_0.xnb
 C:\Users\lily\OneDrive\documents\visual studio 2015\Projects\Game1\Game1\bin\Windows\x86\Debug\Content\img\spr_chara_right_1.xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\File.xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\bg_tiles (1).xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\blep.xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\grass2.xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\grass3.xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\spr_chara_left_0.xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\spr_chara_left_1.xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\spr_chara_right_0.xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\spr_chara_right_1.xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Game1.exe
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Game1.pdb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\MonoGame.Framework.dll
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.MediaFoundation.dll
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.dll
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.XAudio2.dll
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.DXGI.dll
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.Direct3D11.dll
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.Direct2D1.dll
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.XInput.dll
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\MonoGame.Framework.xml
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.MediaFoundation.xml
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.xml
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.XAudio2.xml
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.DXGI.xml
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.Direct3D11.xml
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.XInput.xml
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\obj\x86\Debug\Game1.csprojResolveAssemblyReference.cache
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\obj\x86\Debug\Game1.exe
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\obj\x86\Debug\Game1.pdb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\menu_pixel_0.xnb

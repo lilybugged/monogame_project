@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/lily/OneDrive/documents/visual studio 2015/Projects/Game1/Game1/Content/img/blep.PNG</SourceFile>
+  <SourceFile>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/blep.PNG</SourceFile>
   <SourceTime>2016-12-28T01:27:04.5886303-05:00</SourceTime>
-  <DestFile>C:/Users/lily/OneDrive/documents/visual studio 2015/Projects/Game1/Game1/Content/bin/Windows/img/blep.xnb</DestFile>
-  <DestTime>2017-07-03T15:24:16.0330133-04:00</DestTime>
+  <DestFile>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/bin/Windows/img/blep.xnb</DestFile>
+  <DestTime>2017-07-04T20:42:35.1750559-04:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-06-22T14:38:56-04:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

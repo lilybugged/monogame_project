@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/spr_chara_left_0.png</SourceFile>
-  <SourceTime>2017-07-04T13:56:05.4075598-04:00</SourceTime>
-  <DestFile>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/bin/Windows/img/spr_chara_left_0.xnb</DestFile>
-  <DestTime>2017-07-04T20:42:35.2280567-04:00</DestTime>
+  <SourceFile>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/menu_pixel_0.png</SourceFile>
+  <SourceTime>2017-07-05T22:48:29.9340212-04:00</SourceTime>
+  <DestFile>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/bin/Windows/img/menu_pixel_0.xnb</DestFile>
+  <DestTime>2017-07-05T22:49:10.7855435-04:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-06-22T14:38:56-04:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

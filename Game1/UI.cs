@@ -23,11 +23,16 @@ namespace Game1
         }
         public void Update()
         {
-                
+            
         }
         public void Draw()
         {
-                
+            switch (uiState)
+            {
+                case 1:
+
+                    break;
+            }
         }
     }
 }
