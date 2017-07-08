@@ -24,14 +24,17 @@ namespace Game1
         public static KeyboardState keyState;
         public static AnimatedSprite[] charaLeft = new AnimatedSprite[12];
         public static AnimatedSprite[] charaRight = new AnimatedSprite[12];
-        public static Texture2D menu_0;
+        public static Texture2D pixel;
         Player player;
+        UI ui;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             player = new Player(960, 1136);
             Content.RootDirectory = "Content";
+            this.IsMouseVisible = true;
+            ui = new UI(100,100);
         }
 
         /// <summary>
@@ -70,7 +73,7 @@ namespace Game1
             charaLeft[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_left_1"), 2, 2);
             charaRight[0] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_0"), 1, 1);
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
-            menu_0 = Content.Load<Texture2D>("img/menu_pixel_0");
+            pixel = Content.Load<Texture2D>("img/white_pixel2");
 
 
         }
@@ -110,7 +113,7 @@ namespace Game1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.LightSteelBlue);
 
             //spriteBatch.Draw(grass2, new Vector2(400, 240), Color.White);
             //spriteBatch.Draw(grass3, new Vector2(450, 240), Color.White);
@@ -120,9 +123,7 @@ namespace Game1
             // TODO: Add your drawing code here
             
             base.Draw(gameTime);
-            spriteBatch.Begin();
-            spriteBatch.Draw(menu_0, new Rectangle(0, 0, 800, 480), Color.White);
-            spriteBatch.End();
+            ui.Draw(1);
             player.Draw();
         }
     }

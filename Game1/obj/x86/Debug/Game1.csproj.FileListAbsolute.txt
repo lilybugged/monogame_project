@@ -62,4 +62,5 @@ C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\D
 C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\obj\x86\Debug\Game1.csprojResolveAssemblyReference.cache
 C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\obj\x86\Debug\Game1.exe
 C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\obj\x86\Debug\Game1.pdb
-C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\menu_pixel_0.xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\white_pixel.xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\white_pixel2.xnb
