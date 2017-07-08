@@ -31,10 +31,10 @@ namespace Game1
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            player = new Player(960, 1136);
+            player = new Player(1100, 450);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
-            ui = new UI(100,100);
+            ui = new UI(100,100,4);
         }
 
         /// <summary>
@@ -46,8 +46,8 @@ namespace Game1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            this.graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-            this.graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            this.graphics.PreferredBackBufferWidth = 1280;
+            this.graphics.PreferredBackBufferHeight = 960;
             this.graphics.IsFullScreen = false;
             this.graphics.ApplyChanges();
             graphics.ApplyChanges();
@@ -123,8 +123,8 @@ namespace Game1
             // TODO: Add your drawing code here
             
             base.Draw(gameTime);
-            ui.Draw(1);
             player.Draw();
+            ui.Draw(1);
         }
     }
 }
