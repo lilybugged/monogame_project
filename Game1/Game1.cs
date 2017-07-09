@@ -22,11 +22,17 @@ namespace Game1
         Texture2D grass3;
 
         public static KeyboardState keyState;
+        public static MouseState mouseState;
         public static AnimatedSprite[] charaLeft = new AnimatedSprite[12];
         public static AnimatedSprite[] charaRight = new AnimatedSprite[12];
         public static Texture2D pixel;
+
+        public const int WINDOW_WIDTH = 1280;
+        public const int WINDOW_HEIGHT = 960;
+
         Player player;
         UI ui;
+        UI chest;
 
         public Game1()
         {
@@ -35,6 +41,7 @@ namespace Game1
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
             ui = new UI(100,100,4);
+            chest = new UI(600, 200, 8);
         }
 
         /// <summary>
@@ -46,8 +53,8 @@ namespace Game1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            this.graphics.PreferredBackBufferWidth = 1280;
-            this.graphics.PreferredBackBufferHeight = 960;
+            this.graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
+            this.graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
             this.graphics.IsFullScreen = false;
             this.graphics.ApplyChanges();
             graphics.ApplyChanges();
@@ -84,7 +91,6 @@ namespace Game1
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>
@@ -100,6 +106,7 @@ namespace Game1
             // TODO: Add your update logic here
             player.Update();
             keyState = Keyboard.GetState();
+            mouseState = Mouse.GetState();
             base.Update(gameTime);
 
             //keyinput
@@ -125,6 +132,7 @@ namespace Game1
             base.Draw(gameTime);
             player.Draw();
             ui.Draw(1);
+            chest.Draw(2);
         }
     }
 }
