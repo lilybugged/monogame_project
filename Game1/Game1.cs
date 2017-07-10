@@ -147,9 +147,6 @@ namespace Game1
                 canRelease = false;
             }
             else mouseReleased = false;
-
-            //mouseClicked = mouseState.LeftButton == ButtonState.Pressed && !mouseClicked;
-            //mouseReleased = mouseState.LeftButton == ButtonState.Released && !mouseReleased;
         }
 
         /// <summary>
@@ -173,6 +170,11 @@ namespace Game1
             //draw all UIs
             for (int i=0;i<uiObjects.Count;i++) {
                 uiObjects[i].Draw();
+            }
+            //draw cursor items for all UIs
+            for (int i = 0; i < uiObjects.Count; i++)
+            {
+                uiObjects[i].DrawCursorItem();
             }
         }
     }

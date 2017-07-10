@@ -115,16 +115,20 @@ namespace Game1
                     HoverSquares(this.uix + 7, this.uiy + 7);
                     break;
             }
-
-            //if the cursor is dragging an item, draw it
-            if (cursorItem != -1)
-            {
-                Game1.items_32.DrawTile(Game1.spriteBatch, cursorItem, new Vector2(Game1.mouseState.X, Game1.mouseState.Y));
-            }
-
             Game1.spriteBatch.End();
         }
-
+        /// <summary>
+        /// If the cursor is dragging an item, then draw it.
+        /// </summary>
+        public void DrawCursorItem()
+        {
+            if (cursorItem != -1)
+            {
+                Game1.spriteBatch.Begin();
+                Game1.items_32.DrawTile(Game1.spriteBatch, cursorItem, new Vector2(Game1.mouseState.X, Game1.mouseState.Y));
+                Game1.spriteBatch.End();
+            }
+        }
         private void DrawItems(int startx, int starty)
         {
             for (int i=0; i<inventoryItemIds.Length; i++) {
