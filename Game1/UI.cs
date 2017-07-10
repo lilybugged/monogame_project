@@ -27,8 +27,8 @@ namespace Game1
         private Color menu_3;
         private int inventoryRows;
         private int[] inventoryItemIds;
-        private int cursorItem;
-        private int cursorItemIndex;
+        private static int cursorItem;
+        private static int cursorItemIndex;
         /// <summary>
         /// Initializes the UI System.
         /// </summary>
