@@ -26,7 +26,7 @@ namespace Game1
         /// <summary>
         /// Initializes the UI System.
         /// </summary>
-        public UI(int newx, int newy, int rows)
+        public UI(int newx, int newy, int rows, int[] itemIds)
         {
             this.uix = newx; 
             this.uiy = newy;
@@ -36,7 +36,7 @@ namespace Game1
             menu_2 = new Color(156, 143, 143, 255);
             menu_3 = new Color(178, 166, 166, 255);
             inventoryRows = rows;
-            //inventoryItemIds = itemIds;
+            inventoryItemIds = itemIds;
         }
         public void Update()
         {
@@ -80,7 +80,8 @@ namespace Game1
                             Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 136 + 20 + (44 + 5) * a, this.uiy + 18 + (48) * i, 42, 42), menu_2);
                         }
                     }
-                    CheckSquares(this.uix + 136 + 19, this.uiy + 17);
+                    DrawItems(this.uix + 136 + 19 + 5, this.uiy + 17 + 5);
+                    HoverSquares(this.uix + 136 + 19, this.uiy + 17);
                     break;
                 case 2:
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix - 1, this.uiy - 1, 354, 396), Color.Black);
@@ -97,13 +98,21 @@ namespace Game1
                             Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 8 + (44 + 5) * a, this.uiy + 8 + (48) * i, 42, 42), menu_2);
                         }
                     }
-                    CheckSquares(this.uix + 7, this.uiy + 7);
+                    DrawItems(this.uix + 7, this.uiy + 7);
+                    HoverSquares(this.uix + 7, this.uiy + 7);
                     break;
             }
             Game1.spriteBatch.End();
         }
 
-        public void CheckSquares(int startx, int starty)
+        private void DrawItems(int startx, int starty)
+        {
+            for (int i=0; i<inventoryItemIds.Length; i++) {
+                Game1.items_32.DrawTile(Game1.spriteBatch, inventoryItemIds[i], new Vector2(startx + 49 * (i%7) + 1, starty + 48 * (i / 7) + 1));
+            }
+        }
+
+        private void HoverSquares(int startx, int starty)
         {
             if (Game1.mouseState.X>=startx && Game1.mouseState.X<=startx+(7 * (49)) - 20 && Game1.mouseState.Y >= starty && Game1.mouseState.Y <= starty + (inventoryRows * (48)) - 25)
             {

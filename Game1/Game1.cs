@@ -25,7 +25,9 @@ namespace Game1
         public static MouseState mouseState;
         public static AnimatedSprite[] charaLeft = new AnimatedSprite[12];
         public static AnimatedSprite[] charaRight = new AnimatedSprite[12];
+        public static AnimatedSprite items_32;
         public static Texture2D pixel;
+
 
         public const int WINDOW_WIDTH = 1280;
         public const int WINDOW_HEIGHT = 960;
@@ -40,8 +42,8 @@ namespace Game1
             player = new Player(1100, 450);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
-            ui = new UI(100,100,4);
-            chest = new UI(600, 200, 8);
+            ui = new UI(100,100,4,new int[] {2,1,0});
+            //chest = new UI(600, 200, 8);
         }
 
         /// <summary>
@@ -80,6 +82,8 @@ namespace Game1
             charaLeft[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_left_1"), 2, 2);
             charaRight[0] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_0"), 1, 1);
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
+
+            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 2, 2);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
 
 
@@ -132,7 +136,7 @@ namespace Game1
             base.Draw(gameTime);
             player.Draw();
             ui.Draw(1);
-            chest.Draw(2);
+            //chest.Draw(2);
         }
     }
 }
