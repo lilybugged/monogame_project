@@ -27,12 +27,15 @@ namespace Game1
         public static AnimatedSprite[] charaRight = new AnimatedSprite[12];
         public static AnimatedSprite items_32;
         public static Texture2D pixel;
+        public static SpriteFont font;
 
         public static int[] userInventory;
+        public static int[] userInventoryQuantities;
         public static List<UI> uiObjects = new List<UI>();
 
         public const int WINDOW_WIDTH = 1280;
         public const int WINDOW_HEIGHT = 960;
+        public const int ITEM_STACK_SIZE = 99;
 
         public static bool mouseClicked = false;
         public static bool mouseReleased = false;
@@ -49,12 +52,16 @@ namespace Game1
             player = new Player(1100, 450);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
-            userInventory = new int[] { 2, 1, 0, 2, 2, 2, 1, 0, 2, 1, 0 };
+            userInventory = new int[] { 2, 1, 0, 2, 2, 2, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
+            userInventoryQuantities = new int[] { 99, 12, 50, 12, 32, 42, 21, 10, 12, 31, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+            ui = new UI(100,100,4, userInventory, userInventoryQuantities, 1);
+            chest = new UI(600, 200, 8, new int[] { 0,2,2,1,-1,-1,-1 }, new int[] { 1,2,5,2,-1,-1,-1 }, 2);
 
-            ui = new UI(100,100,4, userInventory, 1);
-            chest = new UI(600, 200, 8, new int[] { 0,2,2,1 }, 2);
-
+            //so far, there can only be four uis up at once
+            //each ui slot is its own type
+            ui.id = uiObjects.Count;
             uiObjects.Add(ui);
+            chest.id = uiObjects.Count;
             uiObjects.Add(chest);
         }
 
@@ -98,7 +105,7 @@ namespace Game1
             items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 2, 2);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
 
-
+            font = Content.Load<SpriteFont>("File");
         }
 
         /// <summary>

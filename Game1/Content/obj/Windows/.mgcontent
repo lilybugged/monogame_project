@@ -4,16 +4,16 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/File.spritefont</File>
-    <File>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/grass2.png</File>
-    <File>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/blep.PNG</File>
-    <File>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/grass3.png</File>
-    <File>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/bg_tiles (1).png</File>
-    <File>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/spr_chara_right_1.png</File>
-    <File>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/spr_chara_left_1.png</File>
-    <File>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/spr_chara_left_0.png</File>
-    <File>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/spr_chara_right_0.png</File>
-    <File>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/white_pixel2.png</File>
-    <File>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/icons_32.png</File>
+    <File>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/File.spritefont</File>
+    <File>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/img/grass2.png</File>
+    <File>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/img/blep.PNG</File>
+    <File>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/img/grass3.png</File>
+    <File>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/img/bg_tiles (1).png</File>
+    <File>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/img/spr_chara_right_1.png</File>
+    <File>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/img/spr_chara_left_1.png</File>
+    <File>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/img/spr_chara_left_0.png</File>
+    <File>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/img/spr_chara_right_0.png</File>
+    <File>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/img/white_pixel2.png</File>
+    <File>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/img/icons_32.png</File>
   </SourceFiles>
 </SourceFileCollection>

@@ -26,17 +26,24 @@ namespace Game1
         private Color menu_2;
         private Color menu_3;
         private int inventoryRows;
-        private int[] inventoryItemIds;
+        public int[] inventoryItemIds;
+        public int[] inventoryItemQuantities;
         private static int cursorItem;
+        private static int cursorItemOrigin;
         private static int cursorItemIndex;
+        private static int cursorQuantity;
+        private String toString;
+        public int id;
         /// <summary>
-        /// Initializes the UI System.
+        /// Initializes the UI System. [Pass arrays as large as your desired ui's inventory.]
         /// </summary>
-        public UI(int newx, int newy, int rows, int[] itemIds, int type)
+        public UI(int newx, int newy, int rows, int[] itemIds, int[] itemQuants, int type)
         {
             this.uix = newx; 
             this.uiy = newy;
             this.uiState = type;
+
+            toString = ""+type;
 
             menu_0 = new Color(129, 114, 114, 255);
             menu_1 = new Color(141, 127, 127, 255);
@@ -47,17 +54,25 @@ namespace Game1
             cursorItemIndex = -1;
             inventoryRows = rows;
             inventoryItemIds = itemIds;
+            cursorItemOrigin = -1;
+            cursorQuantity = -1;
+            inventoryItemQuantities = itemQuants;
         }
         public void Update()
         {
-            DragAndDrop(this.uix + 136 + 19, this.uiy + 17);
+            switch (uiState)
+            {
+                case 1:
+                    DragAndDrop(this.uix + 136 + 19, this.uiy + 17);
+                    break;
+                case 2:
+                    DragAndDrop(this.uix + 7, this.uiy + 7);
+                    break;
+            }
         }
         public void Draw()
         {
             Game1.spriteBatch.Begin();
-
-            
-
             switch (uiState)
             {
                 case 1:
@@ -129,10 +144,17 @@ namespace Game1
                 Game1.spriteBatch.End();
             }
         }
+        /// <summary>
+        /// Draw items in inventory slots. Draw int quantities as spritefonts.
+        /// </summary>
         private void DrawItems(int startx, int starty)
         {
             for (int i=0; i<inventoryItemIds.Length; i++) {
-                Game1.items_32.DrawTile(Game1.spriteBatch, inventoryItemIds[i], new Vector2(startx + 49 * (i%7) + 1, starty + 48 * (i / 7) + 1));
+                if (inventoryItemIds[i] > -1)
+                {
+                    Game1.items_32.DrawTile(Game1.spriteBatch, inventoryItemIds[i], new Vector2(startx + 49 * (i % 7) + 1, starty + 48 * (i / 7) + 1));
+                    Game1.spriteBatch.DrawString(Game1.font, ""+inventoryItemQuantities[i], new Vector2(startx + 49 * (i % 7) + 1, starty + 48 * (i / 7) + 1), Color.White);
+                }
             }
         }
 
@@ -143,16 +165,89 @@ namespace Game1
                 Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(startx%49 + 49 * (Game1.mouseState.X/49) + 1, starty%48 + 48 * (Game1.mouseState.Y / 48) + 1, 42, 42), Color.White*0.25f);
             }
         }
-
+        private int FindFreeSlot()
+        {
+            for (int i = 0; i < inventoryItemIds.Length; i++)
+            {
+                if (inventoryItemIds[i] == -1) return i;
+            }
+            return -1;
+        }
         private void DragAndDrop(int startx, int starty)
         {
-            if (cursorItem == -1 && ((Game1.mouseState.X - startx) / 49 + ((Game1.mouseState.Y - starty) / 48 * 7)) < inventoryItemIds.Length && Game1.mouseClicked && Game1.mouseState.X >= startx && Game1.mouseState.X <= startx + (7 * (49)) - 20 && Game1.mouseState.Y >= starty && Game1.mouseState.Y <= starty + (inventoryRows * (48)) - 25)
+            int gottenIndex = (Game1.mouseState.X - startx) / 49 + ((Game1.mouseState.Y - starty) / 48 * 7);
+            //Debug.WriteLine(cursorItem);
+            //pick up an item
+            if (cursorItem == -1 && (gottenIndex) < inventoryItemIds.Length && Game1.mouseClicked && Game1.mouseState.X >= startx && Game1.mouseState.X <= startx + (7 * (49)) - 20 && Game1.mouseState.Y >= starty && Game1.mouseState.Y <= starty + (inventoryRows * (48)) - 25)
             {
-                cursorItem = inventoryItemIds[(Game1.mouseState.X - startx) / 49 + ((Game1.mouseState.Y - starty) / 48 * 7)];
-                inventoryItemIds[(Game1.mouseState.X - startx) / 49 + ((Game1.mouseState.Y - starty) / 48 * 7)] = -1;
-                cursorItemIndex = (Game1.mouseState.X - startx) / 49 + ((Game1.mouseState.Y - starty) / 48 * 7);
-
-                //TODO: add ability to drop items outside and inside bounds.
+                cursorItem = inventoryItemIds[gottenIndex];
+                inventoryItemIds[gottenIndex] = -1;
+                cursorItemIndex = gottenIndex;
+                cursorItemOrigin = uiState;
+                cursorQuantity = inventoryItemQuantities[gottenIndex];
+            }
+            //drop off an item
+            else if (cursorItem != -1 && (gottenIndex) < inventoryItemIds.Length && Game1.mouseClicked && Game1.mouseState.X >= startx && Game1.mouseState.X <= startx + (7 * (49)) - 20 && Game1.mouseState.Y >= starty && Game1.mouseState.Y <= starty + (inventoryRows * (48)) - 25)
+            {
+                //item in cursor is the same as the one in the slot
+                if (inventoryItemIds[gottenIndex]==cursorItem)
+                {
+                    if (cursorQuantity + inventoryItemQuantities[gottenIndex] > Game1.ITEM_STACK_SIZE)
+                    {
+                        cursorQuantity = inventoryItemQuantities[gottenIndex] + cursorQuantity - Game1.ITEM_STACK_SIZE;
+                        inventoryItemQuantities[gottenIndex] = Game1.ITEM_STACK_SIZE;
+                        cursorItemIndex = -1; //have to find the item a new slot if it has to "return"
+                        cursorItemOrigin = uiState;
+                    }
+                    else
+                    {
+                        inventoryItemQuantities[gottenIndex] += cursorQuantity;
+                        cursorQuantity = -1;
+                        cursorItem = -1;
+                        cursorItemIndex = -1;
+                        cursorItemOrigin = -1;
+                    }
+                }
+                //slot is empty
+                else if (inventoryItemIds[gottenIndex]==-1)
+                {
+                    inventoryItemIds[gottenIndex] = cursorItem;
+                    inventoryItemQuantities[gottenIndex] = cursorQuantity;
+                    cursorItem = -1;
+                    cursorItemIndex = -1;
+                    cursorItemOrigin = -1;
+                    cursorQuantity = -1;
+                }
+                //item in cursor is different from the one in the slot
+                else
+                {
+                    int temp = cursorItem;
+                    cursorItem = inventoryItemIds[gottenIndex];
+                    inventoryItemIds[gottenIndex] = temp;
+                    
+                    temp = cursorQuantity;
+                    cursorQuantity = inventoryItemQuantities[gottenIndex];
+                    inventoryItemQuantities[gottenIndex] = (temp);
+                    cursorItemIndex = gottenIndex;
+                    cursorItemOrigin = -1;
+                }
+            }
+            //return an item that is dropped out of bounds
+            else if (Game1.mouseClicked){
+                if (uiState == 1&&!(Game1.mouseState.X >= (this.uix + 136 + 19) && Game1.mouseState.X <= (this.uix + 136 + 19) + (7 * (49)) - 20 && Game1.mouseState.Y >= (this.uiy + 17) && Game1.mouseState.Y <= (this.uiy + 17) + (inventoryRows * (48)) - 25) &&
+                    (Game1.uiObjects[1] == null|| !(Game1.mouseState.X >= (Game1.uiObjects[1].uix + 7) && Game1.mouseState.X <= (Game1.uiObjects[1].uix + 7) + (7 * (49)) - 20 && Game1.mouseState.Y >= (Game1.uiObjects[1].uiy + 7) && Game1.mouseState.Y <= (Game1.uiObjects[1].uiy + 7) + (inventoryRows * (48)) - 25))) {
+                    //if item has a previous destination to return to, return it
+                    if (cursorItemOrigin != -1 && cursorItemIndex != -1)
+                    {
+                        (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).inventoryItemIds[cursorItemIndex] = cursorItem;
+                        Debug.WriteLine("o");
+                    }
+                    Debug.WriteLine(""+cursorItemIndex+","+cursorItemOrigin);
+                    cursorItem = -1;
+                    cursorItemIndex = -1;
+                    cursorItemOrigin = -1;
+                    //TODO: make it find a new slot when items are "switched"
+                }
             }
         }
     }
