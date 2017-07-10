@@ -28,9 +28,16 @@ namespace Game1
         public static AnimatedSprite items_32;
         public static Texture2D pixel;
 
+        public static int[] userInventory;
+        public static List<UI> uiObjects = new List<UI>();
 
         public const int WINDOW_WIDTH = 1280;
         public const int WINDOW_HEIGHT = 960;
+
+        public static bool mouseClicked = false;
+        public static bool mouseReleased = false;
+        private bool canClick = true;
+        private bool canRelease = false;
 
         Player player;
         UI ui;
@@ -42,8 +49,13 @@ namespace Game1
             player = new Player(1100, 450);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
-            ui = new UI(100,100,4,new int[] {2,1,0});
-            //chest = new UI(600, 200, 8);
+            userInventory = new int[] { 2, 1, 0, 2, 2, 2, 1, 0, 2, 1, 0 };
+
+            ui = new UI(100,100,4, userInventory, 1);
+            chest = new UI(600, 200, 8, new int[] { 0,2,2,1 }, 2);
+
+            uiObjects.Add(ui);
+            uiObjects.Add(chest);
         }
 
         /// <summary>
@@ -113,9 +125,31 @@ namespace Game1
             mouseState = Mouse.GetState();
             base.Update(gameTime);
 
-            //keyinput
-            
+            //update all UIs
+            for (int i = 0; i < uiObjects.Count; i++)
+            {
+                uiObjects[i].Update();
+            }
 
+            //update mouse stats
+            if (mouseState.LeftButton == ButtonState.Pressed && canClick)
+            {
+                mouseClicked = true;
+                canClick = false;
+                canRelease = true;
+            }
+            else mouseClicked = false;
+
+            if (mouseState.LeftButton == ButtonState.Released && canRelease)
+            {
+                mouseReleased = true;
+                canClick = true;
+                canRelease = false;
+            }
+            else mouseReleased = false;
+
+            //mouseClicked = mouseState.LeftButton == ButtonState.Pressed && !mouseClicked;
+            //mouseReleased = mouseState.LeftButton == ButtonState.Released && !mouseReleased;
         }
 
         /// <summary>
@@ -135,8 +169,11 @@ namespace Game1
             
             base.Draw(gameTime);
             player.Draw();
-            ui.Draw(1);
-            //chest.Draw(2);
+
+            //draw all UIs
+            for (int i=0;i<uiObjects.Count;i++) {
+                uiObjects[i].Draw();
+            }
         }
     }
 }
