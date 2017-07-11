@@ -26,8 +26,11 @@ namespace Game1
         public static AnimatedSprite[] charaLeft = new AnimatedSprite[12];
         public static AnimatedSprite[] charaRight = new AnimatedSprite[12];
         public static AnimatedSprite items_32;
+        public static AnimatedSprite tiles;
         public static Texture2D pixel;
         public static SpriteFont font;
+
+        public static ItemInfo itemInfo = new ItemInfo();
 
         public static int[] userInventory;
         public static int[] userInventoryQuantities;
@@ -41,6 +44,11 @@ namespace Game1
         public static bool mouseReleased = false;
         private bool canClick = true;
         private bool canRelease = false;
+
+        public static bool mouseClickedRight = false;
+        public static bool mouseReleasedRight = false;
+        private bool canClickRight = true;
+        private bool canReleaseRight = false;
 
         Player player;
         UI ui;
@@ -103,6 +111,7 @@ namespace Game1
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
 
             items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 2, 2);
+            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 11, 10);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
 
             font = Content.Load<SpriteFont>("File");
@@ -154,6 +163,22 @@ namespace Game1
                 canRelease = false;
             }
             else mouseReleased = false;
+            //mouse stats - right
+            if (mouseState.RightButton == ButtonState.Pressed && canClickRight)
+            {
+                mouseClickedRight = true;
+                canClickRight = false;
+                canReleaseRight = true;
+            }
+            else mouseClickedRight = false;
+            
+            if (mouseState.RightButton == ButtonState.Released && canReleaseRight)
+            {
+                mouseReleasedRight = true;
+                canClickRight = true;
+                canReleaseRight = false;
+            }
+            else mouseReleasedRight = false;
         }
 
         /// <summary>
@@ -167,10 +192,12 @@ namespace Game1
             //spriteBatch.Draw(grass2, new Vector2(400, 240), Color.White);
             //spriteBatch.Draw(grass3, new Vector2(450, 240), Color.White);
 
-
+            Game1.spriteBatch.Begin();
+            //tiles.DrawTile(spriteBatch, 0, new Vector2(Game1.mouseState.X, Game1.mouseState.Y));
+            Game1.spriteBatch.End();
 
             // TODO: Add your drawing code here
-            
+
             base.Draw(gameTime);
             player.Draw();
 
@@ -179,10 +206,7 @@ namespace Game1
                 uiObjects[i].Draw();
             }
             //draw cursor items for all UIs
-            for (int i = 0; i < uiObjects.Count; i++)
-            {
-                uiObjects[i].DrawCursorItem();
-            }
+            uiObjects[0].DrawCursorItem();
         }
     }
 }

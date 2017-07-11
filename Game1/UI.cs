@@ -109,7 +109,7 @@ namespace Game1
                         }
                     }
                     DrawItems(this.uix + 136 + 19 + 5, this.uiy + 17 + 5);
-                    HoverSquares(this.uix + 136 + 19, this.uiy + 17);
+                    Hover(this.uix + 136 + 19, this.uiy + 17);
                     break;
                 case 2:
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix - 1, this.uiy - 1, 354, 396), Color.Black);
@@ -127,7 +127,7 @@ namespace Game1
                         }
                     }
                     DrawItems(this.uix + 7 + 5, this.uiy + 7 + 5);
-                    HoverSquares(this.uix + 7, this.uiy + 7);
+                    Hover(this.uix + 7, this.uiy + 7);
                     break;
             }
             Game1.spriteBatch.End();
@@ -137,11 +137,24 @@ namespace Game1
         /// </summary>
         public void DrawCursorItem()
         {
-            if (cursorItem != -1)
+            int startx = (uiState == 1? this.uix + 136 + 19 + 5 : this.uix + 7 + 5);
+            int starty = (uiState == 1 ? this.uiy + 17 + 5 : this.uix + 7 + 5);
+            if (cursorItem != -1 )
             {
-                Game1.spriteBatch.Begin();
-                Game1.items_32.DrawTile(Game1.spriteBatch, cursorItem, new Vector2(Game1.mouseState.X, Game1.mouseState.Y));
-                Game1.spriteBatch.End();
+                if (uiState == 1 && ((!Game1.itemInfo.ITEM_PLACEABLE[cursorItem])||(Game1.mouseState.X >= (this.uix + 136 + 19) && Game1.mouseState.X <= (this.uix + 136 + 19) + (7 * (49)) - 20 && Game1.mouseState.Y >= (this.uiy + 17) && Game1.mouseState.Y <= (this.uiy + 17) + (inventoryRows * (48)) - 25) &&
+                    (Game1.uiObjects[1] == null || !(Game1.mouseState.X >= (Game1.uiObjects[1].uix + 7) && Game1.mouseState.X <= (Game1.uiObjects[1].uix + 7) + (7 * (49)) - 20 && Game1.mouseState.Y >= (Game1.uiObjects[1].uiy + 7) && Game1.mouseState.Y <= (Game1.uiObjects[1].uiy + 7) + (inventoryRows * (48)) - 25))))
+                {
+                    Game1.spriteBatch.Begin();
+                    Game1.items_32.DrawTile(Game1.spriteBatch, cursorItem, new Vector2(Game1.mouseState.X, Game1.mouseState.Y));
+                    Game1.spriteBatch.End();
+                }
+                else if (Game1.itemInfo.ITEM_PLACEABLE[cursorItem])
+                {
+                    Game1.spriteBatch.Begin();
+                    Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[cursorItem], new Vector2(Game1.mouseState.X, Game1.mouseState.Y));
+                    Game1.spriteBatch.End();
+                }
+                Debug.WriteLine("" + cursorItem);
             }
         }
         /// <summary>
@@ -158,7 +171,7 @@ namespace Game1
             }
         }
 
-        private void HoverSquares(int startx, int starty)
+        private void Hover(int startx, int starty)
         {
             if (Game1.mouseState.X>=startx && Game1.mouseState.X<=startx+(7 * (49)) - 20 && Game1.mouseState.Y >= starty && Game1.mouseState.Y <= starty + (inventoryRows * (48)) - 25)
             {
@@ -169,14 +182,33 @@ namespace Game1
         {
             for (int i = 0; i < inventoryItemIds.Length; i++)
             {
-                if (inventoryItemIds[i] == -1) return i;
+                if (inventoryItemIds[i] == -1 || (inventoryItemIds[i] != -1 && cursorItem == inventoryItemIds[i])) return i;
             }
             return -1;
         }
+
+
+
         private void DragAndDrop(int startx, int starty)
         {
             int gottenIndex = (Game1.mouseState.X - startx) / 49 + ((Game1.mouseState.Y - starty) / 48 * 7);
-            //Debug.WriteLine(cursorItem);
+
+            //pick up part of an item on right click
+            if (cursorItem == -1 && (gottenIndex) < inventoryItemIds.Length && Game1.mouseClickedRight && Game1.mouseState.X >= startx && Game1.mouseState.X <= startx + (7 * (49)) - 20 && Game1.mouseState.Y >= starty && Game1.mouseState.Y <= starty + (inventoryRows * (48)) - 25)
+            {
+                cursorItem = inventoryItemIds[gottenIndex];
+                cursorItemIndex = gottenIndex;
+                cursorItemOrigin = uiState;
+
+                if (cursorQuantity == -1) cursorQuantity = 1;
+                else cursorQuantity++;
+                if (inventoryItemQuantities[gottenIndex] == 1)
+                {
+                    inventoryItemQuantities[gottenIndex] = -1;
+                    inventoryItemIds[gottenIndex] = -1;
+                }
+                else inventoryItemQuantities[gottenIndex] -= 1;
+            }
             //pick up an item
             if (cursorItem == -1 && (gottenIndex) < inventoryItemIds.Length && Game1.mouseClicked && Game1.mouseState.X >= startx && Game1.mouseState.X <= startx + (7 * (49)) - 20 && Game1.mouseState.Y >= starty && Game1.mouseState.Y <= starty + (inventoryRows * (48)) - 25)
             {
@@ -228,8 +260,8 @@ namespace Game1
                     temp = cursorQuantity;
                     cursorQuantity = inventoryItemQuantities[gottenIndex];
                     inventoryItemQuantities[gottenIndex] = (temp);
-                    cursorItemIndex = gottenIndex;
-                    cursorItemOrigin = -1;
+                    //cursorItemIndex = -1;
+                    //cursorItemOrigin = -1;
                 }
             }
             //return an item that is dropped out of bounds
@@ -237,25 +269,84 @@ namespace Game1
                 if (uiState == 1&&!(Game1.mouseState.X >= (this.uix + 136 + 19) && Game1.mouseState.X <= (this.uix + 136 + 19) + (7 * (49)) - 20 && Game1.mouseState.Y >= (this.uiy + 17) && Game1.mouseState.Y <= (this.uiy + 17) + (inventoryRows * (48)) - 25) &&
                     (Game1.uiObjects[1] == null|| !(Game1.mouseState.X >= (Game1.uiObjects[1].uix + 7) && Game1.mouseState.X <= (Game1.uiObjects[1].uix + 7) + (7 * (49)) - 20 && Game1.mouseState.Y >= (Game1.uiObjects[1].uiy + 7) && Game1.mouseState.Y <= (Game1.uiObjects[1].uiy + 7) + (inventoryRows * (48)) - 25))) {
                     //if item has a previous destination to return to, return it
+                    int slot;
+
                     if (cursorItemOrigin != -1 && cursorItemIndex != -1)
                     {
+                        if (cursorItem == (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).inventoryItemIds[cursorItemIndex])
+                        {
+                            (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).inventoryItemQuantities[cursorItemIndex] += cursorQuantity;
+                            cursorQuantity = -1;
+                        }
+                        else
+                        {
+                            (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).inventoryItemQuantities[cursorItemIndex] = cursorQuantity;
+                            cursorQuantity = -1;
+                        }
+
                         (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).inventoryItemIds[cursorItemIndex] = cursorItem;
                         Debug.WriteLine("o");
                     }
                     else if (cursorItemOrigin != -1 && (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).FindFreeSlot()!=-1) {
-                        (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).inventoryItemIds[(cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).FindFreeSlot()] = cursorItem;
+                        slot = (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).FindFreeSlot();
+
+                        if (cursorItem == (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).inventoryItemIds[cursorItemIndex])
+                        {
+                            (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).inventoryItemQuantities[slot] += cursorQuantity;
+                            cursorQuantity--;
+                        }
+                        else
+                        {
+                            (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).inventoryItemQuantities[slot] = cursorQuantity;
+                            cursorQuantity = -1;
+                        }
+
+                        (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).inventoryItemIds[slot] = cursorItem;
+
                         Debug.WriteLine("o k");
                     }
                     else if (cursorItemIndex != -1) {
-                        if (this.FindFreeSlot()!=-1) {
-                            this.inventoryItemIds[this.FindFreeSlot()] = cursorItem;
+                        slot = this.FindFreeSlot();
+                        if (slot!=-1) {
+                            if (cursorItem == this.inventoryItemIds[slot])
+                            {
+                                this.inventoryItemQuantities[slot] += cursorQuantity;
+                                cursorQuantity--;
+                            }
+                            else
+                            {
+                                this.inventoryItemQuantities[slot] = cursorQuantity;
+                                cursorQuantity = -1;
+                            }
+
+                            this.inventoryItemIds[slot] = cursorItem;
+                            
                             Debug.WriteLine("o k o");
                         }
                         else if (Game1.uiObjects[1].FindFreeSlot() != -1)
                         {
-                            Game1.uiObjects[1].inventoryItemIds[Game1.uiObjects[1].FindFreeSlot()] = cursorItem;
+                            slot = Game1.uiObjects[1].FindFreeSlot();
+
+                            if (cursorItem == Game1.uiObjects[1].inventoryItemIds[cursorItemIndex])
+                            {
+                                Game1.uiObjects[1].inventoryItemQuantities[slot] += cursorQuantity;
+                                cursorQuantity--;
+                            }
+                            else
+                            {
+                                Game1.uiObjects[1].inventoryItemQuantities[slot] = cursorQuantity;
+                                cursorQuantity = -1;
+                            }
+
+                            Game1.uiObjects[1].inventoryItemIds[slot] = cursorItem;
+                            
                             Debug.WriteLine("o k o k");
                         }
+                    }
+                    //all else failed - find an origin and find an index
+                    else
+                    {
+
                     }
                     //Debug.WriteLine(""+cursorItemIndex+","+cursorItemOrigin);
                     cursorItem = -1;
@@ -265,5 +356,6 @@ namespace Game1
                 }
             }
         }
+
     }
 }
