@@ -173,7 +173,7 @@ namespace Game1
         {
             if (Game1.mouseState.X>=startx && Game1.mouseState.X<=startx+(7 * (49)) - 20 && Game1.mouseState.Y >= starty && Game1.mouseState.Y <= starty + (inventoryRows * (48)) - 25)
             {
-                Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(startx%49 + 49 * (Game1.mouseState.X/49) + 1, starty%48 + 48 * (Game1.mouseState.Y / 48) + 1, 42, 42), Color.White*0.25f);
+                Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(startx + 49 * ((Game1.mouseState.X - startx) / 49) + 1, starty + 48 * ((Game1.mouseState.Y-starty) / 48) + 1, 42, 42), Color.White*0.25f);
             }
         }
         private int FindFreeSlot()
