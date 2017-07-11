@@ -28,6 +28,8 @@ namespace Game1
         public static AnimatedSprite items_32;
         public static AnimatedSprite tiles;
         public static Texture2D pixel;
+        public static Texture2D[] cursor = new Texture2D[2];
+        public static int globalCursor = 0;
         public static SpriteFont font;
 
         public static ItemInfo itemInfo = new ItemInfo();
@@ -59,7 +61,7 @@ namespace Game1
             graphics = new GraphicsDeviceManager(this);
             player = new Player(1100, 450);
             Content.RootDirectory = "Content";
-            this.IsMouseVisible = true;
+            this.IsMouseVisible = false;
             userInventory = new int[] { 2, 1, 0, 2, 3, 2, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
             userInventoryQuantities = new int[] { 99, 12, 50, 12, 32, 42, 21, 10, 12, 31, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             ui = new UI(100,100,4, userInventory, userInventoryQuantities, 1);
@@ -113,6 +115,8 @@ namespace Game1
             items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 2, 2);
             tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 11, 10);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
+            cursor[0] = Content.Load<Texture2D>("img/cursor");
+            cursor[1] = Content.Load<Texture2D>("img/selectioncursor");
 
             font = Content.Load<SpriteFont>("File");
         }
@@ -206,6 +210,12 @@ namespace Game1
                 uiObjects[i].Draw();
             }
             //draw cursor items for all UIs
+            
+
+            Game1.spriteBatch.Begin();
+            spriteBatch.Draw(cursor[globalCursor], new Vector2(mouseState.X,mouseState.Y), Color.White);
+            Game1.spriteBatch.End();
+
             uiObjects[0].DrawCursorItem();
         }
     }
