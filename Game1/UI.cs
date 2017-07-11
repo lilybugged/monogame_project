@@ -149,10 +149,12 @@ namespace Game1
                 else if (Game1.itemInfo.ITEM_PLACEABLE[cursorItem])
                 {
                     Game1.spriteBatch.Begin();
-                    Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[cursorItem], new Vector2(Game1.mouseState.X, Game1.mouseState.Y));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[cursorItem], Color.White *0.5f, new Vector2(Game1.mouseState.X, Game1.mouseState.Y));
                     Game1.spriteBatch.End();
                 }
                 Debug.WriteLine("" + cursorItem);
+
+                //TODO: implement a method that returns a color for the tile depending on whether it can be placed - use new iteminfo for whether an item requires a surface
             }
         }
         /// <summary>
@@ -231,6 +233,7 @@ namespace Game1
                         inventoryItemQuantities[gottenIndex] = Game1.ITEM_STACK_SIZE;
                         cursorItemIndex = -1; //have to find the item a new slot if it has to "return"
                         cursorItemOrigin = uiState;
+                        Game1.globalCursor = 1;
                     }
                     else
                     {
@@ -251,6 +254,7 @@ namespace Game1
                     cursorItemIndex = -1;
                     cursorItemOrigin = -1;
                     cursorQuantity = -1;
+                    Game1.globalCursor = 0;
                 }
                 //item in cursor is different from the one in the slot
                 else

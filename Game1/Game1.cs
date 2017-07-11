@@ -36,6 +36,7 @@ namespace Game1
 
         public static int[] userInventory;
         public static int[] userInventoryQuantities;
+        public static bool uiToggle = false;
         public static List<UI> uiObjects = new List<UI>();
 
         public const int WINDOW_WIDTH = 1280;
@@ -146,9 +147,12 @@ namespace Game1
             base.Update(gameTime);
 
             //update all UIs
-            for (int i = 0; i < uiObjects.Count; i++)
+            if (uiToggle)
             {
-                uiObjects[i].Update();
+                for (int i = 0; i < uiObjects.Count; i++)
+                {
+                    uiObjects[i].Update();
+                }
             }
 
             //update mouse stats
@@ -205,18 +209,20 @@ namespace Game1
             base.Draw(gameTime);
             player.Draw();
 
-            //draw all UIs
-            for (int i=0;i<uiObjects.Count;i++) {
-                uiObjects[i].Draw();
+            if (uiToggle)
+            {
+                //draw all UIs
+                for (int i = 0; i < uiObjects.Count; i++)
+                {
+                    uiObjects[i].Draw();
+                }
+
+                uiObjects[0].DrawCursorItem();
             }
-            //draw cursor items for all UIs
-            
 
             Game1.spriteBatch.Begin();
             spriteBatch.Draw(cursor[globalCursor], new Vector2(mouseState.X,mouseState.Y), Color.White);
             Game1.spriteBatch.End();
-
-            uiObjects[0].DrawCursorItem();
         }
     }
 }
