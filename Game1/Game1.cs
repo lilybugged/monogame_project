@@ -52,10 +52,10 @@ namespace Game1
             player = new Player(1100, 450);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
-            userInventory = new int[] { 2, 1, 0, 2, 2, 2, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
+            userInventory = new int[] { 2, 1, 0, 2, 3, 2, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
             userInventoryQuantities = new int[] { 99, 12, 50, 12, 32, 42, 21, 10, 12, 31, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             ui = new UI(100,100,4, userInventory, userInventoryQuantities, 1);
-            chest = new UI(600, 200, 8, new int[] { 0,2,2,1,-1,-1,-1 }, new int[] { 1,2,5,2,-1,-1,-1 }, 2);
+            chest = new UI(600, 200, 8, new int[] { 0,2,2,1,3,2,3 }, new int[] { 1,2,5,2,55,66,99 }, 2);
 
             //so far, there can only be four uis up at once
             //each ui slot is its own type

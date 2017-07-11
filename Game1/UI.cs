@@ -242,11 +242,26 @@ namespace Game1
                         (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).inventoryItemIds[cursorItemIndex] = cursorItem;
                         Debug.WriteLine("o");
                     }
-                    Debug.WriteLine(""+cursorItemIndex+","+cursorItemOrigin);
+                    else if (cursorItemOrigin != -1 && (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).FindFreeSlot()!=-1) {
+                        (cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).inventoryItemIds[(cursorItemOrigin == 1 ? this : Game1.uiObjects[1]).FindFreeSlot()] = cursorItem;
+                        Debug.WriteLine("o k");
+                    }
+                    else if (cursorItemIndex != -1) {
+                        if (this.FindFreeSlot()!=-1) {
+                            this.inventoryItemIds[this.FindFreeSlot()] = cursorItem;
+                            Debug.WriteLine("o k o");
+                        }
+                        else if (Game1.uiObjects[1].FindFreeSlot() != -1)
+                        {
+                            Game1.uiObjects[1].inventoryItemIds[Game1.uiObjects[1].FindFreeSlot()] = cursorItem;
+                            Debug.WriteLine("o k o k");
+                        }
+                    }
+                    //Debug.WriteLine(""+cursorItemIndex+","+cursorItemOrigin);
                     cursorItem = -1;
                     cursorItemIndex = -1;
                     cursorItemOrigin = -1;
-                    //TODO: make it find a new slot when items are "switched"
+                    //TODO: placeable items and more item information arrays
                 }
             }
         }
