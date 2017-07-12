@@ -23,10 +23,17 @@ namespace Game1
             {
                 for (int a = 0; a < height; a++)
                 {
-                    mapTiles[i, a] = 2;
+                    mapTiles[i, a] = -1;
                 }
             }
-            mapTiles[0, 0] = 2;
+            for (int i = 0; i < length; i++)
+            {
+                for (int a = 80; a < height; a++)
+                {
+                    mapTiles[i, a] = 4;
+                }
+            }
+            //mapTiles[0, 90] = 4;
         }
         public void DrawMap()
         {

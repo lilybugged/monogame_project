@@ -46,6 +46,7 @@ namespace Game1
             ITEM_SOLID[1] = false;
             ITEM_SOLID[2] = false;
             ITEM_SOLID[3] = false;
+            ITEM_SOLID[4] = true;
 
             ITEM_BLOCKID[0] = -1;
             ITEM_BLOCKID[1] = -1;

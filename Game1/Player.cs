@@ -37,6 +37,14 @@ namespace Game1
         public void Update()
         {
             MouseKeyboardInfo.keyState = Keyboard.GetState();
+            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.W))
+            {
+                playery -= speed;
+            }
+            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.S))
+            {
+                playery += speed;
+            }
             if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A))
             {
                 playerx-=speed;

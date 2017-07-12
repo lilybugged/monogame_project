@@ -53,7 +53,7 @@ namespace Game1
 
         public Game1()
         {
-            map0 = new MapInfo(100, 100);
+            map0 = new MapInfo(300, 150);
             currentMap = map0;
             itemInfo = new ItemInfo();
             graphics = new GraphicsDeviceManager(this);
