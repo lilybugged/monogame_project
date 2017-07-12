@@ -15,8 +15,8 @@ namespace Game1
     /// </summary>
     class Player
     {
-        private int playerx;
-        private int playery;
+        public static int playerx;
+        public static int playery;
         private int currentAction;
         private int currentDirection;
         private int speed;
@@ -65,7 +65,7 @@ namespace Game1
         }
         public void Draw()
         {
-            (currentDirection==0? Game1.charaLeft[currentAction] :Game1.charaRight[currentAction]).Draw(Game1.spriteBatch, new Vector2(playerx, playery));
+            (currentDirection==0? Game1.charaLeft[currentAction] :Game1.charaRight[currentAction]).Draw(Game1.spriteBatch, new Vector2(Game1.WINDOW_WIDTH/2, Game1.WINDOW_HEIGHT/2));
         }
     }
 }

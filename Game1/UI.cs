@@ -150,9 +150,10 @@ namespace Game1
                 else if (Game1.itemInfo.ITEM_PLACEABLE[cursorItem])
                 {
                     Game1.spriteBatch.Begin();
-                    Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[cursorItem], Color.White *0.5f, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y));
-                    Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y+24), Color.White);
+                    Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[cursorItem], Color.White *0.5f, new Vector2(MouseKeyboardInfo.mouseState.X/16*16 - (Player.playerx%16), MouseKeyboardInfo.mouseState.Y/16*16 - (Player.playery%16)));
+                    Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X / 16 * 16 - (Player.playerx % 16), MouseKeyboardInfo.mouseState.Y / 16 * 16 - (Player.playery % 16) + 24), Color.White);
                     Game1.spriteBatch.End();
+                    Debug.WriteLine(""+CanBePlaced(MouseKeyboardInfo.mouseState.X / 16 * 16 - (Player.playerx % 16), MouseKeyboardInfo.mouseState.Y / 16 * 16 - (Player.playery % 16)));
                 }
                 
 
@@ -271,8 +272,6 @@ namespace Game1
                     temp = cursorQuantity;
                     cursorQuantity = inventoryItemQuantities[gottenIndex];
                     inventoryItemQuantities[gottenIndex] = (temp);
-                    //cursorItemIndex = -1;
-                    //cursorItemOrigin = -1;
                 }
             }
             //return an item that is dropped out of bounds
@@ -362,6 +361,11 @@ namespace Game1
                 }
             }
         }
-
+        public bool CanBePlaced(int x, int y)
+        {
+            //TODO: figure out for a REQUIRE_SURFACE item whether the cursor is on top of a surface (solid)
+            if (Game1.itemInfo.ITEM_REQUIRE_SURFACE[Game1.currentMap.mapTiles[x/16,y/16]] && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[x / 16, y / 16 + 1]] && Game1.currentMap.mapTiles[x / 16, y / 16]==-1) return true;
+            return false;
+        }
     }
 }

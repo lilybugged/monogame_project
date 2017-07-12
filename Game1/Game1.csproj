@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AnimatedSprite.cs" />
+    <Compile Include="MapInfo.cs" />
     <Compile Include="MouseKeyboardInfo.cs" />
     <Compile Include="ItemInfo.cs" />
     <Compile Include="UI.cs" />

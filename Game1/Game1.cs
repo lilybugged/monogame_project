@@ -33,7 +33,10 @@ namespace Game1
         public static int globalCursor = 0;
         public static SpriteFont font;
 
-        public static ItemInfo itemInfo = new ItemInfo();
+        public static ItemInfo itemInfo;
+        
+        public static MapInfo map0;
+        public static MapInfo currentMap;
 
         public static int[] userInventory;
         public static int[] userInventoryQuantities;
@@ -50,14 +53,17 @@ namespace Game1
 
         public Game1()
         {
+            map0 = new MapInfo(100, 100);
+            currentMap = map0;
+            itemInfo = new ItemInfo();
             graphics = new GraphicsDeviceManager(this);
             player = new Player(1100, 450);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = false;
-            userInventory = new int[] { 2, 1, 0, 2, 3, 2, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
-            userInventoryQuantities = new int[] { 99, 12, 50, 12, 32, 42, 21, 10, 12, 31, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-            ui = new UI(100,100,4, userInventory, userInventoryQuantities, 1);
-            chest = new UI(600, 200, 8, new int[] { 0,2,2,1,3,2,3 }, new int[] { 1,2,5,2,55,66,99 }, 2);
+            userInventory = new int[] { 2, 4, 0, 2, 3, 2, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
+            userInventoryQuantities = new int[] { 99, 99, 50, 12, 32, 42, 21, 10, 12, 31, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+            ui = new UI(0,100,4, userInventory, userInventoryQuantities, 1);
+            chest = new UI(0, 600, 8, new int[] { 0,2,2,1,3,2,3 }, new int[] { 1,2,5,2,55,66,99 }, 2);
 
             //so far, there can only be four uis up at once
             //each ui slot is its own type
@@ -65,6 +71,7 @@ namespace Game1
             uiObjects.Add(ui);
             chest.id = uiObjects.Count;
             uiObjects.Add(chest);
+
         }
 
         /// <summary>
@@ -104,7 +111,7 @@ namespace Game1
             charaRight[0] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_0"), 1, 1);
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
 
-            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 2, 2);
+            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 3, 2);
             tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 11, 10);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
             cursor[0] = Content.Load<Texture2D>("img/cursor");
@@ -162,11 +169,12 @@ namespace Game1
             //spriteBatch.Draw(grass3, new Vector2(450, 240), Color.White);
 
             Game1.spriteBatch.Begin();
-            //tiles.DrawTile(spriteBatch, 0, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y));
+            map0.DrawMap();
             Game1.spriteBatch.End();
 
             // TODO: Add your drawing code here
 
+            
             base.Draw(gameTime);
             player.Draw();
 
