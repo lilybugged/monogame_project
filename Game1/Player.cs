@@ -36,15 +36,15 @@ namespace Game1
         }
         public void Update()
         {
-            Game1.keyState = Keyboard.GetState();
-            if (Game1.keyState.IsKeyDown(Keys.A))
+            MouseKeyboardInfo.keyState = Keyboard.GetState();
+            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A))
             {
                 playerx-=speed;
                 //currentSprite = Game1.charaLeft[1];
                 currentAction = 1;
                 currentDirection = 0;
             }
-            else if (Game1.keyState.IsKeyDown(Keys.D))
+            else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D))
             {
                 playerx+=speed;
                 //currentSprite = Game1.charaRight[1];

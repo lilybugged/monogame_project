@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/File.spritefont</SourceFile>
-  <SourceTime>2017-07-10T09:29:07.999883-04:00</SourceTime>
-  <DestFile>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/bin/Windows/File.xnb</DestFile>
-  <DestTime>2017-07-11T08:12:53.0187639-04:00</DestTime>
+  <SourceFile>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/File.spritefont</SourceFile>
+  <SourceTime>2017-07-10T19:41:51.8394892-04:00</SourceTime>
+  <DestFile>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/bin/Windows/File.xnb</DestFile>
+  <DestTime>2017-07-11T19:44:56.9633597-04:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
-  <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
+  <ImporterTime>2017-06-22T14:38:56-04:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>
-  <ProcessorTime>2017-03-01T10:05:36-05:00</ProcessorTime>
+  <ProcessorTime>2017-06-22T14:38:56-04:00</ProcessorTime>
   <Parameters>
     <Key>PremultiplyAlpha</Key>
     <Value>True</Value>

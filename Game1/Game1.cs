@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Diagnostics;
 
 namespace Game1
 {
@@ -21,8 +22,8 @@ namespace Game1
         Texture2D bg;
         Texture2D grass3;
 
-        public static KeyboardState keyState;
-        public static MouseState mouseState;
+        
+        
         public static AnimatedSprite[] charaLeft = new AnimatedSprite[12];
         public static AnimatedSprite[] charaRight = new AnimatedSprite[12];
         public static AnimatedSprite items_32;
@@ -36,23 +37,13 @@ namespace Game1
 
         public static int[] userInventory;
         public static int[] userInventoryQuantities;
-        public static bool uiToggle = false;
+        public static bool uiToggle = true;
         public static List<UI> uiObjects = new List<UI>();
 
         public const int WINDOW_WIDTH = 1280;
         public const int WINDOW_HEIGHT = 960;
         public const int ITEM_STACK_SIZE = 99;
-
-        public static bool mouseClicked = false;
-        public static bool mouseReleased = false;
-        private bool canClick = true;
-        private bool canRelease = false;
-
-        public static bool mouseClickedRight = false;
-        public static bool mouseReleasedRight = false;
-        private bool canClickRight = true;
-        private bool canReleaseRight = false;
-
+        
         Player player;
         UI ui;
         UI chest;
@@ -137,13 +128,14 @@ namespace Game1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //Debug.WriteLine(MouseKeyboardInfo.IsMouseLeftClicked());
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || MouseKeyboardInfo.keyState.IsKeyDown(Keys.Escape))
                 Exit();
-            
+
+            MouseKeyboardInfo.Update();
             // TODO: Add your update logic here
             player.Update();
-            keyState = Keyboard.GetState();
-            mouseState = Mouse.GetState();
+            
             base.Update(gameTime);
 
             //update all UIs
@@ -154,39 +146,8 @@ namespace Game1
                     uiObjects[i].Update();
                 }
             }
-
-            //update mouse stats
-            if (mouseState.LeftButton == ButtonState.Pressed && canClick)
-            {
-                mouseClicked = true;
-                canClick = false;
-                canRelease = true;
-            }
-            else mouseClicked = false;
-
-            if (mouseState.LeftButton == ButtonState.Released && canRelease)
-            {
-                mouseReleased = true;
-                canClick = true;
-                canRelease = false;
-            }
-            else mouseReleased = false;
-            //mouse stats - right
-            if (mouseState.RightButton == ButtonState.Pressed && canClickRight)
-            {
-                mouseClickedRight = true;
-                canClickRight = false;
-                canReleaseRight = true;
-            }
-            else mouseClickedRight = false;
             
-            if (mouseState.RightButton == ButtonState.Released && canReleaseRight)
-            {
-                mouseReleasedRight = true;
-                canClickRight = true;
-                canReleaseRight = false;
-            }
-            else mouseReleasedRight = false;
+
         }
 
         /// <summary>
@@ -201,7 +162,7 @@ namespace Game1
             //spriteBatch.Draw(grass3, new Vector2(450, 240), Color.White);
 
             Game1.spriteBatch.Begin();
-            //tiles.DrawTile(spriteBatch, 0, new Vector2(Game1.mouseState.X, Game1.mouseState.Y));
+            //tiles.DrawTile(spriteBatch, 0, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y));
             Game1.spriteBatch.End();
 
             // TODO: Add your drawing code here
@@ -221,7 +182,7 @@ namespace Game1
             }
 
             Game1.spriteBatch.Begin();
-            spriteBatch.Draw(cursor[globalCursor], new Vector2(mouseState.X,mouseState.Y), Color.White);
+            spriteBatch.Draw(cursor[globalCursor], new Vector2(MouseKeyboardInfo.mouseState.X,MouseKeyboardInfo.mouseState.Y), Color.White);
             Game1.spriteBatch.End();
         }
     }
