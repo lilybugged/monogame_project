@@ -144,14 +144,17 @@ namespace Game1
                 {
                     Game1.spriteBatch.Begin();
                     Game1.items_32.DrawTile(Game1.spriteBatch, cursorItem, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y));
+                    Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y+24), Color.White);
                     Game1.spriteBatch.End();
                 }
                 else if (Game1.itemInfo.ITEM_PLACEABLE[cursorItem])
                 {
                     Game1.spriteBatch.Begin();
                     Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[cursorItem], Color.White *0.5f, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y));
+                    Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y+24), Color.White);
                     Game1.spriteBatch.End();
                 }
+                
 
                 //TODO: implement a method that returns a color for the tile depending on whether it can be placed - use new iteminfo for whether an item requires a surface
             }
@@ -165,7 +168,7 @@ namespace Game1
                 if (inventoryItemIds[i] > -1)
                 {
                     Game1.items_32.DrawTile(Game1.spriteBatch, inventoryItemIds[i], new Vector2(startx + 49 * (i % 7) + 1, starty + 48 * (i / 7) + 1));
-                    Game1.spriteBatch.DrawString(Game1.font, ""+inventoryItemQuantities[i], new Vector2(startx + 49 * (i % 7) + 1, starty + 48 * (i / 7) + 1), Color.White);
+                    Game1.spriteBatch.DrawString(Game1.font, ""+inventoryItemQuantities[i], new Vector2(startx + 49 * (i % 7) + 1, starty + 48 * (i / 7) + 24), Color.White);
                 }
             }
         }
@@ -193,7 +196,7 @@ namespace Game1
             int gottenIndex = (MouseKeyboardInfo.mouseState.X - startx) / 49 + ((MouseKeyboardInfo.mouseState.Y - starty) / 48 * 7);
             //if (MouseKeyboardInfo.mouseClickedRight) Debug.WriteLine("click");
             //pick up part of an item on right click
-            if ((gottenIndex) < inventoryItemIds.Length && gottenIndex > -1 && inventoryItemIds[gottenIndex] != -1 && cursorItem == inventoryItemIds[gottenIndex] && MouseKeyboardInfo.mouseClickedRight && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (7 * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 25)
+            if (gottenIndex > -1 && (gottenIndex) < inventoryItemIds.Length && inventoryItemIds[gottenIndex] != -1 && (cursorItem == inventoryItemIds[gottenIndex] || cursorItem==-1) && MouseKeyboardInfo.mouseClickedRight && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (7 * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 25)
             {
                 cursorItem = inventoryItemIds[gottenIndex];
                 cursorItemIndex = gottenIndex;
