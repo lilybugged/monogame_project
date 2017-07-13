@@ -57,7 +57,7 @@ namespace Game1
             currentMap = map0;
             itemInfo = new ItemInfo();
             graphics = new GraphicsDeviceManager(this);
-            player = new Player(1100, 450);
+            player = new Player(0, 0);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = false;
             userInventory = new int[] { 2, 4, 0, 2, 3, 2, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };

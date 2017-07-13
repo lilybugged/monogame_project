@@ -140,8 +140,7 @@ namespace Game1
                 !(MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396))
             {
                 //TODO: fix this.
-                Game1.currentMap.mapTiles[1,1] = cursorItem;
-                Debug.WriteLine(""+ (MouseKeyboardInfo.mouseState.X / 16 * 16 + (Player.playerx) + 1));
+                Game1.currentMap.mapTiles[(MouseKeyboardInfo.mouseState.X + Player.playerx) / 16, (MouseKeyboardInfo.mouseState.Y + Player.playery) / 16] = cursorItem;
             }
         }
         /// <summary>
@@ -162,7 +161,7 @@ namespace Game1
                 else if (Game1.itemInfo.ITEM_PLACEABLE[cursorItem])
                 {
                     Game1.spriteBatch.Begin();
-                    Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[cursorItem], (CanBePlaced(MouseKeyboardInfo.mouseState.X / 16 * 16 + (Player.playerx) + 1, MouseKeyboardInfo.mouseState.Y / 16 * 16 + (Player.playery) + 1) ? Color.White:Color.Red) *0.5f, new Vector2((MouseKeyboardInfo.mouseState.X) /16 * 16 - Player.playerx % 16, (MouseKeyboardInfo.mouseState.Y) / 16 * 16 - Player.playery % 16));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[cursorItem], (CanBePlaced(MouseKeyboardInfo.mouseState.X / 16 * 16 + (Player.playerx) + 1, MouseKeyboardInfo.mouseState.Y / 16 * 16 + (Player.playery) + 1) ? Color.White:Color.Red) *0.5f, new Vector2((MouseKeyboardInfo.mouseState.X + Player.playerx%16) /16 * 16, (MouseKeyboardInfo.mouseState.Y + Player.playery % 16) / 16 * 16));
                     Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X / 16 * 16 - (Player.playerx % 16), MouseKeyboardInfo.mouseState.Y / 16 * 16 - (Player.playery % 16) + 24), Color.White);
                     Game1.spriteBatch.End();
                     //Debug.WriteLine(""+CanBePlaced(MouseKeyboardInfo.mouseState.X / 16 * 16 - (Player.playerx % 16), MouseKeyboardInfo.mouseState.Y / 16 * 16 - (Player.playery % 16)));
@@ -377,7 +376,7 @@ namespace Game1
             //figures out for a REQUIRE_SURFACE item whether the cursor is on top of a surface (solid) or whether the space is free for item placement
             Debug.WriteLine(""+(x/16));
             if (x>=0 && y>=0 && Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && Game1.currentMap.mapTiles[x / 16, y / 16 + 1] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[x / 16, y / 16 + 1]] && Game1.currentMap.mapTiles[x / 16, y / 16] == -1) return true;
-            else if (!Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem]) return true;
+            else if (!Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && Game1.currentMap.mapTiles[x / 16, y / 16] == -1) return true;
             return false;
         }
     }
