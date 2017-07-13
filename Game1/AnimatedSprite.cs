@@ -86,7 +86,18 @@ namespace Game1
             sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White);
             //sprBatch.End();
         }
+        public void DrawTile(SpriteBatch sprBatch, int tileId, int width, int height, Vector2 location)
+        {
+            int row = tileId / Columns;
+            int column = tileId % Columns;
 
+            Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
+            Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
+
+            //sprBatch.Begin();
+            sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White);
+            //sprBatch.End();
+        }
         public void DrawTile(SpriteBatch sprBatch, int tileId, Color color, Vector2 location)
         {
             int width = Texture.Width / Columns;
