@@ -69,6 +69,7 @@ namespace Game1
                     DragAndDrop(this.uix + 7, this.uiy + 7);
                     break;
             }
+            PlaceItem();
         }
         public void Draw()
         {
@@ -132,6 +133,17 @@ namespace Game1
             }
             Game1.spriteBatch.End();
         }
+        public void PlaceItem()
+        {
+            //Game1.uiObjects[1].uix - 1, Game1.uiObjects[1].uiy - 1, 354, 396
+            if (uiState == 1 && MouseKeyboardInfo.mouseClickedRight && cursorItem!=-1 && Game1.itemInfo.ITEM_PLACEABLE[cursorItem] && CanBePlaced(MouseKeyboardInfo.mouseState.X / 16 * 16 + (Player.playerx) + 1, MouseKeyboardInfo.mouseState.Y / 16 * 16 + (Player.playery) + 1) && !(MouseKeyboardInfo.mouseState.X >= this.uix - 1 && MouseKeyboardInfo.mouseState.X <= this.uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= this.uiy - 1 && MouseKeyboardInfo.mouseState.Y <= this.uiy - 1 + 514) && 
+                !(MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396))
+            {
+                //TODO: fix this.
+                Game1.currentMap.mapTiles[1,1] = cursorItem;
+                Debug.WriteLine(""+ (MouseKeyboardInfo.mouseState.X / 16 * 16 + (Player.playerx) + 1));
+            }
+        }
         /// <summary>
         /// If the cursor is dragging an item, then draw it.
         /// </summary>
@@ -150,7 +162,7 @@ namespace Game1
                 else if (Game1.itemInfo.ITEM_PLACEABLE[cursorItem])
                 {
                     Game1.spriteBatch.Begin();
-                    Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[cursorItem], (CanBePlaced(MouseKeyboardInfo.mouseState.X / 16 * 16 - (Player.playerx % 16), MouseKeyboardInfo.mouseState.Y / 16 * 16 - (Player.playery % 16)) ? Color.White:Color.Red) *0.5f, new Vector2(MouseKeyboardInfo.mouseState.X/16*16 - (Player.playerx%16), MouseKeyboardInfo.mouseState.Y/16*16 - (Player.playery%16)));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[cursorItem], (CanBePlaced(MouseKeyboardInfo.mouseState.X / 16 * 16 + (Player.playerx) + 1, MouseKeyboardInfo.mouseState.Y / 16 * 16 + (Player.playery) + 1) ? Color.White:Color.Red) *0.5f, new Vector2((MouseKeyboardInfo.mouseState.X) /16 * 16 - Player.playerx % 16, (MouseKeyboardInfo.mouseState.Y) / 16 * 16 - Player.playery % 16));
                     Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X / 16 * 16 - (Player.playerx % 16), MouseKeyboardInfo.mouseState.Y / 16 * 16 - (Player.playery % 16) + 24), Color.White);
                     Game1.spriteBatch.End();
                     //Debug.WriteLine(""+CanBePlaced(MouseKeyboardInfo.mouseState.X / 16 * 16 - (Player.playerx % 16), MouseKeyboardInfo.mouseState.Y / 16 * 16 - (Player.playery % 16)));
@@ -357,15 +369,14 @@ namespace Game1
                     cursorItemIndex = -1;
                     cursorItemOrigin = -1;
                     Game1.globalCursor = 0;
-                    //TODO: placeable items and more item information arrays
                 }
             }
         }
         public bool CanBePlaced(int x, int y)
         {
-            //TODO: figure out for a REQUIRE_SURFACE item whether the cursor is on top of a surface (solid)
+            //figures out for a REQUIRE_SURFACE item whether the cursor is on top of a surface (solid) or whether the space is free for item placement
             Debug.WriteLine(""+(x/16));
-            if (Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && Game1.currentMap.mapTiles[x / 16, y / 16 + 1] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[x / 16, y / 16 + 1]] && Game1.currentMap.mapTiles[x / 16, y / 16] == -1) return true;
+            if (x>=0 && y>=0 && Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && Game1.currentMap.mapTiles[x / 16, y / 16 + 1] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[x / 16, y / 16 + 1]] && Game1.currentMap.mapTiles[x / 16, y / 16] == -1) return true;
             else if (!Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem]) return true;
             return false;
         }
