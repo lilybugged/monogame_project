@@ -14,7 +14,7 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 7;
+        public const int ITEM_COUNT = 8;
         public bool[] ITEM_EQUIPPABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_PLACEABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_REQUIRE_SURFACE = new bool[ITEM_COUNT]; //if it's placeable, must it be placed on a surface?
@@ -32,9 +32,11 @@ namespace Game1
             ITEM_PLACEABLE[4] = true;
             ITEM_PLACEABLE[5] = true;
             ITEM_PLACEABLE[6] = true;
+            ITEM_PLACEABLE[7] = true;
 
             ITEM_REQUIRE_SURFACE[2] = true;
             ITEM_REQUIRE_SURFACE[6] = true;
+            ITEM_REQUIRE_SURFACE[7] = true;
 
             ITEM_SOLID[4] = true;
             ITEM_SOLID[5] = true;
@@ -47,6 +49,7 @@ namespace Game1
             ITEM_BLOCKID[4] = 7;
             ITEM_BLOCKID[5] = 0;
             ITEM_BLOCKID[6] = 51;
+            ITEM_BLOCKID[7] = 102;
 
             ITEM_STACKABLE[0] = true;
             ITEM_STACKABLE[1] = true;
@@ -55,6 +58,7 @@ namespace Game1
             ITEM_STACKABLE[4] = true;
             ITEM_STACKABLE[5] = true;
             ITEM_STACKABLE[6] = true;
+            ITEM_STACKABLE[7] = true;
 
             ITEM_AUTOTILE[5] = true;
             ITEM_AUTOTILE[6] = true;

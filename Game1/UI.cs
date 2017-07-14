@@ -19,7 +19,9 @@ namespace Game1
     public class UI
     {
         //private AnimatedSprite currentSprite;
-        private int uix, uiy;
+        private int uix, uiy; //pos of ui on screen
+        private int posx, posy; //for DragUi
+        private int uiDragging; //for DragUi
         private int uiState;
         private Color menu_0;
         private Color menu_1;
@@ -57,6 +59,10 @@ namespace Game1
             cursorItemOrigin = -1;
             cursorQuantity = -1;
             inventoryItemQuantities = itemQuants;
+
+            posx = 0;
+            posy = 0;
+            uiDragging = -1;
         }
         public void Update()
         {
@@ -70,6 +76,7 @@ namespace Game1
                     break;
             }
             PlaceItem();
+            DragUi();
         }
         public void Draw()
         {
@@ -133,6 +140,28 @@ namespace Game1
             }
             Game1.spriteBatch.End();
         }
+        public void DragUi()
+        {
+            if (cursorItem == -1 && MouseKeyboardInfo.mouseClickedLeft && ((uiState == 1 && (MouseKeyboardInfo.mouseState.X >= this.uix - 1 && MouseKeyboardInfo.mouseState.X <= this.uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= this.uiy - 1 && MouseKeyboardInfo.mouseState.Y <= this.uiy - 1 + 514)) ||
+                (uiState == 2 && (MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396)))){
+                posx = MouseKeyboardInfo.mouseState.X - uix;
+                posy = MouseKeyboardInfo.mouseState.Y - uiy;
+                uiDragging = uiState;
+            }
+            if (cursorItem==-1 && MouseKeyboardInfo.mouseReleasedLeft) {
+                posx = 0;
+                posy = 0;
+                uiDragging = -1;
+            }
+            if (uiDragging!=-1)
+            {
+                (uiDragging == 1 ? Game1.uiObjects[0] : Game1.uiObjects[1]).uix = MouseKeyboardInfo.mouseState.X - posx;
+                (uiDragging == 1 ? Game1.uiObjects[0] : Game1.uiObjects[1]).uiy = MouseKeyboardInfo.mouseState.Y - posy;
+            }
+        }
+        /// <summary>
+        /// If an item can be placed from the cursor, place it.
+        /// </summary>
         public void PlaceItem()
         {
             //Game1.uiObjects[1].uix - 1, Game1.uiObjects[1].uiy - 1, 354, 396

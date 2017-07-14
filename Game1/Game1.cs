@@ -60,8 +60,8 @@ namespace Game1
             player = new Player(0, 0);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = false;
-            userInventory = new int[] { 2, 4, 5, 6, 3, 2, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
-            userInventoryQuantities = new int[] { 99, 99, 99, 99, 32, 42, 21, 10, 12, 31, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+            userInventory = new int[] { 2, 4, 5, 6, 7, 2, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
+            userInventoryQuantities = new int[] { 99, 99, 99, 99, 99, 42, 21, 10, 12, 31, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             ui = new UI(0,100,4, userInventory, userInventoryQuantities, 1);
             chest = new UI(0, 600, 8, new int[] { 0,2,2,1,3,2,3 }, new int[] { 1,2,5,2,55,66,99 }, 2);
 
