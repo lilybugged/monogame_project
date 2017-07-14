@@ -75,7 +75,7 @@ namespace Game1
                     DragAndDrop(this.uix + 7, this.uiy + 7);
                     break;
             }
-            Debug.WriteLine(""+InOnlyOneUi());
+            //Debug.WriteLine(""+InOnlyOneUi());
             InteractItem();
             PlaceItem();
             DragUi();
@@ -179,14 +179,16 @@ namespace Game1
                 
                 if (cursorItem == 8) //small chest
                 {
-                    int[][] inv = new int[7 * 2][];
-                    for (int i = 0; i < 7 * 2; i++)
+                    int[][] inv = new int[2][];
+                    for (int i = 0; i < 2; i++)
                     {
-                        inv[i] = new int[] { -1, -1 };
-                        Debug.WriteLine(""+inv[i][0]+","+inv[i][1]);
+                        inv[i] = new int[7*2];
+                        for (int a = 0; a < 7 * 2; a++)
+                        {
+                            inv[i][a] = -1;
+                        }
                     }
                     Chest chest = new Chest(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16, inv);
-                    Debug.WriteLine(chest.inventory.GetLength(0));
                     Game1.chestInventories.Add(chest);
                 }
                 if (cursorQuantity > 1)
@@ -294,6 +296,7 @@ namespace Game1
         private void DragAndDrop(int startx, int starty)
         {
             int gottenIndex = (MouseKeyboardInfo.mouseState.X - startx) / 49 + ((MouseKeyboardInfo.mouseState.Y - starty) / 48 * 7);
+            Debug.WriteLine(""+inventoryItemIds.Length);
             //if (MouseKeyboardInfo.mouseClickedRight) Debug.WriteLine("click");
             //pick up part of an item on right click
             if ((InOnlyOneUi() || uiState != 1) && gottenIndex > -1 && (gottenIndex) < inventoryItemIds.Length && inventoryItemIds[gottenIndex] != -1 && (cursorItem == inventoryItemIds[gottenIndex] || cursorItem==-1) && MouseKeyboardInfo.mouseClickedRight && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (7 * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 25)

@@ -15,7 +15,7 @@ namespace Game1
     {
         public int chestx;
         public int chesty;
-        public int[][] inventory; // first index is position in the inventory, second is quantity(1)/itemid(0)
+        public int[][] inventory; // first index is itemid(0)/quantity(1), second is position in the inventory
 
         public Chest(int x, int y, int[][] inv)
         {
