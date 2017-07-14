@@ -20,6 +20,8 @@ namespace Game1
         //item info
         public const int ITEM_COUNT = 9;
         public bool[] ITEM_EQUIPPABLE = new bool[ITEM_COUNT];
+        public int[] ITEM_UNIT_WIDTH = new int[ITEM_COUNT]; //e.g. 1,2,3
+        public int[] ITEM_UNIT_HEIGHT = new int[ITEM_COUNT]; //e.g. 1,2,3
         public bool[] ITEM_PLACEABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_REQUIRE_SURFACE = new bool[ITEM_COUNT]; //if it's placeable, must it be placed on a surface?
         public bool[] ITEM_SOLID = new bool[ITEM_COUNT]; //if it's placeable, does it have a solid collision state?
@@ -27,11 +29,18 @@ namespace Game1
         public bool[] ITEM_STACKABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_AUTOTILE = new bool[ITEM_COUNT]; //should still work for things like beds
         public int[] ITEM_END_POSITION = new int[ITEM_COUNT]; //where the "mask" should end (for collisions or stopping CanBePlaced())
+        public UI[] ITEM_UI = new UI[ITEM_COUNT]; // ui associated with the item
         public Action[] ITEM_FUNCTION = new Action[ITEM_COUNT]; // for when you click an item with an empty cursor - think chests and other furniture
         public int[] ITEM_TOOL_TIER = new int[ITEM_COUNT]; // which tier of tool is required to break the item at minimum - "0" = hands (empty cursor)
         public static int chestState = 0; //0-4 values - closed, opening, open, closing
         public ItemInfo()
         {
+            for (int i = 0; i < ITEM_COUNT; i++)
+            {
+                ITEM_UNIT_WIDTH[i] = 1;
+                ITEM_UNIT_HEIGHT[i] = 1;
+            }
+
             ITEM_PLACEABLE[2] = true;
             ITEM_PLACEABLE[4] = true;
             ITEM_PLACEABLE[5] = true;
@@ -70,7 +79,6 @@ namespace Game1
 
             ITEM_AUTOTILE[5] = true;
             ITEM_AUTOTILE[6] = true;
-            ITEM_AUTOTILE[8] = true;
 
 
             ITEM_FUNCTION[8] = Function8;
@@ -84,42 +92,6 @@ namespace Game1
         {
             switch (itemId)
             {
-                case 8:
-                    if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId))
-                    {
-                        if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId))
-                        {
-                            switch (chestState)
-                            {
-                                case 0:
-                                    Game1.tiles.DrawTile(Game1.spriteBatch, 35, position); //noleft, noright
-                                    break;
-                                case 1:
-                                    Game1.spriteBatch.End();
-                                    Game1.tiles2.Draw(Game1.spriteBatch, 35, 38, 1, position); //noleft, noright
-                                    Game1.spriteBatch.Begin();
-                                    break;
-                                case 2:
-                                    Game1.tiles.DrawTile(Game1.spriteBatch, 38, position); //noleft, noright
-                                    break;
-                                case 3:
-                                    Game1.spriteBatch.End();
-                                    Game1.tiles2.Draw(Game1.spriteBatch, 38, 35, -1, position); //noleft, noright
-                                    Game1.spriteBatch.Begin();
-                                    break;
-                            }
-                        }
-                        else Game1.tiles.DrawTile(Game1.spriteBatch, 39, position); //noleft
-                    }
-                    else if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId))
-                    {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 47, position); //noright
-                    }
-                    else
-                    {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 43, position); //leftandright
-                    }
-                    break;
                 case 6:
                     if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId))
                     {

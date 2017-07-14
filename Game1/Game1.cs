@@ -42,10 +42,12 @@ namespace Game1
         public static MapInfo map0;
         public static MapInfo currentMap;
 
+        public static int chestCount = 0;
+        public static List<Chest> chestInventories; //access using the chest id
         public static int[] userInventory;
         public static int[] userInventoryQuantities;
         public static bool uiToggle = true;
-        public static List<UI> uiObjects = new List<UI>();
+        public static UI[] uiObjects = new UI[4];
 
         public const int WINDOW_WIDTH = 1280;
         public const int WINDOW_HEIGHT = 960;
@@ -64,18 +66,22 @@ namespace Game1
             player = new Player(0, 0);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = false;
+            chestInventories = new List<Chest>();
             userInventory = new int[] { 2, 4, 5, 6, 7, 8, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
             userInventoryQuantities = new int[] { 99, 99, 99, 99, 99, 99, 21, 10, 12, 31, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             ui = new UI(0,100,4, userInventory, userInventoryQuantities, 1);
-            chest = new UI(0, 600, 8, new int[] { 0,2,2,1,3,2,3 }, new int[] { 1,2,5,2,55,66,99 }, 2);
+
+            //test chests
+            chestInventories.Add(new Chest(50,50, new int[][] { new int[]{ 0, 2, 2, 1, 3, 2, 3 }, new int[]{ 1, 2, 5, 2, 55, 66, 99 }}));
+            Debug.WriteLine(""+chestInventories[0]);
+            //chest = new UI(0, 600, 8, new int[] { 0, 2, 2, 1, 3, 2, 3 }, new int[] { 1, 2, 5, 2, 55, 66, 99 }, 2);
 
             //so far, there can only be four uis up at once
             //each ui slot is its own type
-            ui.id = uiObjects.Count;
-            uiObjects.Add(ui);
-            chest.id = uiObjects.Count;
-            uiObjects.Add(chest);
-
+            ui.id = uiObjects.Length;
+            uiObjects[0] = ui;
+            //chest.id = uiObjects.Length;
+            //uiObjects[1] = chest;
         }
 
         /// <summary>
@@ -155,9 +161,9 @@ namespace Game1
             //update all UIs
             if (uiToggle)
             {
-                for (int i = 0; i < uiObjects.Count; i++)
+                for (int i = 0; i < uiObjects.Length; i++)
                 {
-                    uiObjects[i].Update();
+                    if (uiObjects[i]!=null) uiObjects[i].Update();
                 }
             }
             
@@ -188,9 +194,9 @@ namespace Game1
             if (uiToggle)
             {
                 //draw all UIs
-                for (int i = 0; i < uiObjects.Count; i++)
+                for (int i = 0; i < uiObjects.Length; i++)
                 {
-                    uiObjects[i].Draw();
+                    if (uiObjects[i] != null) uiObjects[i].Draw();
                 }
 
                 uiObjects[0].DrawCursorItem();
