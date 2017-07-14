@@ -28,10 +28,14 @@ namespace Game1
         public static AnimatedSprite[] charaRight = new AnimatedSprite[12];
         public static AnimatedSprite items_32;
         public static AnimatedSprite tiles;
+        public static AnimatedSprite tiles2;
         public static Texture2D pixel;
+        public static Texture2D portrait;
         public static Texture2D[] cursor = new Texture2D[2];
         public static int globalCursor = 0;
         public static SpriteFont font;
+
+        //public static AnimatedSprite[] chestSprites = new AnimatedSprite[4];
 
         public static ItemInfo itemInfo;
         
@@ -60,8 +64,8 @@ namespace Game1
             player = new Player(0, 0);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = false;
-            userInventory = new int[] { 2, 4, 5, 6, 7, 2, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
-            userInventoryQuantities = new int[] { 99, 99, 99, 99, 99, 42, 21, 10, 12, 31, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+            userInventory = new int[] { 2, 4, 5, 6, 7, 8, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
+            userInventoryQuantities = new int[] { 99, 99, 99, 99, 99, 99, 21, 10, 12, 31, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             ui = new UI(0,100,4, userInventory, userInventoryQuantities, 1);
             chest = new UI(0, 600, 8, new int[] { 0,2,2,1,3,2,3 }, new int[] { 1,2,5,2,55,66,99 }, 2);
 
@@ -113,7 +117,9 @@ namespace Game1
 
             items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 3, 3);
             tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 11, 10);
+            tiles2 = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 11, 10);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
+            portrait = Content.Load<Texture2D>("img/portrait");
             cursor[0] = Content.Load<Texture2D>("img/cursor");
             cursor[1] = Content.Load<Texture2D>("img/selectioncursor");
 
@@ -142,7 +148,8 @@ namespace Game1
             MouseKeyboardInfo.Update();
             // TODO: Add your update logic here
             player.Update();
-            
+            tiles.Update();
+            tiles2.Update();
             base.Update(gameTime);
 
             //update all UIs

@@ -11,10 +11,14 @@ using System.Diagnostics;
 
 namespace Game1
 {
+    /// <summary>
+    /// The ItemInfo class should be instantiated exactly once in the game.
+    /// It contains information for every item in the game.
+    /// </summary>
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 8;
+        public const int ITEM_COUNT = 9;
         public bool[] ITEM_EQUIPPABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_PLACEABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_REQUIRE_SURFACE = new bool[ITEM_COUNT]; //if it's placeable, must it be placed on a surface?
@@ -25,7 +29,7 @@ namespace Game1
         public int[] ITEM_END_POSITION = new int[ITEM_COUNT]; //where the "mask" should end (for collisions or stopping CanBePlaced())
         public Action[] ITEM_FUNCTION = new Action[ITEM_COUNT]; // for when you click an item with an empty cursor - think chests and other furniture
         public int[] ITEM_TOOL_TIER = new int[ITEM_COUNT]; // which tier of tool is required to break the item at minimum - "0" = hands (empty cursor)
-
+        public static int chestState = 0; //0-4 values - closed, opening, open, closing
         public ItemInfo()
         {
             ITEM_PLACEABLE[2] = true;
@@ -33,10 +37,12 @@ namespace Game1
             ITEM_PLACEABLE[5] = true;
             ITEM_PLACEABLE[6] = true;
             ITEM_PLACEABLE[7] = true;
+            ITEM_PLACEABLE[8] = true;
 
             ITEM_REQUIRE_SURFACE[2] = true;
             ITEM_REQUIRE_SURFACE[6] = true;
             ITEM_REQUIRE_SURFACE[7] = true;
+            ITEM_REQUIRE_SURFACE[8] = true;
 
             ITEM_SOLID[4] = true;
             ITEM_SOLID[5] = true;
@@ -50,6 +56,7 @@ namespace Game1
             ITEM_BLOCKID[5] = 0;
             ITEM_BLOCKID[6] = 51;
             ITEM_BLOCKID[7] = 102;
+            ITEM_BLOCKID[8] = 35;
 
             ITEM_STACKABLE[0] = true;
             ITEM_STACKABLE[1] = true;
@@ -59,15 +66,60 @@ namespace Game1
             ITEM_STACKABLE[5] = true;
             ITEM_STACKABLE[6] = true;
             ITEM_STACKABLE[7] = true;
+            ITEM_STACKABLE[8] = true;
 
             ITEM_AUTOTILE[5] = true;
             ITEM_AUTOTILE[6] = true;
+            ITEM_AUTOTILE[8] = true;
+
+
+            ITEM_FUNCTION[8] = Function8;
         }
 
+        private static void Function8()
+        {
+            chestState = 1;
+        }
         public static void DrawAutoTile(int itemId, Vector2 position)
         {
             switch (itemId)
             {
+                case 8:
+                    if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId))
+                    {
+                        if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId))
+                        {
+                            switch (chestState)
+                            {
+                                case 0:
+                                    Game1.tiles.DrawTile(Game1.spriteBatch, 35, position); //noleft, noright
+                                    break;
+                                case 1:
+                                    Game1.spriteBatch.End();
+                                    Game1.tiles2.Draw(Game1.spriteBatch, 35, 38, 1, position); //noleft, noright
+                                    Game1.spriteBatch.Begin();
+                                    break;
+                                case 2:
+                                    Game1.tiles.DrawTile(Game1.spriteBatch, 38, position); //noleft, noright
+                                    break;
+                                case 3:
+                                    Game1.spriteBatch.End();
+                                    Game1.tiles2.Draw(Game1.spriteBatch, 38, 35, -1, position); //noleft, noright
+                                    Game1.spriteBatch.Begin();
+                                    break;
+                            }
+                        }
+                        else Game1.tiles.DrawTile(Game1.spriteBatch, 39, position); //noleft
+                    }
+                    else if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId))
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 47, position); //noright
+                    }
+                    else
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 43, position); //leftandright
+                    }
+                    break;
                 case 6:
                     if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId))
                     {

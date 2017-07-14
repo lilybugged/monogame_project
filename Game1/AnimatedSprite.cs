@@ -19,6 +19,7 @@ namespace Game1
         private int currentFrame;
         private int totalFrames;
         private int tick = 0;
+        private int tickSpeed = 1; // don't make this any more than 1 or less than -1
 
         public AnimatedSprite(Texture2D texture, int rows, int columns)
         {
@@ -28,12 +29,12 @@ namespace Game1
             currentFrame = 0;
             totalFrames = Rows * Columns;
         }
-
+        //TODO: do something about the global tick issue lol
         public void Update()
         {
             if (tick > 4) tick = 0;
             currentFrame += (tick==4? 1:0);
-            if (currentFrame == totalFrames)
+            if (currentFrame >= totalFrames)
                 currentFrame = 0;
             tick++;
         }
@@ -53,14 +54,15 @@ namespace Game1
             sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White);
             sprBatch.End();
         }
-        public void Draw(SpriteBatch sprBatch, int startframe, int endframe, Vector2 location)
+        public void Draw(SpriteBatch sprBatch, int startframe, int endframe, int speed, Vector2 location)
         {
+            //this.tickSpeed = speed;
             int width = Texture.Width / Columns;
             int height = Texture.Height / Rows;
-            int row = (int)((float) startframe + (float)currentFrame / (float)Columns);
-            int column = startframe + currentFrame % Columns;
-            totalFrames = endframe - startframe;
-
+            int row = (int)(((float) startframe + (float)tickSpeed*(float)currentFrame) / (float)Columns);
+            int column = (startframe + tickSpeed * currentFrame) % Columns;
+            totalFrames = Math.Abs(endframe - startframe + 1);
+            Debug.WriteLine(""+column+","+row);
             Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
             Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
 

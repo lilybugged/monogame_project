@@ -104,3 +104,4 @@ C:\Users\lily.DESKTOP-0KJ3NCB\OneDrive\Documents\monogame githubs\monogame_proje
 C:\Users\lily.DESKTOP-0KJ3NCB\OneDrive\Documents\monogame githubs\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\selectioncursor.xnb
 C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\cursor.xnb
 C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\selectioncursor.xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\portrait.xnb

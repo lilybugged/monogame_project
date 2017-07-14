@@ -75,6 +75,7 @@ namespace Game1
                     DragAndDrop(this.uix + 7, this.uiy + 7);
                     break;
             }
+            InteractItem();
             PlaceItem();
             DragUi();
         }
@@ -93,7 +94,9 @@ namespace Game1
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 9, this.uiy + 9, 134, 170), menu_3);
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 11, this.uiy + 11, 130, 166), menu_0);
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 12, this.uiy + 12, 128, 164), menu_2);
-                    
+
+                    Game1.spriteBatch.Draw(Game1.portrait, new Vector2(this.uix + 12, this.uiy + 12), Color.White*0.5f);
+
                     for (int i = 0; i < 6; i++)
                     {
                         for (int a = 0; a < 3; a++)
@@ -181,6 +184,16 @@ namespace Game1
                     Game1.globalCursor = 0;
                 }
 
+            }
+        }
+        public void InteractItem()
+        {
+            if (uiState == 1 && MouseKeyboardInfo.mouseClickedRight && cursorItem == -1 && !(MouseKeyboardInfo.mouseState.X >= this.uix - 1 && MouseKeyboardInfo.mouseState.X <= this.uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= this.uiy - 1 && MouseKeyboardInfo.mouseState.Y <= this.uiy - 1 + 514) &&
+                !(MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396) && 
+                Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]!=-1)
+            {
+                Debug.WriteLine(""+ Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]);
+                Game1.itemInfo.ITEM_FUNCTION[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]]?.Invoke();
             }
         }
         /// <summary>
