@@ -41,8 +41,6 @@ namespace Game1
         
         public static MapInfo map0;
         public static MapInfo currentMap;
-
-        public static int chestCount = 0;
         public static List<Chest> chestInventories; //access using the chest id
         public static int[] userInventory;
         public static int[] userInventoryQuantities;

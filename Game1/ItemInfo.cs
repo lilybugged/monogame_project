@@ -92,6 +92,9 @@ namespace Game1
         {
             switch (itemId)
             {
+                case 8:
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 35, position);
+                    break;
                 case 6:
                     if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId))
                     {
