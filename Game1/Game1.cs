@@ -22,8 +22,6 @@ namespace Game1
         Texture2D bg;
         Texture2D grass3;
 
-        
-        
         public static AnimatedSprite[] charaLeft = new AnimatedSprite[12];
         public static AnimatedSprite[] charaRight = new AnimatedSprite[12];
         public static AnimatedSprite items_32;
@@ -44,8 +42,11 @@ namespace Game1
         public static List<Chest> chestInventories; //access using the chest id
         public static int[] userInventory;
         public static int[] userInventoryQuantities;
+
         public static bool uiToggle = true;
         public static UI[] uiObjects = new UI[4];
+        public static int[] uiPosX = new int[4];
+        public static int[] uiPosY = new int[4];
 
         public const int WINDOW_WIDTH = 1280;
         public const int WINDOW_HEIGHT = 960;
@@ -68,11 +69,6 @@ namespace Game1
             userInventory = new int[] { 2, 4, 5, 6, 7, 8, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
             userInventoryQuantities = new int[] { 99, 99, 99, 99, 99, 99, 21, 10, 12, 31, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             ui = new UI(0,100,4, userInventory, userInventoryQuantities, 1);
-
-            //test chests
-            chestInventories.Add(new Chest(50,50, new int[][] { new int[]{ 0, 2, 2, 1, 3, 2, 3 }, new int[]{ 1, 2, 5, 2, 55, 66, 99 }}));
-            Debug.WriteLine(""+chestInventories[0]);
-            //chest = new UI(0, 600, 8, new int[] { 0, 2, 2, 1, 3, 2, 3 }, new int[] { 1, 2, 5, 2, 55, 66, 99 }, 2);
 
             //so far, there can only be four uis up at once
             //each ui slot is its own type
