@@ -6,11 +6,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{29E5E9A0-3930-4E19-9742-710750224324}</ProjectGuid>
+    <ProjectGuid>{2ED5E0ED-5760-43E6-BD1B-131CF751B941}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Game1</RootNamespace>
-    <AssemblyName>Game1</AssemblyName>
+    <RootNamespace>Game2</RootNamespace>
+    <AssemblyName>Game2</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -41,15 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AnimatedSprite.cs" />
-    <Compile Include="Chest.cs" />
-    <Compile Include="NetworkClient.cs" />
-    <Compile Include="MapInfo.cs" />
-    <Compile Include="MouseKeyboardInfo.cs" />
-    <Compile Include="ItemInfo.cs" />
-    <Compile Include="UI.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="Server.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

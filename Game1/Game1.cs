@@ -33,6 +33,8 @@ namespace Game1
         public static int globalCursor = 0;
         public static SpriteFont font;
 
+        //public static bool gameIsActive = true;
+
         //public static AnimatedSprite[] chestSprites = new AnimatedSprite[4];
 
         public static ItemInfo itemInfo;
@@ -115,9 +117,8 @@ namespace Game1
             charaRight[0] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_0"), 1, 1);
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
 
-            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 3, 3);
+            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 4, 3);
             tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 11, 10);
-            tiles2 = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 11, 10);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
             portrait = Content.Load<Texture2D>("img/portrait");
             cursor[0] = Content.Load<Texture2D>("img/cursor");
@@ -145,22 +146,23 @@ namespace Game1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || MouseKeyboardInfo.keyState.IsKeyDown(Keys.Escape))
                 Exit();
 
-            MouseKeyboardInfo.Update();
-            // TODO: Add your update logic here
-            player.Update();
-            tiles.Update();
-            tiles2.Update();
-            base.Update(gameTime);
-
-            //update all UIs
-            if (uiToggle)
+            if (this.IsActive)
             {
-                for (int i = 0; i < uiObjects.Length; i++)
+                MouseKeyboardInfo.Update();
+                // TODO: Add your update logic here
+                player.Update();
+                tiles.Update();
+                base.Update(gameTime);
+
+                //update all UIs
+                if (uiToggle)
                 {
-                    if (uiObjects[i]!=null) uiObjects[i].Update();
+                    for (int i = 0; i < uiObjects.Length; i++)
+                    {
+                        if (uiObjects[i] != null) uiObjects[i].Update();
+                    }
                 }
             }
-            
 
         }
 
