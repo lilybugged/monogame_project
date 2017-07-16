@@ -37,7 +37,7 @@ namespace Game1
 
             config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
             config.EnableMessageType(NetIncomingMessageType.Data);
-            client.DiscoverLocalPeers(14242);
+            client.DiscoverLocalPeers(7777);
             tick = 0;
         }
 
