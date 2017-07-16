@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Lidgren.Network;
 
-namespace Game2
+namespace Game1Server
 {
     /// <summary>
     /// This is the main type for your game.
