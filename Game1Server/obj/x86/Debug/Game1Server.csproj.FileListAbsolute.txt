@@ -48,3 +48,5 @@ C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1Server\bin\Windows
 C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.XInput.xml
 C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1Server\obj\x86\Debug\Game1Server.csprojResolveAssemblyReference.cache
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1Server\bin\Windows\x86\Debug\Content\File.xnb
+C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1Server\bin\Windows\x86\Debug\Content\default_font.xnb

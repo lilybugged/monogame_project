@@ -53,13 +53,17 @@ namespace Game1
         public const int WINDOW_WIDTH = 1280;
         public const int WINDOW_HEIGHT = 960;
         public const int ITEM_STACK_SIZE = 99;
-        
+
+        public NetworkClient client;
+
+
         Player player;
         UI ui;
         UI chest;
 
         public Game1()
         {
+            client = new NetworkClient();
             map0 = new MapInfo(300, 150);
             currentMap = map0;
             itemInfo = new ItemInfo();
@@ -152,6 +156,8 @@ namespace Game1
                 // TODO: Add your update logic here
                 player.Update();
                 tiles.Update();
+                client.Update();
+
                 base.Update(gameTime);
 
                 //update all UIs
