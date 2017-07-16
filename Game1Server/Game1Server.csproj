@@ -9,7 +9,7 @@
     <ProjectGuid>{2ED5E0ED-5760-43E6-BD1B-131CF751B941}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Game1Server</RootNamespace>
+    <RootNamespace>Game2</RootNamespace>
     <AssemblyName>Game1 Server</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
@@ -56,7 +56,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ClientInformation.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

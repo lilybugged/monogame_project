@@ -33,8 +33,6 @@ namespace Game1
         public static int globalCursor = 0;
         public static SpriteFont font;
 
-        public static int CLIENT_ID = -1;
-
         //public static bool gameIsActive = true;
 
         //public static AnimatedSprite[] chestSprites = new AnimatedSprite[4];
@@ -56,7 +54,7 @@ namespace Game1
         public const int WINDOW_HEIGHT = 960;
         public const int ITEM_STACK_SIZE = 99;
 
-        public static NetworkClient client;
+        public NetworkClient client;
 
 
         Player player;
@@ -152,16 +150,13 @@ namespace Game1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || MouseKeyboardInfo.keyState.IsKeyDown(Keys.Escape))
                 Exit();
 
-            //SYNC INFORMATION
-            client.Update();
-
-            //update all the things, only if the window is active
             if (this.IsActive)
             {
                 MouseKeyboardInfo.Update();
                 // TODO: Add your update logic here
                 player.Update();
                 tiles.Update();
+                client.Update();
 
                 base.Update(gameTime);
 

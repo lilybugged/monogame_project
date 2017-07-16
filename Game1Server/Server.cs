@@ -26,14 +26,10 @@ namespace Game1Server
         NetPeerConfiguration config;
         NetIncomingMessage msgIn;
         List<String> messages = new List<String>();
-        List<ClientInformation> clients = new List<ClientInformation>();
-
-        int[,] userInventories; 
 
         public Server()
         {
             this.IsMouseVisible = true;
-            this.Window.Title = "Game1 Server";
 
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -46,7 +42,6 @@ namespace Game1Server
 
             config.EnableMessageType(NetIncomingMessageType.ConnectionApproval);
             config.EnableMessageType(NetIncomingMessageType.DiscoveryRequest);
-            config.EnableMessageType(NetIncomingMessageType.Data);
 
         }
 
@@ -92,7 +87,6 @@ namespace Game1Server
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
-        /// ALWAYS SEND THE CLIENT ID BEFORE STRINGS FOR CHECKING
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
@@ -102,60 +96,34 @@ namespace Game1Server
 
             // TODO: Add your update logic here
             //use local message variable
-            NetOutgoingMessage msg = server.CreateMessage();
-
-            //msg.Write("activate id: " + clients.Count);
-
-            //if (msgIn!=null && msgIn.SenderEndPoint != null && server.GetConnection(msgIn.SenderEndPoint) != null) server.SendMessage(msg, server.GetConnection(msgIn.SenderEndPoint), NetDeliveryMethod.ReliableOrdered);
-
-            //update clients' information
-            //msg.Write("syncMap: 15 15 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 99,3,54,6,2,1,1,1,1,1,1,1,1,1,1");
-
-            //server.SendToAll(msg, NetDeliveryMethod.ReliableOrdered);
-
-            //Game1.client.messageQueue.Add("" + Game1.CLIENT_ID + " playerMove:" + playerx + "," + playery);
+            
+            //standard receive loop - loops through all received messages, until none is left
             while ((msgIn = server.ReadMessage()) != null)
             {
-                msg = server.CreateMessage();
-                msg.Write("activate id: " + clients.Count);
-                if (msgIn.SenderConnection!=null) server.SendMessage(msg, msgIn.SenderConnection, NetDeliveryMethod.ReliableOrdered);
-
                 //create message type handling with a switch
                 switch (msgIn.MessageType)
                 {
                     case NetIncomingMessageType.Data:
                         //This type handles all data that have been send by you.
                         messages.Add("" + msgIn.ReadString());
-                        String str;
-                        str = msgIn.ReadString();
-                        //Debug.WriteLine(msgIn.ReadString());
-                        if (str.Contains("playerMove"))
-                        {
-                            clients[Int32.Parse(str.Split(' ')[0])].playerx = Int32.Parse(str.Substring(12+(""+ Int32.Parse(str.Split(' ')[0])).Length).Split(',')[0]);
-                            clients[Int32.Parse(str.Split(' ')[0])].playery = Int32.Parse(str.Substring(12 + ("" + Int32.Parse(str.Split(' ')[0])).Length).Split(',')[1]);
-                            Debug.WriteLine(""+clients[Int32.Parse(str.Split(' ')[0])].playerx+","+clients[Int32.Parse(str.Split(' ')[0])].playery);
-                        }
-                        //Debug.WriteLine("" + msgIn.ReadString());
                         break;
                     //All other types are for library related events (some examples)
                     case NetIncomingMessageType.DiscoveryRequest:
+                        NetOutgoingMessage msg = server.CreateMessage();
                         //add a string as welcome text
                         msg.Write("Hellooooo Client");
                         //send a response
                         server.SendDiscoveryResponse(msg, msgIn.SenderEndPoint);
                         break;
                     case NetIncomingMessageType.ConnectionApproval:
-                        clients.Add(new ClientInformation(server.GetConnection(msgIn.SenderEndPoint)));
                         msgIn.SenderConnection.Approve();
                         break;
                     default:
                         messages.Add("" + msgIn.ReadString());
-                        //Debug.WriteLine("" + msgIn.ReadString());
                         break;
                 }
-                
                 //Recycle the message to create less garbage
-                //Debug.WriteLine(msgIn.ReadString());
+                Debug.WriteLine(msgIn.ReadString());
             }
 
             base.Update(gameTime);
@@ -171,9 +139,9 @@ namespace Game1Server
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            for (int i = messages.Count - 1; i > 0; i--)
+            for (int i = 0; i < messages.Count; i++)
             {
-                if ((new Regex(@"\W|_")).Replace(messages[i], "").Length > 0) spriteBatch.DrawString(font, (new Regex(@"\W|_")).Replace(messages[i], ""), new Vector2(0,480 - 16*(messages.Count - i)), Color.White);
+                if ((new Regex(@"\W|_")).Replace(messages[i], "").Length > 0)spriteBatch.DrawString(font, (new Regex(@"\W|_")).Replace(messages[i], ""), new Vector2(0,16*i), Color.White);
             }
             spriteBatch.End();
 
