@@ -40,10 +40,12 @@ namespace Game1
             if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.W))
             {
                 playery -= speed;
+                Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" playerMove:"+playerx+","+playery);
             }
             if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.S))
             {
                 playery += speed;
+                Game1.client.messageQueue.Add("" + Game1.CLIENT_ID + " playerMove:" + playerx + "," + playery);
             }
             if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A))
             {
@@ -51,6 +53,7 @@ namespace Game1
                 //currentSprite = Game1.charaLeft[1];
                 currentAction = 1;
                 currentDirection = 0;
+                Game1.client.messageQueue.Add("" + Game1.CLIENT_ID + " playerMove:" + playerx + "," + playery);
             }
             else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D))
             {
@@ -58,6 +61,7 @@ namespace Game1
                 //currentSprite = Game1.charaRight[1];
                 currentAction = 1;
                 currentDirection = 1;
+                Game1.client.messageQueue.Add("" + Game1.CLIENT_ID + " playerMove:" + playerx + "," + playery);
             }
             else if (currentDirection == 0)
             {
