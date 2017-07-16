@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/img/selectioncursor.png</SourceFile>
-  <SourceTime>2017-07-11T19:43:38.2632983-04:00</SourceTime>
-  <DestFile>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1/Content/bin/Windows/img/selectioncursor.xnb</DestFile>
-  <DestTime>2017-07-14T16:44:09.3565075-04:00</DestTime>
+  <SourceFile>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/img/selectioncursor.png</SourceFile>
+  <SourceTime>2017-07-11T14:27:47.1988798-04:00</SourceTime>
+  <DestFile>C:/Users/lily.DESKTOP-0KJ3NCB/OneDrive/Documents/monogame githubs/monogame_project/Game1/Content/bin/Windows/img/selectioncursor.xnb</DestFile>
+  <DestTime>2017-07-16T10:44:46.9042664-04:00</DestTime>
   <Importer>TextureImporter</Importer>
-  <ImporterTime>2017-06-22T14:38:56-04:00</ImporterTime>
+  <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
-  <ProcessorTime>2017-06-22T14:38:56-04:00</ProcessorTime>
+  <ProcessorTime>2017-03-01T10:05:36-05:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>255,0,255,255</Value>

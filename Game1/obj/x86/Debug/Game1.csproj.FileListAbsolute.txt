@@ -108,3 +108,4 @@ C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\D
 C:\Users\lily.DESKTOP-0KJ3NCB\OneDrive\Documents\monogame githubs\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\portrait.xnb
 C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Lidgren.Network.dll
 C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1\bin\Windows\x86\Debug\Lidgren.Network.xml
+C:\Users\lily.DESKTOP-0KJ3NCB\OneDrive\Documents\monogame githubs\monogame_project\Game1\bin\Windows\x86\Debug\Lidgren.Network.xml
