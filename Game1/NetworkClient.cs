@@ -37,7 +37,7 @@ namespace Game1
 
             config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
             config.EnableMessageType(NetIncomingMessageType.Data);
-            client.DiscoverLocalPeers(14242);
+            
             tick = 0;
         }
 
@@ -46,13 +46,17 @@ namespace Game1
         /// </summary>
         public void Update()
         {
-            tick++;
-            if (tick > 100) tick = 0;
+            //tick++;
+            //if (tick > 100) tick = 0;
             NetOutgoingMessage msgOut = client.CreateMessage();
             //write your data
             //msgOut.Write("Some Text");
             //client.SendMessage(msgOut, NetDeliveryMethod.ReliableOrdered);
-
+            if (Game1.CLIENT_ID == -1)
+            {
+                client.DiscoverLocalPeers(14242);
+                Debug.WriteLine("doin it");
+            }
             //SEND USER DATA
             while (messageQueue.Count>0)
             {
