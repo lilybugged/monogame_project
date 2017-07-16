@@ -50,3 +50,30 @@ C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1Server\bin\Windows
 C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1Server\obj\x86\Debug\Game1Server.csprojResolveAssemblyReference.cache
 C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1Server\bin\Windows\x86\Debug\Content\File.xnb
 C:\Users\lily\OneDrive\Documents\GitHub\monogame_project\Game1Server\bin\Windows\x86\Debug\Content\default_font.xnb
+E:\monogame game1\monogame_project\Game1Server\obj\x86\Debug\Game1 Server.exe
+E:\monogame game1\monogame_project\Game1Server\obj\x86\Debug\Game1 Server.pdb
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\Content\default_font.xnb
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\Content\File.xnb
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\Game1 Server.exe
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\Game1 Server.pdb
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\Lidgren.Network.dll
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\MonoGame.Framework.dll
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.MediaFoundation.dll
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.dll
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.XAudio2.dll
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.DXGI.dll
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.Direct3D11.dll
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.Direct2D1.dll
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.XInput.dll
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\Lidgren.Network.xml
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\MonoGame.Framework.xml
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.MediaFoundation.xml
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.xml
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.XAudio2.xml
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.DXGI.xml
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.Direct3D11.xml
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.XInput.xml
+E:\monogame game1\monogame_project\Game1Server\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
+E:\monogame game1\monogame_project\Game1Server\obj\x86\Debug\Game1Server.csprojResolveAssemblyReference.cache

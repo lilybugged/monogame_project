@@ -4,7 +4,7 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1Server/Content/File.spritefont</File>
-    <File>C:/Users/lily/OneDrive/Documents/GitHub/monogame_project/Game1Server/Content/default_font.spritefont</File>
+    <File>E:/monogame game1/monogame_project/Game1Server/Content/File.spritefont</File>
+    <File>E:/monogame game1/monogame_project/Game1Server/Content/default_font.spritefont</File>
   </SourceFiles>
 </SourceFileCollection>

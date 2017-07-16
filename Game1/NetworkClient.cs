@@ -86,6 +86,9 @@ namespace Game1
                     case NetIncomingMessageType.ConnectionApproval:
                         //...
                         break;
+                    default:
+                        Debug.WriteLine(""+msgIn.ReadString());
+                        break;
 
                 }
                 //Recycle the message to create less garbage
