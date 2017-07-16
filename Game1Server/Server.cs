@@ -39,7 +39,7 @@ namespace Game1Server
             Content.RootDirectory = "Content";
 
             config = new NetPeerConfiguration("Game1");
-            config.Port = 7777;
+            config.Port = 14242;
 
             server = new NetServer(config);
             server.Start();
