@@ -23,6 +23,7 @@ namespace Game1
         private int tick;
         NetIncomingMessage msgIn;
         public List<string> messageQueue = new List<string>();
+        public List<string> otherPlayers = new List<string>();
 
         public NetworkClient()
         {

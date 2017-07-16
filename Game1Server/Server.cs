@@ -104,16 +104,19 @@ namespace Game1Server
             //use local message variable
             NetOutgoingMessage msg = server.CreateMessage();
 
-            //msg.Write("activate id: " + clients.Count);
-
-            //if (msgIn!=null && msgIn.SenderEndPoint != null && server.GetConnection(msgIn.SenderEndPoint) != null) server.SendMessage(msg, server.GetConnection(msgIn.SenderEndPoint), NetDeliveryMethod.ReliableOrdered);
-
             //update clients' information
-            //msg.Write("syncMap: 15 15 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 99,3,54,6,2,1,1,1,1,1,1,1,1,1,1");
+            string players = "";
+            for (int i = 0; i < clients.Count; i++)
+            {
+                players += clients[i].playerx + "," + clients[i].playery;
+                if (i != clients.Count - 1) players += ";";
+            }
+            msg.Write("syncPlayer: "+players);
+            //Debug.WriteLine(players);
+            server.SendToAll(msg, NetDeliveryMethod.ReliableOrdered);
 
-            //server.SendToAll(msg, NetDeliveryMethod.ReliableOrdered);
 
-            //Game1.client.messageQueue.Add("" + Game1.CLIENT_ID + " playerMove:" + playerx + "," + playery);
+            //take information from clients
             while ((msgIn = server.ReadMessage()) != null)
             {
                 msg = server.CreateMessage();
@@ -131,9 +134,10 @@ namespace Game1Server
                         //Debug.WriteLine(msgIn.ReadString());
                         if (str.Contains("playerMove"))
                         {
-                            clients[Int32.Parse(str.Split(' ')[0])].playerx = Int32.Parse(str.Substring(12+(""+ Int32.Parse(str.Split(' ')[0])).Length).Split(',')[0]);
-                            clients[Int32.Parse(str.Split(' ')[0])].playery = Int32.Parse(str.Substring(12 + ("" + Int32.Parse(str.Split(' ')[0])).Length).Split(',')[1]);
-                            Debug.WriteLine(""+clients[Int32.Parse(str.Split(' ')[0])].playerx+","+clients[Int32.Parse(str.Split(' ')[0])].playery);
+                            clients[Int32.Parse(str.Split(' ')[0])].playerx = Int32.Parse(str.Split(' ')[2].Split(',')[0]);
+
+                            clients[Int32.Parse(str.Split(' ')[0])].playery = Int32.Parse(str.Split(' ')[2].Split(',')[1]);
+                            Debug.WriteLine(""+str);
                         }
                         //Debug.WriteLine("" + msgIn.ReadString());
                         break;
@@ -143,6 +147,10 @@ namespace Game1Server
                         msg.Write("Hellooooo Client");
                         //send a response
                         server.SendDiscoveryResponse(msg, msgIn.SenderEndPoint);
+                        break;
+                    case NetIncomingMessageType.DebugMessage:
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("(Server) Debug: " + msgIn.ReadString());
                         break;
                     case NetIncomingMessageType.ConnectionApproval:
                         clients.Add(new ClientInformation(server.GetConnection(msgIn.SenderEndPoint)));

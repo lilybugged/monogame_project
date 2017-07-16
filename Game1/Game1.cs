@@ -65,7 +65,7 @@ namespace Game1
 
         public Game1()
         {
-            client = new NetworkClient();
+            //client = new NetworkClient();
             map0 = new MapInfo(300, 150);
             currentMap = map0;
             itemInfo = new ItemInfo();
@@ -153,7 +153,7 @@ namespace Game1
                 Exit();
 
             //SYNC INFORMATION
-            client.Update();
+            //client.Update();
 
             //update all the things, only if the window is active
             if (this.IsActive)
