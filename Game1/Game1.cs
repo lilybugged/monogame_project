@@ -24,7 +24,7 @@ namespace Game1
 
         public static AnimatedSprite[] charaLeft = new AnimatedSprite[12];
         public static AnimatedSprite[] charaRight = new AnimatedSprite[12];
-        public static AnimatedSprite[] chestSprites = new AnimatedSprite[8];
+        public static AnimatedSprite[] chestSprites = new AnimatedSprite[4];
         public static AnimatedSprite items_32;
         public static AnimatedSprite tiles;
         public static AnimatedSprite tiles2;
@@ -50,6 +50,9 @@ namespace Game1
 
         public static int[] userInventory;
         public static int[] userInventoryQuantities;
+        public static int[] userCarry;
+        public static int[] userCarryQuantities;
+        public static UI carryUi;
 
         public static bool uiToggle = true;
         public static UI[] uiObjects = new UI[4];
@@ -77,8 +80,8 @@ namespace Game1
             Content.RootDirectory = "Content";
             this.IsMouseVisible = false;
             chestInventories = new List<Chest>();
-            userInventory = new int[] { 2, 4, 5, 6, 7, 8, 1, 0, 2, 1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
-            userInventoryQuantities = new int[] { 99, 99, 99, 99, 99, 99, 21, 10, 12, 31, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+            userInventory = new int[] { 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
+            userInventoryQuantities = new int[] { 99, 99, 99, 99, 99, 99, 21, 10, 12, 31, 10, 99, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             ui = new UI(0,100,4, userInventory, userInventoryQuantities, 1);
 
             //so far, there can only be four uis up at once
@@ -126,8 +129,8 @@ namespace Game1
             charaRight[0] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_0"), 1, 1);
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
 
-            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 4, 3);
-            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 10, 10);
+            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 4, 4);
+            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 10, 9);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
             portrait = Content.Load<Texture2D>("img/portrait");
             cursor[0] = Content.Load<Texture2D>("img/cursor");
@@ -135,6 +138,8 @@ namespace Game1
 
             chestSprites[0] = new AnimatedSprite(Content.Load<Texture2D>("img/chests/chest_open_s"), 2, 2);
             chestSprites[1] = new AnimatedSprite(Content.Load<Texture2D>("img/chests/chest_close_s"), 2, 2);
+            chestSprites[2] = new AnimatedSprite(Content.Load<Texture2D>("img/chests/chest_open_skin"), 2, 2);
+            chestSprites[3] = new AnimatedSprite(Content.Load<Texture2D>("img/chests/chest_close_skin"), 2, 2);
 
             font = Content.Load<SpriteFont>("File");
         }

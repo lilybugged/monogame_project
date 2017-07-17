@@ -18,7 +18,7 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 9;
+        public const int ITEM_COUNT = 14;
         public bool[] ITEM_EQUIPPABLE = new bool[ITEM_COUNT];
         public int[] ITEM_UNIT_WIDTH = new int[ITEM_COUNT]; //e.g. 1,2,3
         public int[] ITEM_UNIT_HEIGHT = new int[ITEM_COUNT]; //e.g. 1,2,3
@@ -47,11 +47,21 @@ namespace Game1
             ITEM_PLACEABLE[6] = true;
             ITEM_PLACEABLE[7] = true;
             ITEM_PLACEABLE[8] = true;
+            ITEM_PLACEABLE[9] = true;
+            ITEM_PLACEABLE[10] = true;
+            ITEM_PLACEABLE[11] = true;
+            ITEM_PLACEABLE[12] = true;
+            ITEM_PLACEABLE[13] = true;
 
             ITEM_REQUIRE_SURFACE[2] = true;
             ITEM_REQUIRE_SURFACE[6] = true;
             ITEM_REQUIRE_SURFACE[7] = true;
             ITEM_REQUIRE_SURFACE[8] = true;
+            ITEM_REQUIRE_SURFACE[9] = true;
+            ITEM_REQUIRE_SURFACE[10] = true;
+            ITEM_REQUIRE_SURFACE[11] = true;
+            ITEM_REQUIRE_SURFACE[12] = true;
+            ITEM_REQUIRE_SURFACE[13] = true;
 
             ITEM_SOLID[4] = true;
             ITEM_SOLID[5] = true;
@@ -59,36 +69,29 @@ namespace Game1
 
             ITEM_BLOCKID[0] = -1;
             ITEM_BLOCKID[1] = -1;
-            ITEM_BLOCKID[2] = 93;
+            ITEM_BLOCKID[2] = 85;
             ITEM_BLOCKID[3] = -1;
             ITEM_BLOCKID[4] = 7;
             ITEM_BLOCKID[5] = 0;
-            ITEM_BLOCKID[6] = 43;
-            ITEM_BLOCKID[7] = 94;
+            ITEM_BLOCKID[6] = 39;
+            ITEM_BLOCKID[7] = 86;
             ITEM_BLOCKID[8] = 35;
+            ITEM_BLOCKID[9] = 35;
+            ITEM_BLOCKID[10] = 35;
+            ITEM_BLOCKID[11] = 35;
+            ITEM_BLOCKID[12] = 35;
+            ITEM_BLOCKID[13] = 35;
 
-            ITEM_STACKABLE[0] = true;
-            ITEM_STACKABLE[1] = true;
-            ITEM_STACKABLE[2] = true;
-            ITEM_STACKABLE[3] = true;
-            ITEM_STACKABLE[4] = true;
-            ITEM_STACKABLE[5] = true;
-            ITEM_STACKABLE[6] = true;
-            ITEM_STACKABLE[7] = true;
-            ITEM_STACKABLE[8] = true;
+            for (int i = 0; i < ITEM_COUNT; i++)
+            {
+                ITEM_STACKABLE[i] = true;
+            }
 
             ITEM_AUTOTILE[5] = true;
             ITEM_AUTOTILE[6] = true;
             ITEM_AUTOTILE[8] = true;
-
-
-            ITEM_FUNCTION[8] = Function8;
         }
 
-        private static void Function8()
-        {
-            chestState = 1;
-        }
         public static void DrawAutoTile(int itemId, Vector2 position)
         {
             switch (itemId)
@@ -100,17 +103,17 @@ namespace Game1
                     {
                         if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId))
                         {
-                            Game1.tiles.DrawTile(Game1.spriteBatch, 43, position); //noleft, noright
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 39, position); //noleft, noright
                         }
-                        else Game1.tiles.DrawTile(Game1.spriteBatch, 44, position); //noleft
+                        else Game1.tiles.DrawTile(Game1.spriteBatch, 40, position); //noleft
                     }
                     else if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId))
                     {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 46, position); //noright
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 42, position); //noright
                     }
                     else
                     {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 45, position); //leftandright
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 41, position); //leftandright
                     }
                     break;
 

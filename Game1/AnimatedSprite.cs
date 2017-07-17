@@ -54,6 +54,21 @@ namespace Game1
             sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White);
             sprBatch.End();
         }
+        public void Draw(SpriteBatch sprBatch, Color color, Vector2 location)
+        {
+            totalFrames = Rows * Columns;
+            int width = Texture.Width / Columns;
+            int height = Texture.Height / Rows;
+            int row = (int)((float)currentFrame / (float)Columns);
+            int column = currentFrame % Columns;
+
+            Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
+            Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
+
+            sprBatch.Begin();
+            sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, color);
+            sprBatch.End();
+        }
         public void Draw(SpriteBatch sprBatch, int startframe, int endframe, int speed, Vector2 location)
         {
             //this.tickSpeed = speed;

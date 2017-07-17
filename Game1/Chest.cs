@@ -17,13 +17,16 @@ namespace Game1
         public int chesty;
         public int[][] inventory; // first index is itemid(0)/quantity(1), second is position in the inventory
         public int chestState = 0; //0-3 - closed, opening, open, closing
-        int chestSize = 0; //0-2 - small, medium, large
+        int chestRank = 0; //0-2 - small, medium, large
+        Color[] chestRankColors = new Color[] {Color.White, new Color(128,128,128,255), new Color(229,137,104, 255),
+        new Color(199,199,199, 255),new Color(244,220,151, 255),new Color(188,216,237, 255)};
 
         public Chest(int x, int y, int size, int[][] inv)
         {
             chestx = x;
             chesty = y;
             inventory = inv;
+            chestRank = size;
         }
 
         public override String ToString()
@@ -58,17 +61,6 @@ namespace Game1
                 chestState = 3;
             }
         }
-        //TODO:
-        /*switch (chestSize)
-                    {
-                        case 0:
-
-                            break;
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                    }*/
         public void Draw()
         {
             switch (chestState)
@@ -76,18 +68,22 @@ namespace Game1
                 case 0:
                     Game1.spriteBatch.Begin();
                     Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[8], new Vector2(chestx - Player.playerx, chesty - Player.playery));
+                    if (chestRank>0) Game1.tiles.DrawTile(Game1.spriteBatch, 37, chestRankColors[chestRank], new Vector2(chestx - Player.playerx, chesty - Player.playery));
                     Game1.spriteBatch.End();
                     break;
                 case 1:
                     Game1.chestSprites[0].Draw(Game1.spriteBatch, new Vector2(chestx - Player.playerx, chesty - Player.playery));
+                    if (chestRank > 0) Game1.chestSprites[2].Draw(Game1.spriteBatch, chestRankColors[chestRank], new Vector2(chestx - Player.playerx, chesty - Player.playery));
                     break;
                 case 2:
                     Game1.spriteBatch.Begin();
                     Game1.tiles.DrawTile(Game1.spriteBatch, 36, new Vector2(chestx - Player.playerx, chesty - Player.playery));
+                    if (chestRank > 0) Game1.tiles.DrawTile(Game1.spriteBatch, 38, chestRankColors[chestRank], new Vector2(chestx - Player.playerx, chesty - Player.playery));
                     Game1.spriteBatch.End();
                     break;
                 case 3:
                     Game1.chestSprites[1].Draw(Game1.spriteBatch, new Vector2(chestx - Player.playerx, chesty - Player.playery));
+                    if (chestRank > 0) Game1.chestSprites[3].Draw(Game1.spriteBatch, chestRankColors[chestRank], new Vector2(chestx - Player.playerx, chesty - Player.playery));
                     break;
             }
         }
