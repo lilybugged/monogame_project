@@ -148,3 +148,11 @@ E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.Direct2D1
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.XInput.xml
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 E:\monogame game1\monogame_project\Game1\obj\x86\Debug\Game1.csprojResolveAssemblyReference.cache
+E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\chests\chest_close_left.xnb
+E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\chests\chest_close_middle.xnb
+E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\chests\chest_close_right.xnb
+E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\chests\chest_close_s.xnb
+E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\chests\chest_open_left.xnb
+E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\chests\chest_open_middle.xnb
+E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\chests\chest_open_right.xnb
+E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\chests\chest_open_s.xnb

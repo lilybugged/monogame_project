@@ -24,6 +24,7 @@ namespace Game1
 
         public static AnimatedSprite[] charaLeft = new AnimatedSprite[12];
         public static AnimatedSprite[] charaRight = new AnimatedSprite[12];
+        public static AnimatedSprite[] chestSprites = new AnimatedSprite[8];
         public static AnimatedSprite items_32;
         public static AnimatedSprite tiles;
         public static AnimatedSprite tiles2;
@@ -43,7 +44,10 @@ namespace Game1
         
         public static MapInfo map0;
         public static MapInfo currentMap;
+
         public static List<Chest> chestInventories; //access using the chest id
+        public static int openChest = -1;
+
         public static int[] userInventory;
         public static int[] userInventoryQuantities;
 
@@ -61,7 +65,6 @@ namespace Game1
 
         Player player;
         UI ui;
-        UI chest;
 
         public Game1()
         {
@@ -124,11 +127,14 @@ namespace Game1
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
 
             items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 4, 3);
-            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 11, 10);
+            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 10, 10);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
             portrait = Content.Load<Texture2D>("img/portrait");
             cursor[0] = Content.Load<Texture2D>("img/cursor");
             cursor[1] = Content.Load<Texture2D>("img/selectioncursor");
+
+            chestSprites[0] = new AnimatedSprite(Content.Load<Texture2D>("img/chests/chest_open_s"), 2, 2);
+            chestSprites[1] = new AnimatedSprite(Content.Load<Texture2D>("img/chests/chest_close_s"), 2, 2);
 
             font = Content.Load<SpriteFont>("File");
         }
@@ -158,10 +164,17 @@ namespace Game1
             //update all the things, only if the window is active
             if (this.IsActive)
             {
+                for (int i = 0; i < chestInventories.Count; i++)
+                {
+                    chestInventories[i].Update();
+                }
+
                 MouseKeyboardInfo.Update();
                 // TODO: Add your update logic here
                 player.Update();
                 tiles.Update();
+                chestSprites[0].Update();
+                chestSprites[1].Update();
 
                 base.Update(gameTime);
 
@@ -193,7 +206,10 @@ namespace Game1
             Game1.spriteBatch.End();
 
             // TODO: Add your drawing code here
-
+            for (int i = 0; i < chestInventories.Count; i++)
+            {
+                chestInventories[i].Draw();
+            }
             
             base.Draw(gameTime);
             player.Draw();

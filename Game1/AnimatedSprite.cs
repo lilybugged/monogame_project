@@ -16,7 +16,7 @@ namespace Game1
         public Texture2D Texture { get; set; }
         public int Rows { get; set; }
         public int Columns { get; set; }
-        private int currentFrame;
+        public int currentFrame;
         private int totalFrames;
         private int tick = 0;
         private int tickSpeed = 1; // don't make this any more than 1 or less than -1

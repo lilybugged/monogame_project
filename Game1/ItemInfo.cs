@@ -59,12 +59,12 @@ namespace Game1
 
             ITEM_BLOCKID[0] = -1;
             ITEM_BLOCKID[1] = -1;
-            ITEM_BLOCKID[2] = 101;
+            ITEM_BLOCKID[2] = 93;
             ITEM_BLOCKID[3] = -1;
             ITEM_BLOCKID[4] = 7;
             ITEM_BLOCKID[5] = 0;
-            ITEM_BLOCKID[6] = 51;
-            ITEM_BLOCKID[7] = 102;
+            ITEM_BLOCKID[6] = 43;
+            ITEM_BLOCKID[7] = 94;
             ITEM_BLOCKID[8] = 35;
 
             ITEM_STACKABLE[0] = true;
@@ -79,6 +79,7 @@ namespace Game1
 
             ITEM_AUTOTILE[5] = true;
             ITEM_AUTOTILE[6] = true;
+            ITEM_AUTOTILE[8] = true;
 
 
             ITEM_FUNCTION[8] = Function8;
@@ -93,24 +94,23 @@ namespace Game1
             switch (itemId)
             {
                 case 8:
-                    Game1.tiles.DrawTile(Game1.spriteBatch, 35, position);
                     break;
                 case 6:
                     if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId))
                     {
                         if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId))
                         {
-                            Game1.tiles.DrawTile(Game1.spriteBatch, 51, position); //noleft, noright
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 43, position); //noleft, noright
                         }
-                        else Game1.tiles.DrawTile(Game1.spriteBatch, 52, position); //noleft
+                        else Game1.tiles.DrawTile(Game1.spriteBatch, 44, position); //noleft
                     }
                     else if (!(Game1.currentMap.mapTiles[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId))
                     {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 54, position); //noright
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 46, position); //noright
                     }
                     else
                     {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 53, position); //leftandright
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 45, position); //leftandright
                     }
                     break;
 

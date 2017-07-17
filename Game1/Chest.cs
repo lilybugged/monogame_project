@@ -16,8 +16,10 @@ namespace Game1
         public int chestx;
         public int chesty;
         public int[][] inventory; // first index is itemid(0)/quantity(1), second is position in the inventory
+        public int chestState = 0; //0-3 - closed, opening, open, closing
+        int chestSize = 0; //0-2 - small, medium, large
 
-        public Chest(int x, int y, int[][] inv)
+        public Chest(int x, int y, int size, int[][] inv)
         {
             chestx = x;
             chesty = y;
@@ -39,6 +41,55 @@ namespace Game1
                 }
             }
             return -1;
+        }
+        //TODO: use this to search for autotiled chest parts and update their states when this one is clicked.
+        public void Update()
+        {
+            if (chestState==1&&Game1.chestSprites[0].currentFrame==3)
+            {
+                chestState = 2;
+            }
+            if (chestState == 3 && Game1.chestSprites[1].currentFrame == 3)
+            {
+                chestState = 0;
+            }
+            if (chestState==2 && Game1.chestInventories[Game1.openChest]!=this)
+            {
+                chestState = 3;
+            }
+        }
+        //TODO:
+        /*switch (chestSize)
+                    {
+                        case 0:
+
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                    }*/
+        public void Draw()
+        {
+            switch (chestState)
+            {
+                case 0:
+                    Game1.spriteBatch.Begin();
+                    Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[8], new Vector2(chestx - Player.playerx, chesty - Player.playery));
+                    Game1.spriteBatch.End();
+                    break;
+                case 1:
+                    Game1.chestSprites[0].Draw(Game1.spriteBatch, new Vector2(chestx - Player.playerx, chesty - Player.playery));
+                    break;
+                case 2:
+                    Game1.spriteBatch.Begin();
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 36, new Vector2(chestx - Player.playerx, chesty - Player.playery));
+                    Game1.spriteBatch.End();
+                    break;
+                case 3:
+                    Game1.chestSprites[1].Draw(Game1.spriteBatch, new Vector2(chestx - Player.playerx, chesty - Player.playery));
+                    break;
+            }
         }
     }
 }
