@@ -52,6 +52,7 @@ namespace Game1
         public static int[] userInventoryQuantities;
         public static int[] userCarry;
         public static int[] userCarryQuantities;
+        public static int carryRank = 3;
         public static UI carryUi;
 
         public static bool uiToggle = true;
@@ -82,7 +83,11 @@ namespace Game1
             chestInventories = new List<Chest>();
             userInventory = new int[] { 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
             userInventoryQuantities = new int[] { 99, 99, 99, 99, 99, 99, 21, 10, 12, 31, 10, 99, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-            ui = new UI(0,100,4, userInventory, userInventoryQuantities, 1);
+            ui = new UI(0,100,4, userInventory, userInventoryQuantities, 1, 7);
+
+            userCarry = new int[] { -1, -1, -1, -1 };
+            userCarryQuantities = new int[] { -1, -1, -1, -1 };
+            carryUi = new UI(0, 0, 1, userCarry, userCarryQuantities, 3, carryRank);
 
             //so far, there can only be four uis up at once
             //each ui slot is its own type
@@ -173,7 +178,7 @@ namespace Game1
                 {
                     chestInventories[i].Update();
                 }
-
+                carryUi.Update();
                 MouseKeyboardInfo.Update();
                 // TODO: Add your update logic here
                 player.Update();
@@ -218,6 +223,7 @@ namespace Game1
             
             base.Draw(gameTime);
             player.Draw();
+            carryUi.Draw();
 
             if (uiToggle)
             {
