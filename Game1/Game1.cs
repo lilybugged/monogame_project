@@ -87,12 +87,13 @@ namespace Game1
 
             userCarry = new int[] { -1, -1, -1, -1 };
             userCarryQuantities = new int[] { -1, -1, -1, -1 };
-            carryUi = new UI(0, 0, 1, userCarry, userCarryQuantities, 3, carryRank);
+            carryUi = new UI(0, 0, 1, userCarry, userCarryQuantities, 3, carryRank+1);
 
             //so far, there can only be four uis up at once
             //each ui slot is its own type
             ui.id = uiObjects.Length;
             uiObjects[0] = ui;
+            uiObjects[2] = carryUi;
             //chest.id = uiObjects.Length;
             //uiObjects[1] = chest;
         }
