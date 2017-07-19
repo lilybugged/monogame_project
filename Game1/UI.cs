@@ -179,7 +179,7 @@ namespace Game1
         }
         public void DragUi()
         {
-            if (cursorItem == -1 && MouseKeyboardInfo.mouseClickedLeft && uiDragging==-1 && ((CountUis()==1 && WithinUi(this.uiState)) || (uiState == 2 && WithinUi(this.uiState)))) { 
+            if (uiState !=3 && cursorItem == -1 && MouseKeyboardInfo.mouseClickedLeft && uiDragging==-1 && ((CountUis()==1 && WithinUi(this.uiState)) || (uiState == 2 && WithinUi(this.uiState)))) { 
                 {
                     posx = MouseKeyboardInfo.mouseState.X - uix;
                     posy = MouseKeyboardInfo.mouseState.Y - uiy;
@@ -523,6 +523,7 @@ namespace Game1
             //figures out for a REQUIRE_SURFACE item whether the cursor is on top of a surface (solid) or whether the space is free for item placement
             //TODO: make it so you can't place items over the player
             if (MouseKeyboardInfo.mouseState.X>=0 && MouseKeyboardInfo.mouseState.Y >= 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT && Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && Game1.currentMap.mapTiles[x / 16, y / 16 + 1] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[x / 16, y / 16 + 1]] && Game1.currentMap.mapTiles[x / 16, y / 16] == -1) return true;
+            else if (MouseKeyboardInfo.mouseState.X >= 0 && MouseKeyboardInfo.mouseState.Y >= 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT && !Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && Game1.currentMap.mapTiles[x / 16, y / 16] == -1) return true;
             else if (MouseKeyboardInfo.mouseState.X >= 0 && MouseKeyboardInfo.mouseState.Y >= 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT && !Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && Game1.currentMap.mapTiles[x / 16, y / 16] == -1) return true;
             return false;
         }
