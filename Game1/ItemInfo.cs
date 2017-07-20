@@ -79,7 +79,7 @@ namespace Game1
             ITEM_SOLID[6] = true;
 
             ITEM_TOOL_TIER[4] = 0;
-            ITEM_TOOL_TIER[5] = 0;
+            ITEM_TOOL_TIER[5] = 1;
 
             ITEM_BLOCKID[0] = -1;
             ITEM_BLOCKID[1] = -1;

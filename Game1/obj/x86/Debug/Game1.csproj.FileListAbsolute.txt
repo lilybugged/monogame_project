@@ -197,3 +197,5 @@ E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\chest
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\chests\chest_open_skin.xnb
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\breakcursor.xnb
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\breakactivatecursor.xnb
+C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\breakactivatecursor.xnb
+C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\breakcursor.xnb

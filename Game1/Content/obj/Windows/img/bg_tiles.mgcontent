@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>E:/monogame game1/monogame_project/Game1/Content/img/bg_tiles.png</SourceFile>
-  <SourceTime>2017-07-17T20:35:04.0547731-04:00</SourceTime>
-  <DestFile>E:/monogame game1/monogame_project/Game1/Content/bin/Windows/img/bg_tiles.xnb</DestFile>
-  <DestTime>2017-07-19T18:43:30.0810913-04:00</DestTime>
+  <SourceFile>C:/Users/lily.DESKTOP-0KJ3NCB/Documents/monogame_project/Game1/Content/img/bg_tiles.png</SourceFile>
+  <SourceTime>2017-07-17T10:49:22.2280644-04:00</SourceTime>
+  <DestFile>C:/Users/lily.DESKTOP-0KJ3NCB/Documents/monogame_project/Game1/Content/bin/Windows/img/bg_tiles.xnb</DestFile>
+  <DestTime>2017-07-20T09:12:02.8312212-04:00</DestTime>
   <Importer>TextureImporter</Importer>
-  <ImporterTime>2017-06-22T14:38:56-04:00</ImporterTime>
+  <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
-  <ProcessorTime>2017-06-22T14:38:56-04:00</ProcessorTime>
+  <ProcessorTime>2017-03-01T10:05:36-05:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>255,0,255,255</Value>

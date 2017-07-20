@@ -77,12 +77,12 @@ namespace Game1
             currentMap = map0;
             itemInfo = new ItemInfo();
             graphics = new GraphicsDeviceManager(this);
-            player = new Player(0, 0);
+            player = new Player(16, 16);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = false;
             chestInventories = new List<Chest>();
-            userInventory = new int[] { 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 13, 14, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
-            userInventoryQuantities = new int[] { 99, 99, 99, 99, 99, 99, 21, 10, 12, 31, 10, 99, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+            userInventory = new int[] { 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 14, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, };
+            userInventoryQuantities = new int[] { 99, 99, 99, 99, 99, 99, 21, 10, 12, 31, 1, 99, 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             ui = new UI(0,100,4, userInventory, userInventoryQuantities, 1, 7);
 
             userCarry = new int[] { -1, -1, -1, -1 };
