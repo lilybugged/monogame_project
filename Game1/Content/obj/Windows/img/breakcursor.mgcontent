@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>E:/monogame game1/monogame_project/Game1/Content/img/icons_32.png</SourceFile>
-  <SourceTime>2017-07-19T20:07:05.4314513-04:00</SourceTime>
-  <DestFile>E:/monogame game1/monogame_project/Game1/Content/bin/Windows/img/icons_32.xnb</DestFile>
-  <DestTime>2017-07-19T20:12:19.8365322-04:00</DestTime>
+  <SourceFile>E:/monogame game1/monogame_project/Game1/Content/img/breakcursor.png</SourceFile>
+  <SourceTime>2017-07-19T19:37:49.4886676-04:00</SourceTime>
+  <DestFile>E:/monogame game1/monogame_project/Game1/Content/bin/Windows/img/breakcursor.xnb</DestFile>
+  <DestTime>2017-07-19T20:04:45.7302919-04:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-06-22T14:38:56-04:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

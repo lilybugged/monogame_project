@@ -103,6 +103,23 @@ namespace Game1
             sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White);
             //sprBatch.End();
         }
+        /// <summary>
+        /// An overload which only serves to flip the tile. The parameter does nothing otherwise.
+        /// </summary>
+        public void DrawTile(SpriteBatch sprBatch, int tileId, Vector2 location, bool flip)
+        {
+            int width = Texture.Width / Columns;
+            int height = Texture.Height / Rows;
+            int row = tileId / Columns;
+            int column = tileId % Columns;
+
+            Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
+            Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
+
+            //sprBatch.Begin();
+            sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White,0,new Vector2(0,0),SpriteEffects.FlipHorizontally,0);
+            //sprBatch.End();
+        }
         public void DrawTile(SpriteBatch sprBatch, int tileId, int width, int height, Vector2 location)
         {
             int row = tileId / Columns;

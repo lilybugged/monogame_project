@@ -17,8 +17,8 @@ namespace Game1
     {
         public static int playerx;
         public static int playery;
-        private int currentAction;
-        private int currentDirection;
+        public static int currentAction;
+        public static int currentDirection;
         private int speed;
         //private AnimatedSprite currentSprite;
 
