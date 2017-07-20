@@ -30,7 +30,7 @@ namespace Game1
         public static AnimatedSprite tiles2;
         public static Texture2D pixel;
         public static Texture2D portrait;
-        public static Texture2D[] cursor = new Texture2D[3];
+        public static Texture2D[] cursor = new Texture2D[4];
         public static int globalCursor = 0;
         public static SpriteFont font;
 
@@ -142,6 +142,7 @@ namespace Game1
             cursor[0] = Content.Load<Texture2D>("img/cursor");
             cursor[1] = Content.Load<Texture2D>("img/selectioncursor");
             cursor[2] = Content.Load<Texture2D>("img/breakcursor");
+            cursor[3] = Content.Load<Texture2D>("img/breakactivatecursor");
 
             chestSprites[0] = new AnimatedSprite(Content.Load<Texture2D>("img/chests/chest_open_s"), 2, 2);
             chestSprites[1] = new AnimatedSprite(Content.Load<Texture2D>("img/chests/chest_close_s"), 2, 2);
@@ -207,7 +208,7 @@ namespace Game1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.LightSteelBlue);
+            GraphicsDevice.Clear(new Color(230, 247, 255));
 
             //spriteBatch.Draw(grass2, new Vector2(400, 240), Color.White);
             //spriteBatch.Draw(grass3, new Vector2(450, 240), Color.White);

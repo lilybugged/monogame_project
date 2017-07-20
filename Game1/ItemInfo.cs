@@ -19,6 +19,7 @@ namespace Game1
     {
         //item info
         public const int ITEM_COUNT = 17;
+        public int[] ITEM_RANK = new int[ITEM_COUNT]; //for tools mainly
         public bool[] ITEM_EQUIPPABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_TOOL = new bool[ITEM_COUNT];
         public int[] ITEM_UNIT_WIDTH = new int[ITEM_COUNT]; //e.g. 1,2,3
@@ -32,7 +33,7 @@ namespace Game1
         public int[] ITEM_END_POSITION = new int[ITEM_COUNT]; //where the "mask" should end (for collisions or stopping CanBePlaced())
         public UI[] ITEM_UI = new UI[ITEM_COUNT]; // ui associated with the item
         public Action[] ITEM_FUNCTION = new Action[ITEM_COUNT]; // for when you click an item with an empty cursor - think chests and other furniture
-        public int[] ITEM_TOOL_TIER = new int[ITEM_COUNT]; // which tier of tool is required to break the item at minimum - "0" = hands (empty cursor)
+        public int[] ITEM_TOOL_TIER = new int[ITEM_COUNT]; // which tier of tool is required to break the item at minimum - "0" = wand
         public static int chestState = 0; //0-4 values - closed, opening, open, closing
         public ItemInfo()
         {
@@ -40,7 +41,13 @@ namespace Game1
             {
                 ITEM_UNIT_WIDTH[i] = 1;
                 ITEM_UNIT_HEIGHT[i] = 1;
+                ITEM_RANK[i] = -1;
+                ITEM_STACKABLE[i] = true;
+                ITEM_TOOL_TIER[i] = -1;
             }
+
+            ITEM_RANK[14] = 0;
+            ITEM_RANK[16] = 1;
 
             ITEM_PLACEABLE[2] = true;
             ITEM_PLACEABLE[4] = true;
@@ -71,6 +78,9 @@ namespace Game1
             ITEM_SOLID[5] = true;
             ITEM_SOLID[6] = true;
 
+            ITEM_TOOL_TIER[4] = 0;
+            ITEM_TOOL_TIER[5] = 0;
+
             ITEM_BLOCKID[0] = -1;
             ITEM_BLOCKID[1] = -1;
             ITEM_BLOCKID[2] = 85;
@@ -85,11 +95,10 @@ namespace Game1
             ITEM_BLOCKID[11] = 35;
             ITEM_BLOCKID[12] = 35;
             ITEM_BLOCKID[13] = 35;
+            ITEM_BLOCKID[14] = -1;
+            ITEM_BLOCKID[15] = -1;
+            ITEM_BLOCKID[16] = -1;
 
-            for (int i = 0; i < ITEM_COUNT; i++)
-            {
-                ITEM_STACKABLE[i] = true;
-            }
             ITEM_STACKABLE[14] = false;
             ITEM_STACKABLE[16] = false;
 
