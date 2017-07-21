@@ -267,9 +267,11 @@ namespace Game1
         {
             if (cursorItem==-1 && uiState == 3 && inventoryItemIds[selectedCarry] != -1)
             {
-                if ((MouseKeyboardInfo.mouseState.X > 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y > 0 && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT) && 
-                    CountUis()==0 && Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] != -1 &&
-                    Game1.itemInfo.ITEM_RANK[inventoryItemIds[selectedCarry]] == Game1.itemInfo.ITEM_TOOL_TIER[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]])
+                if ((MouseKeyboardInfo.mouseState.X > 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y > 0 && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT) &&
+                    CountUis() == 0 && Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] != -1 &&
+                    Game1.itemInfo.ITEM_TOOL_TIER[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]] != -1 &&
+                    WithinItemRange(inventoryItemIds[selectedCarry], MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y) &&
+                    Game1.itemInfo.ITEM_RANK[inventoryItemIds[selectedCarry]] >= Game1.itemInfo.ITEM_TOOL_TIER[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]])
                 {
                     Game1.globalCursor = 2;
                     if (MouseKeyboardInfo.mouseState.LeftButton == ButtonState.Pressed)
@@ -283,7 +285,7 @@ namespace Game1
                         }
                         else if (blockTimer == -1)
                         {
-                            blockTimer = 40;
+                            blockTimer = 20;
                         }
                     }
                 }
@@ -323,6 +325,11 @@ namespace Game1
 
                 }
             }
+        }
+        private bool WithinItemRange(int itemId, int x, int y)
+        {
+            return (x > Game1.WINDOW_WIDTH / 2 - Game1.itemInfo.ITEM_TOOL_RANGE[itemId] && x < Game1.WINDOW_WIDTH / 2 +32+ Game1.itemInfo.ITEM_TOOL_RANGE[itemId] &&
+                y > Game1.WINDOW_HEIGHT / 2 - Game1.itemInfo.ITEM_TOOL_RANGE[itemId] && y < Game1.WINDOW_HEIGHT / 2 +32+ Game1.itemInfo.ITEM_TOOL_RANGE[itemId]);
         }
         public static void AddToInventory(int item, int quantity)
         {

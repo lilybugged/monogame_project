@@ -22,6 +22,7 @@ namespace Game1
         public int[] ITEM_RANK = new int[ITEM_COUNT]; //for tools mainly
         public bool[] ITEM_EQUIPPABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_TOOL = new bool[ITEM_COUNT];
+        public int[] ITEM_TOOL_RANGE = new int[ITEM_COUNT]; //range of tool - i.e. a square radius
         public int[] ITEM_UNIT_WIDTH = new int[ITEM_COUNT]; //e.g. 1,2,3
         public int[] ITEM_UNIT_HEIGHT = new int[ITEM_COUNT]; //e.g. 1,2,3
         public bool[] ITEM_PLACEABLE = new bool[ITEM_COUNT];
@@ -44,10 +45,14 @@ namespace Game1
                 ITEM_RANK[i] = -1;
                 ITEM_STACKABLE[i] = true;
                 ITEM_TOOL_TIER[i] = -1;
+                ITEM_TOOL_RANGE[i] = -1;
             }
 
             ITEM_RANK[14] = 0;
             ITEM_RANK[16] = 1;
+
+            ITEM_TOOL_RANGE[14] = 3*16;
+            ITEM_TOOL_RANGE[16] = 6*16;
 
             ITEM_PLACEABLE[2] = true;
             ITEM_PLACEABLE[4] = true;
