@@ -32,14 +32,17 @@ namespace Game1
         public int[] inventoryItemIds;
         public int[] inventoryItemQuantities;
         public int rowSize;
+        private static bool itemIsCarried; //if you're trying to place a carried item, this is true
+        //TODO: fix this script so that using a carried item updates the actual carried item
         private static int cursorItem;
         private static int cursorItemOrigin;
         private static int cursorItemIndex;
         private static int cursorQuantity;
         private String toString;
-        public static int selectedCarry = 0;
+        public static int selectedCarry = 0; //for carryUi
         private static int blockTimer = -1;
         public int id;
+        private int lastScroll = MouseKeyboardInfo.mouseState.ScrollWheelValue;
         /// <summary>
         /// Initializes the UI System. [Only pass arrays as large as the chosen ui type's inventory.]
         /// </summary>
@@ -83,7 +86,45 @@ namespace Game1
                     DragAndDrop(this.uix + 7, this.uiy + 7);
                     break;
             }
-            if (blockTimer > 0) blockTimer--;
+            if (uiState == 3)
+            {
+                selectedCarry += (MouseKeyboardInfo.mouseState.ScrollWheelValue > lastScroll ? 1 : 0);
+                selectedCarry -= (MouseKeyboardInfo.mouseState.ScrollWheelValue < lastScroll ? 1 : 0);
+                lastScroll = MouseKeyboardInfo.mouseState.ScrollWheelValue;
+
+                if (selectedCarry >= rowSize) selectedCarry = 0;
+                if (selectedCarry < 0) selectedCarry = rowSize - 1;
+                if (blockTimer > 0) blockTimer--;
+
+                if (cursorItem == -1)
+                {
+                    if (inventoryItemIds[selectedCarry] != -1)
+                    {
+                        if (inventoryItemIds[selectedCarry] != -1 && Game1.itemInfo.ITEM_PLACEABLE[inventoryItemIds[selectedCarry]])
+                        {
+                            cursorItem = inventoryItemIds[selectedCarry];
+                            cursorQuantity = inventoryItemQuantities[selectedCarry];
+                            inventoryItemIds[selectedCarry] = -1;
+                            inventoryItemQuantities[selectedCarry] = -1;
+                            cursorItemOrigin = 3;
+                            cursorItemIndex = selectedCarry;
+                        }
+                    }
+                }
+                else if (cursorItemOrigin == 3 && selectedCarry!=cursorItemIndex)
+                {
+                    inventoryItemIds[cursorItemIndex] = cursorItem;
+                    inventoryItemQuantities[cursorItemIndex] = cursorQuantity;
+                    cursorItem = inventoryItemIds[selectedCarry];
+                    cursorQuantity = inventoryItemQuantities[selectedCarry];
+                    cursorItemIndex = selectedCarry;
+                    if (cursorItem != -1 && !Game1.itemInfo.ITEM_PLACEABLE[cursorItem])
+                    {
+                        cursorItem = -1;
+                        cursorQuantity = -1;
+                    }
+                }
+            }
             InteractItem();
             PlaceItem();
             BreakItem();
@@ -234,7 +275,7 @@ namespace Game1
             if (uiState == 1 && MouseKeyboardInfo.mouseState.RightButton == ButtonState.Pressed && cursorItem!=-1 && Game1.itemInfo.ITEM_PLACEABLE[cursorItem] && CanBePlaced(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16) && !(MouseKeyboardInfo.mouseState.X >= this.uix - 1 && MouseKeyboardInfo.mouseState.X <= this.uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= this.uiy - 1 && MouseKeyboardInfo.mouseState.Y <= this.uiy - 1 + 514) &&
                 (Game1.uiObjects[1] == null || !(MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396)))
             {
-                Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem;
+                (Game1.itemInfo.ITEM_BACKTILE[cursorItem]? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles)[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem;
                 // Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" placeItem:"+ ((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16))+","+((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))+" "+cursorItem);
                 if (cursorItem>=8&&cursorItem<=13) //small chest of any rank
                 {
@@ -252,10 +293,16 @@ namespace Game1
                 }
                 if (cursorQuantity > 1)
                 {
+                    //if (itemIsCarried) Game1.uiObjects[2].inventoryItemQuantities[UI.selectedCarry]--;
                     cursorQuantity--;
                 }
                 else
                 {
+                    /*if (itemIsCarried)
+                    {
+                        Game1.uiObjects[2].inventoryItemIds[UI.selectedCarry] = -1;
+                        Game1.uiObjects[2].inventoryItemQuantities[UI.selectedCarry] = -1;
+                    }*/
                     cursorItem = -1;
                     cursorQuantity = -1;
                     Game1.globalCursor = 0;
@@ -267,6 +314,7 @@ namespace Game1
         {
             if (cursorItem==-1 && uiState == 3 && inventoryItemIds[selectedCarry] != -1)
             {
+
                 if ((MouseKeyboardInfo.mouseState.X > 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y > 0 && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT) &&
                     CountUis() == 0 && Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] != -1 &&
                     Game1.itemInfo.ITEM_TOOL_TIER[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]] != -1 &&
@@ -289,11 +337,34 @@ namespace Game1
                         }
                     }
                 }
-                else
+                else if ((MouseKeyboardInfo.mouseState.X > 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y > 0 && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT) &&
+                    CountUis() == 0 && Game1.currentMap.mapBackTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] != -1 &&
+                    Game1.itemInfo.ITEM_TOOL_TIER[Game1.currentMap.mapBackTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]] != -1 &&
+                    WithinItemRange(inventoryItemIds[selectedCarry], MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y) &&
+                    Game1.itemInfo.ITEM_RANK[inventoryItemIds[selectedCarry]] >= Game1.itemInfo.ITEM_TOOL_TIER[Game1.currentMap.mapBackTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]])
+                {
+                    Game1.globalCursor = 2;
+                    if (MouseKeyboardInfo.mouseState.RightButton == ButtonState.Pressed)
+                    {
+                        Game1.globalCursor = 3;
+                        if (blockTimer == 0)
+                        {
+                            blockTimer = -1;
+                            UI.AddToInventory(Game1.currentMap.mapBackTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))], 1);
+                            Game1.currentMap.mapBackTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = -1;
+                        }
+                        else if (blockTimer == -1)
+                        {
+                            blockTimer = 20;
+                        }
+                    }
+                }
+                else 
                 {
                     Game1.globalCursor = 0;
                 }
-            }
+            } //Back
+            
         }
         public void InteractItem()
         {
@@ -440,6 +511,7 @@ namespace Game1
             int gottenIndex = (MouseKeyboardInfo.mouseState.X - startx) / 49 + ((MouseKeyboardInfo.mouseState.Y - starty) / 48) * rowSize;
             
             //pick up part of an item on right click
+            
             if ((CountUis()==1 || uiState != 1 && uiState != 3) && gottenIndex > -1 && (gottenIndex) < inventoryItemIds.Length && inventoryItemIds[gottenIndex] != -1 && ((cursorItem == inventoryItemIds[gottenIndex] && cursorItem!=-1) || cursorItem==-1) && MouseKeyboardInfo.mouseClickedRight && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
                 cursorItem = inventoryItemIds[gottenIndex];
@@ -469,7 +541,7 @@ namespace Game1
                 Game1.globalCursor = 1;
             }
             //drop off an item
-            else if ((CountUis() == 1 || uiState != 1 && uiState != 3) && cursorItem != -1 && (gottenIndex) >-1 && (gottenIndex) < inventoryItemIds.Length && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
+            else if ((CountUis() == 1 || uiState != 1 && uiState != 3) && cursorItem != -1 && (gottenIndex) >-1 && (gottenIndex) < inventoryItemIds.Length && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (Game1.uiObjects[1].inventoryRows * (48)) - 5)
             {
                 
                 //item in cursor is the same as the one in the slot
@@ -508,10 +580,15 @@ namespace Game1
                 //item in cursor is different from the one in the slot
                 else
                 {
+                    if (cursorItemOrigin == 3)
+                    {
+                        Game1.uiObjects[2].inventoryItemIds[selectedCarry] = -1;
+                        Game1.uiObjects[2].inventoryItemQuantities[selectedCarry] = -1;
+                    }
                     int temp = cursorItem;
                     cursorItem = inventoryItemIds[gottenIndex];
                     inventoryItemIds[gottenIndex] = temp;
-                    
+
                     temp = cursorQuantity;
                     cursorQuantity = inventoryItemQuantities[gottenIndex];
                     inventoryItemQuantities[gottenIndex] = (temp);
@@ -545,7 +622,7 @@ namespace Game1
                     else if (cursorItemOrigin != -1 && (Game1.uiObjects[cursorItemOrigin - 1]).FindFreeSlot()!=-1) {
                         slot = (Game1.uiObjects[cursorItemOrigin - 1]).FindFreeSlot();
 
-                        if (cursorItem == (Game1.uiObjects[cursorItemOrigin + 1]).inventoryItemIds[slot])
+                        if (cursorItem == (Game1.uiObjects[cursorItemOrigin - 1]).inventoryItemIds[slot])
                         {
                             (Game1.uiObjects[cursorItemOrigin - 1]).inventoryItemQuantities[slot] += cursorQuantity;
                             cursorQuantity--;
@@ -610,8 +687,9 @@ namespace Game1
         {
             //figures out for a REQUIRE_SURFACE item whether the cursor is on top of a surface (solid) or whether the space is free for item placement
             //TODO: make it so you can't place items over the player
-            if (MouseKeyboardInfo.mouseState.X>=0 && MouseKeyboardInfo.mouseState.Y >= 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT && Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && Game1.currentMap.mapTiles[x / 16, y / 16 + 1] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[x / 16, y / 16 + 1]] && Game1.currentMap.mapTiles[x / 16, y / 16] == -1) return true;
-            else if (MouseKeyboardInfo.mouseState.X >= 0 && MouseKeyboardInfo.mouseState.Y >= 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT && !Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && Game1.currentMap.mapTiles[x / 16, y / 16] == -1) return true;
+            int[,] map = (Game1.itemInfo.ITEM_BACKTILE[cursorItem] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
+            if (MouseKeyboardInfo.mouseState.X>=0 && MouseKeyboardInfo.mouseState.Y >= 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT && Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && map[x / 16, y / 16 + 1] != -1 && Game1.itemInfo.ITEM_SOLID[map[x / 16, y / 16 + 1]] && map[x / 16, y / 16] == -1) return true;
+            else if (MouseKeyboardInfo.mouseState.X >= 0 && MouseKeyboardInfo.mouseState.Y >= 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT && !Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && map[x / 16, y / 16] == -1) return true;
             return false;
         }
     }

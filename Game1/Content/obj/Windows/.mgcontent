@@ -20,9 +20,9 @@
     <File>E:/monogame game1/monogame_project/Game1/Content/img/chests/chest_close_s.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/chests/chest_open_skin.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/chests/chest_close_skin.png</File>
-    <File>E:/monogame game1/monogame_project/Game1/Content/img/bg_tiles.png</File>
-    <File>E:/monogame game1/monogame_project/Game1/Content/img/icons_32.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/breakcursor.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/breakactivatecursor.png</File>
+    <File>E:/monogame game1/monogame_project/Game1/Content/img/icons_32.png</File>
+    <File>E:/monogame game1/monogame_project/Game1/Content/img/bg_tiles.png</File>
   </SourceFiles>
 </SourceFileCollection>

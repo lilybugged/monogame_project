@@ -22,7 +22,7 @@ namespace Game1
         public static int currentDirection;
         private int speedy;
         private int speedx;
-        private int jumpTimer;
+        private bool canJump;
         //private AnimatedSprite currentSprite;
 
         /// <summary>
@@ -41,12 +41,11 @@ namespace Game1
         }
         public void Update()
         {
-            if (jumpTimer > 0) jumpTimer--;
             MouseKeyboardInfo.keyState = Keyboard.GetState();
-            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.W) && jumpTimer==0)
+            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.W) && canJump)
             {
                 speedy = -13;
-                jumpTimer = 35;
+                canJump = false;
                 // Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" playerMove:"+playerx+","+playery);
             }
             if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A))
@@ -102,10 +101,18 @@ namespace Game1
         }
         private void SnapOnCollision() // handles y collisions
         {
-            if (speedy > 0(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 8) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32) / 16]!=-1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH/ 2 + 8) /16, (Player.playery + Game1.WINDOW_HEIGHT/ 2 + 32) /16]]) ||
+            if ((Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 8) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32) / 16]!=-1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH/ 2 + 8) /16, (Player.playery + Game1.WINDOW_HEIGHT/ 2 + 32) /16]]) ||
                     (Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 16) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 16) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32) / 16]]))
             {
                 //playerx = playerx / 16 * 16;
+                playery = playery / 16 * 16;
+                speedy = 0;
+                canJump = true;
+            }
+            if ((Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 8) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 8) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16]]) ||
+                    (Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 16) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 16) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16]]))
+            {
+                playery++;
                 playery = playery / 16 * 16;
                 speedy = 0;
             }
