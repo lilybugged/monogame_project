@@ -96,7 +96,7 @@ namespace Game1
                 if (selectedCarry < 0) selectedCarry = rowSize - 1;
                 if (blockTimer > 0) blockTimer--;
 
-                if (cursorItem == -1)
+                if (cursorItem == -1) //begin to select a carried item from an empty cursor
                 {
                     if (inventoryItemIds[selectedCarry] != -1)
                     {
@@ -111,13 +111,15 @@ namespace Game1
                         }
                     }
                 }
-                else if (cursorItemOrigin == 3 && selectedCarry!=cursorItemIndex)
+                else if (cursorItemOrigin == 3 && selectedCarry!=cursorItemIndex) //holding an item from the carry-slots and not hovering on the slot the item is from
                 {
-                    inventoryItemIds[cursorItemIndex] = cursorItem;
-                    inventoryItemQuantities[cursorItemIndex] = cursorQuantity;
+                    int temp = cursorItem;
                     cursorItem = inventoryItemIds[selectedCarry];
                     cursorQuantity = inventoryItemQuantities[selectedCarry];
-                    cursorItemIndex = selectedCarry;
+
+                    inventoryItemIds[cursorItemIndex] = temp;
+                    inventoryItemQuantities[cursorItemIndex] = temp;
+
                     if (cursorItem != -1 && !Game1.itemInfo.ITEM_PLACEABLE[cursorItem])
                     {
                         cursorItem = -1;
@@ -541,7 +543,7 @@ namespace Game1
                 Game1.globalCursor = 1;
             }
             //drop off an item
-            else if ((CountUis() == 1 || uiState != 1 && uiState != 3) && cursorItem != -1 && (gottenIndex) >-1 && (gottenIndex) < inventoryItemIds.Length && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (Game1.uiObjects[1].inventoryRows * (48)) - 5)
+            else if ((CountUis() == 1 && WithinUi(uiState)) && cursorItem != -1 && (gottenIndex) >-1 && (gottenIndex) < inventoryItemIds.Length && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (Game1.uiObjects[uiState-1].inventoryRows * (48)) - 5)
             {
                 
                 //item in cursor is the same as the one in the slot
