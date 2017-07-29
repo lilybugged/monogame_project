@@ -104,8 +104,8 @@ namespace Game1
                         {
                             cursorItem = inventoryItemIds[selectedCarry];
                             cursorQuantity = inventoryItemQuantities[selectedCarry];
-                            inventoryItemIds[selectedCarry] = -1;
-                            inventoryItemQuantities[selectedCarry] = -1;
+                            //inventoryItemIds[selectedCarry] = -1;
+                            //inventoryItemQuantities[selectedCarry] = -1;
                             cursorItemOrigin = 3;
                             cursorItemIndex = selectedCarry;
                         }
@@ -125,6 +125,7 @@ namespace Game1
                         cursorItem = -1;
                         cursorQuantity = -1;
                     }
+                    cursorItemIndex = selectedCarry;
                 }
             }
             InteractItem();
@@ -297,6 +298,7 @@ namespace Game1
                 {
                     //if (itemIsCarried) Game1.uiObjects[2].inventoryItemQuantities[UI.selectedCarry]--;
                     cursorQuantity--;
+                    if (cursorItemOrigin == 3) Game1.uiObjects[2].inventoryItemQuantities[selectedCarry]--;
                 }
                 else
                 {
@@ -308,6 +310,11 @@ namespace Game1
                     cursorItem = -1;
                     cursorQuantity = -1;
                     Game1.globalCursor = 0;
+                    if (cursorItemOrigin == 3)
+                    {
+                        Game1.uiObjects[2].inventoryItemIds[selectedCarry] = -1;
+                        Game1.uiObjects[2].inventoryItemQuantities[selectedCarry] = -1;
+                    }
                 }
                 //TODO: update this method and CanBePlaced() to account for item width/height
             }
@@ -516,12 +523,25 @@ namespace Game1
             
             if ((CountUis()==1 || uiState != 1 && uiState != 3) && gottenIndex > -1 && (gottenIndex) < inventoryItemIds.Length && inventoryItemIds[gottenIndex] != -1 && ((cursorItem == inventoryItemIds[gottenIndex] && cursorItem!=-1) || cursorItem==-1) && MouseKeyboardInfo.mouseClickedRight && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
-                cursorItem = inventoryItemIds[gottenIndex];
-                cursorItemIndex = gottenIndex;
-                cursorItemOrigin = uiState;
+                if (cursorItem == -1)
+                {
+                    cursorItem = inventoryItemIds[gottenIndex];
+                    cursorItemIndex = gottenIndex;
+                    cursorItemOrigin = uiState;
+                }
 
-                if (cursorQuantity == -1) cursorQuantity = 1;
-                else cursorQuantity++;
+                if (cursorQuantity == -1)
+                {
+                    cursorQuantity = 1;
+                }
+                else
+                {
+                    cursorQuantity++;
+                    if (cursorItemOrigin == 3)
+                    {
+                        Game1.uiObjects[2].inventoryItemQuantities[selectedCarry]++;
+                    }
+                }
                 if (inventoryItemQuantities[gottenIndex] == 1)
                 {
                     inventoryItemQuantities[gottenIndex] = -1;
@@ -530,7 +550,6 @@ namespace Game1
                 else inventoryItemQuantities[gottenIndex] -= 1;
 
                 Game1.globalCursor = 1;
-                
             }
             //pick up an item
             else if ((CountUis() == 1 || uiState != 1 && uiState != 3) && cursorItem == -1 && gottenIndex>-1 && (gottenIndex) < inventoryItemIds.Length && inventoryItemIds[gottenIndex] != -1 && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
@@ -556,7 +575,11 @@ namespace Game1
                         inventoryItemQuantities[gottenIndex] = Game1.ITEM_STACK_SIZE;
                         cursorItemIndex = -1; //have to find the item a new slot if it has to "return"
                         Game1.globalCursor = 1;
-
+                        if (cursorItemOrigin == 3)
+                        {
+                            Game1.uiObjects[2].inventoryItemQuantities[selectedCarry]= cursorQuantity;
+                            Game1.uiObjects[2].inventoryItemIds[selectedCarry] = cursorItem;
+                        }
                     }
                     else
                     {
@@ -566,11 +589,22 @@ namespace Game1
                         cursorItemIndex = -1;
                         cursorItemOrigin = -1;
                         Game1.globalCursor = 0;
+
+                        if (cursorItemOrigin == 3)
+                        {
+                            Game1.uiObjects[2].inventoryItemQuantities[selectedCarry] = cursorQuantity;
+                            Game1.uiObjects[2].inventoryItemIds[selectedCarry] = cursorItem;
+                        }
                     }
                 }
                 //slot is empty
                 else if (inventoryItemIds[gottenIndex]==-1)
                 {
+                    if (cursorItemOrigin == 3)
+                    {
+                        Game1.uiObjects[2].inventoryItemQuantities[selectedCarry] = -1;
+                        Game1.uiObjects[2].inventoryItemIds[selectedCarry] = -1;
+                    }
                     inventoryItemIds[gottenIndex] = cursorItem;
                     inventoryItemQuantities[gottenIndex] = cursorQuantity;
                     cursorItem = -1;
@@ -597,7 +631,7 @@ namespace Game1
                 }
             }
             //return an item that is dropped out of bounds
-            else if (MouseKeyboardInfo.mouseClickedLeft){
+            else if (MouseKeyboardInfo.mouseClickedLeft && cursorItemOrigin!=3){
                 if (uiState == 1 && !(MouseKeyboardInfo.mouseState.X >= (this.uix + 136 + 19) && MouseKeyboardInfo.mouseState.X <= (this.uix + 136 + 19) + (7 * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= (this.uiy + 17) && MouseKeyboardInfo.mouseState.Y <= (this.uiy + 17) + (inventoryRows * (48)) - 5) &&
                     (Game1.uiObjects[1] == null || !(MouseKeyboardInfo.mouseState.X >= (Game1.uiObjects[1].uix + 7) && MouseKeyboardInfo.mouseState.X <= (Game1.uiObjects[1].uix + 7) + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= (Game1.uiObjects[1].uiy + 7) && MouseKeyboardInfo.mouseState.Y <= (Game1.uiObjects[1].uiy + 7) + (inventoryRows * (48)) - 5)) &&
                     (Game1.uiObjects[2] == null || !WithinUi(3))) {

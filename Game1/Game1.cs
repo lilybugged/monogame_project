@@ -190,6 +190,7 @@ namespace Game1
 
                 base.Update(gameTime);
 
+                if (MouseKeyboardInfo.keyClickedI)
                 //update all UIs
                 if (uiToggle)
                 {

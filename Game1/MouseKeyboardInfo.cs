@@ -70,6 +70,25 @@ namespace Game1
                 canReleaseRight = false;
             }
             else mouseReleasedRight = false;
+
+            //TODO: finish this thing below
+            //key stats - i
+            if (keyState.i == ButtonState.Pressed && canClickRight)
+            {
+                mouseClickedRight = true;
+                canClickRight = false;
+                canReleaseRight = true;
+
+            }
+            else mouseClickedRight = false;
+
+            if (mouseState.RightButton == ButtonState.Released && canReleaseRight)
+            {
+                mouseReleasedRight = true;
+                canClickRight = true;
+                canReleaseRight = false;
+            }
+            else mouseReleasedRight = false;
         }
     }
 }
