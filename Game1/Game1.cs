@@ -191,13 +191,13 @@ namespace Game1
                 base.Update(gameTime);
 
                 if (MouseKeyboardInfo.keyClickedI)
-                //update all UIs
-                if (uiToggle)
                 {
-                    for (int i = 0; i < uiObjects.Length; i++)
-                    {
-                        if (uiObjects[i] != null) uiObjects[i].Update();
-                    }
+                    uiToggle = !uiToggle;
+                }
+                //update all UIs
+                for (int i = 0; i < uiObjects.Length; i++)
+                {
+                    if (uiObjects[i] != null && (i == 2 || !uiToggle)) uiObjects[i].Update();
                 }
             }
 
@@ -227,16 +227,13 @@ namespace Game1
             base.Draw(gameTime);
             player.Draw();
 
-            if (uiToggle)
+            //draw all UIs
+            for (int i = 0; i < uiObjects.Length; i++)
             {
-                //draw all UIs
-                for (int i = 0; i < uiObjects.Length; i++)
-                {
-                    if (uiObjects[i] != null) uiObjects[i].Draw();
-                }
-
-                uiObjects[0].DrawCursorItem();
+                if (uiObjects[i] != null && (i==2 || !uiToggle)) uiObjects[i].Draw();
             }
+
+            uiObjects[0].DrawCursorItem();
 
             Game1.spriteBatch.Begin();
             spriteBatch.Draw(cursor[globalCursor], new Vector2(MouseKeyboardInfo.mouseState.X,MouseKeyboardInfo.mouseState.Y), Color.White);

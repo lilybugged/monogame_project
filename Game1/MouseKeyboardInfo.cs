@@ -36,7 +36,7 @@ namespace Game1
             mouseState = Mouse.GetState();
             keyState = Keyboard.GetState();
 
-            //update mouse stats
+            //update mouse stats - left
             if (mouseState.LeftButton == ButtonState.Pressed && canClickLeft)
             {
                 mouseClickedLeft = true;
@@ -73,22 +73,22 @@ namespace Game1
 
             //TODO: finish this thing below
             //key stats - i
-            if (keyState.i == ButtonState.Pressed && canClickRight)
+            if (keyState.IsKeyDown(Keys.I) && canClickI)
             {
-                mouseClickedRight = true;
-                canClickRight = false;
-                canReleaseRight = true;
+                keyClickedI = true;
+                canClickI = false;
+                canReleaseI = true;
 
             }
-            else mouseClickedRight = false;
+            else keyClickedI = false;
 
-            if (mouseState.RightButton == ButtonState.Released && canReleaseRight)
+            if (!keyState.IsKeyDown(Keys.I) && canReleaseI)
             {
-                mouseReleasedRight = true;
-                canClickRight = true;
-                canReleaseRight = false;
+                keyReleasedI = true;
+                canClickI = true;
+                canReleaseI = false;
             }
-            else mouseReleasedRight = false;
+            else keyReleasedI = false;
         }
     }
 }
