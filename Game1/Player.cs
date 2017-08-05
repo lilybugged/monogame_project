@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Diagnostics;
 
 namespace Game1
 {
@@ -41,6 +42,7 @@ namespace Game1
         }
         public void Update()
         {
+            //Debug.WriteLine(""+RangeFromPoint(playerx+MouseKeyboardInfo.mouseState.X, playery + MouseKeyboardInfo.mouseState.Y)[0]);
             MouseKeyboardInfo.keyState = Keyboard.GetState();
             if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.W) && canJump)
             {
@@ -116,6 +118,13 @@ namespace Game1
                 playery = playery / 16 * 16;
                 speedy = 0;
             }
+        }
+        /// <summary>
+        /// Takes a world point and returns the player's x-distance and y-distance from it.
+        /// </summary>
+        public static int[] RangeFromPoint(int pointx, int pointy)
+        {
+            return new int[] {Math.Abs(playerx + Game1.WINDOW_WIDTH/2 - pointx), Math.Abs(playery + Game1.WINDOW_HEIGHT / 2 - pointy)};
         }
     }
 }
