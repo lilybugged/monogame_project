@@ -48,7 +48,7 @@ namespace Game1
         //TODO: use this to search for autotiled chest parts and update their states when this one is clicked.
         public void Update()
         {
-            if (Game1.openChest != -1 && Game1.chestInventories[Game1.openChest] == this && Player.RangeFromPoint(chestx, chesty)[0] >= 300)
+            if (Game1.openChest != -1 && Game1.chestInventories[Game1.openChest] == this && Player.RangeFromPoint(chestx, chesty)[0] >= Game1.PLAYER_RANGE_REQUIREMENT)
             {
                 chestState = 0;
                 Game1.uiObjects[1] = null;

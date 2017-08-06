@@ -85,14 +85,24 @@ namespace Game1
             (currentDirection == 0 ? Game1.charaLeft[currentAction] : Game1.charaRight[currentAction]).Update();
             speedy += accelerationy;
             //below handles x collisions
+            playerx += speedx;
             if (speedx < 0 && (!(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16]]) ||
-                !(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16]]))) speedx = 0;
+                !(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16]])))
+            {
+                speedx = 0;
+                playerx++;
+                playerx = playerx / 16 * 16;
+                playerx++;
+            }
             else if (speedx > 0 && (!(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 32) / 16 , (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 32) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16]])||
-                !(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 32) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 32) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16]]))) speedx = 0;
-            else playerx += speedx;
+                !(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 32) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 32) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16]])))
+            {
+                playerx -= speedx;
+                speedx = 0;
+            }
             for (int i = 0; i < Math.Abs(speedy); i++)
             {
-                playery += speedy / Math.Abs(speedy);
+                if (speedy != 0) playery += speedy / Math.Abs(speedy);
                 SnapOnCollision();
             }
 
@@ -112,10 +122,11 @@ namespace Game1
                 canJump = true;
             }
             if ((Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 1) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 1) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16]]) ||
-                    (Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 16) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 16) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16]]))
+                    (Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16]]))
             {
-                playery++;
+                //playery++;
                 playery = playery / 16 * 16;
+                playery++;
                 speedy = 0;
             }
         }

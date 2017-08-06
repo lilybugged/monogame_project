@@ -18,25 +18,27 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 20;
-        public int[] ITEM_RANK = new int[ITEM_COUNT]; //for tools mainly
+        public const int ITEM_COUNT = 21;
+        public int[] ITEM_RANK = new int[ITEM_COUNT]; // for tools mainly
         public bool[] ITEM_EQUIPPABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_TOOL = new bool[ITEM_COUNT];
-        public int[] ITEM_TOOL_RANGE = new int[ITEM_COUNT]; //range of tool - i.e. a square radius
-        public int[] ITEM_UNIT_WIDTH = new int[ITEM_COUNT]; //e.g. 1,2,3
-        public int[] ITEM_UNIT_HEIGHT = new int[ITEM_COUNT]; //e.g. 1,2,3
+        public int[] ITEM_TOOL_RANGE = new int[ITEM_COUNT]; // range of tool - i.e. a square radius
+        public int[] ITEM_UNIT_WIDTH = new int[ITEM_COUNT]; // e.g. 1,2,3
+        public int[] ITEM_UNIT_HEIGHT = new int[ITEM_COUNT]; // e.g. 1,2,3
         public bool[] ITEM_PLACEABLE = new bool[ITEM_COUNT];
-        public bool[] ITEM_REQUIRE_SURFACE = new bool[ITEM_COUNT]; //if it's placeable, must it be placed on a surface?
-        public bool[] ITEM_SOLID = new bool[ITEM_COUNT]; //if it's placeable, does it have a solid collision state?
+        public bool[] ITEM_REQUIRE_SURFACE = new bool[ITEM_COUNT]; // if it's placeable, must it be placed on a surface?
+        public bool[] ITEM_SOLID = new bool[ITEM_COUNT]; // if it's placeable, does it have a solid collision state?
         public int[] ITEM_BLOCKID = new int[ITEM_COUNT];
         public bool[] ITEM_STACKABLE = new bool[ITEM_COUNT];
-        public bool[] ITEM_AUTOTILE = new bool[ITEM_COUNT]; //should still work for things like beds
-        public bool[] ITEM_BACKTILE = new bool[ITEM_COUNT]; //indicates whether the block should be on the layer behind
-        public int[] ITEM_END_POSITION = new int[ITEM_COUNT]; //where the "mask" should end (for collisions or stopping CanBePlaced())
+        public bool[] ITEM_AUTOTILE = new bool[ITEM_COUNT]; // should still work for things like beds
+        public bool[] ITEM_BACKTILE = new bool[ITEM_COUNT]; // indicates whether the block should be on the layer behind
+        public int[] ITEM_END_POSITION = new int[ITEM_COUNT]; // where the "mask" should end (for collisions or stopping CanBePlaced())
+        public int[] ITEM_YIELD_IDS = new int[ITEM_COUNT]; // what items are dropped when the block is broken?
+        public int[] ITEM_YIELD_QUANTITIES = new int[ITEM_COUNT];// how many of each?
         public UI[] ITEM_UI = new UI[ITEM_COUNT]; // ui associated with the item
         public Action[] ITEM_FUNCTION = new Action[ITEM_COUNT]; // for when you click an item with an empty cursor - think chests and other furniture
         public int[] ITEM_TOOL_TIER = new int[ITEM_COUNT]; // which tier of tool is required to break the item at minimum - "0" = wand
-        public static int chestState = 0; //0-4 values - closed, opening, open, closing
+        public static int chestState = 0; // 0-4 values - closed, opening, open, closing
         public ItemInfo()
         {
             for (int i = 0; i < ITEM_COUNT; i++)
@@ -72,6 +74,7 @@ namespace Game1
             ITEM_PLACEABLE[17] = true;
             ITEM_PLACEABLE[18] = true;
             ITEM_PLACEABLE[19] = true;
+            ITEM_PLACEABLE[20] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
@@ -90,6 +93,7 @@ namespace Game1
             ITEM_SOLID[4] = true;
             ITEM_SOLID[5] = true;
             ITEM_SOLID[6] = true;
+            ITEM_SOLID[20] = true;
 
             ITEM_TOOL_TIER[4] = 0;
             ITEM_TOOL_TIER[5] = 1;
@@ -116,6 +120,7 @@ namespace Game1
             ITEM_BLOCKID[17] = 88;
             ITEM_BLOCKID[18] = 87;
             ITEM_BLOCKID[19] = 89;
+            ITEM_BLOCKID[20] = 90;
 
             ITEM_STACKABLE[14] = false;
             ITEM_STACKABLE[16] = false;
@@ -124,6 +129,7 @@ namespace Game1
             ITEM_AUTOTILE[6] = true;
             ITEM_AUTOTILE[8] = true;
             ITEM_AUTOTILE[18] = true;
+            ITEM_AUTOTILE[20] = true;
         }
 
         public static void DrawAutoTile(int itemId, Vector2 position)
@@ -156,19 +162,19 @@ namespace Game1
                     Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
 
                     //draw edges for default block items
-                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId))
+                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1))
                     {
                         Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X, (int)position.Y + 15, 16, 1), Color.Black); //nounder
                     }
-                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId))
+                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1))
                     {
                         Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X, (int)position.Y, 16, 1), Color.Black); //noabove
                     }
-                    if (!(map[(int)(position.X+Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId))
+                    if (!(map[(int)(position.X+Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1))
                     {
                         Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X, (int)position.Y, 1, 16), Color.Black); //noleft
                     }
-                    if (!(map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId))
+                    if (!(map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1))
                     {
                         Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X + 15, (int)position.Y, 1, 16), Color.Black); //noright
                     }

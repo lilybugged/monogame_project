@@ -224,18 +224,6 @@
 /processorParam:TextureFormat=Color
 /build:img/breakactivatecursor.png
 
-#begin img/icons_32.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:img/icons_32.png
-
 #begin img/bg_tiles.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -247,4 +235,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:img/bg_tiles.png
+
+#begin img/icons_32.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:img/icons_32.png
 

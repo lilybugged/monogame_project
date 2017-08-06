@@ -391,8 +391,8 @@ namespace Game1
             if (uiState == 3 && MouseKeyboardInfo.mouseClickedRight && cursorItem == -1 && !(MouseKeyboardInfo.mouseState.X >= this.uix - 1 && MouseKeyboardInfo.mouseState.X <= this.uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= this.uiy - 1 && MouseKeyboardInfo.mouseState.Y <= this.uiy - 1 + 514) &&
                 (Game1.uiObjects[1] == null || !(MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396)) && 
                 Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]!=-1 &&
-                Player.RangeFromPoint((Player.playerx) + MouseKeyboardInfo.mouseState.X, (Player.playery) + MouseKeyboardInfo.mouseState.Y)[0]<64 ||
-                (inventoryItemIds[selectedCarry]!=-1 && Game1.itemInfo.ITEM_TOOL[inventoryItemIds[selectedCarry]] && WithinItemRange(inventoryItemIds[selectedCarry], MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y)))
+                (Player.RangeFromPoint((Player.playerx) + MouseKeyboardInfo.mouseState.X, (Player.playery) + MouseKeyboardInfo.mouseState.Y)[0]< Game1.PLAYER_RANGE_REQUIREMENT ||
+                (inventoryItemIds[selectedCarry]!=-1 && Game1.itemInfo.ITEM_TOOL[inventoryItemIds[selectedCarry]] && WithinItemRange(inventoryItemIds[selectedCarry], MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y))))
             {
                 if (Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] >= 8 && Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] <= 13)
                 {
