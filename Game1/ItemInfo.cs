@@ -54,8 +54,8 @@ namespace Game1
             ITEM_RANK[14] = 0;
             ITEM_RANK[16] = 1;
 
-            ITEM_TOOL_RANGE[14] = 3*16;
-            ITEM_TOOL_RANGE[16] = 6*16;
+            ITEM_TOOL_RANGE[14] = 5*16;
+            ITEM_TOOL_RANGE[16] = 8*16;
 
             ITEM_BACKTILE[17] = true;
             ITEM_BACKTILE[18] = true;
