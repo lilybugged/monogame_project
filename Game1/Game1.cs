@@ -25,6 +25,8 @@ namespace Game1
         public static AnimatedSprite[] charaLeft = new AnimatedSprite[12];
         public static AnimatedSprite[] charaRight = new AnimatedSprite[12];
         public static AnimatedSprite[] chestSprites = new AnimatedSprite[4];
+        public static AnimatedSprite equippables;
+        public static AnimatedSprite equip_icons;
         public static AnimatedSprite items_32;
         public static AnimatedSprite tiles;
         public static AnimatedSprite tiles2;
@@ -52,6 +54,7 @@ namespace Game1
         public static int[] userInventoryQuantities;
         public static int[] userCarry;
         public static int[] userCarryQuantities;
+        public static int[] playerEquippedItems = new int[18];
         public static int carryRank = 3;
         public static UI carryUi;
 
@@ -97,6 +100,12 @@ namespace Game1
             uiObjects[2] = carryUi;
             //chest.id = uiObjects.Length;
             //uiObjects[1] = chest;
+
+            for (int i = 0; i < playerEquippedItems.Length; i++)
+            {
+                playerEquippedItems[i] = -1;
+            }
+            playerEquippedItems[7] = 22;
         }
 
         /// <summary>
@@ -137,6 +146,9 @@ namespace Game1
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
 
             items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 5, 5);
+            equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 3, 3);
+
+            equip_icons = new AnimatedSprite(Content.Load<Texture2D>("img/equip_slots"), 5, 4);
             tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 10, 10);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
             portrait = Content.Load<Texture2D>("img/portrait");

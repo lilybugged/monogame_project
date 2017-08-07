@@ -8,10 +8,6 @@
     <File>E:/monogame game1/monogame_project/Game1/Content/img/grass2.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/blep.PNG</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/grass3.png</File>
-    <File>E:/monogame game1/monogame_project/Game1/Content/img/spr_chara_right_1.png</File>
-    <File>E:/monogame game1/monogame_project/Game1/Content/img/spr_chara_left_1.png</File>
-    <File>E:/monogame game1/monogame_project/Game1/Content/img/spr_chara_left_0.png</File>
-    <File>E:/monogame game1/monogame_project/Game1/Content/img/spr_chara_right_0.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/white_pixel2.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/cursor.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/selectioncursor.png</File>
@@ -23,6 +19,12 @@
     <File>E:/monogame game1/monogame_project/Game1/Content/img/breakcursor.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/breakactivatecursor.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/bg_tiles.png</File>
+    <File>E:/monogame game1/monogame_project/Game1/Content/img/spr_chara_left_0.png</File>
+    <File>E:/monogame game1/monogame_project/Game1/Content/img/spr_chara_left_1.png</File>
+    <File>E:/monogame game1/monogame_project/Game1/Content/img/spr_chara_right_0.png</File>
+    <File>E:/monogame game1/monogame_project/Game1/Content/img/spr_chara_right_1.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/icons_32.png</File>
+    <File>E:/monogame game1/monogame_project/Game1/Content/img/equip_slots.png</File>
+    <File>E:/monogame game1/monogame_project/Game1/Content/img/equippable_items.png</File>
   </SourceFiles>
 </SourceFileCollection>

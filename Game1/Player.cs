@@ -24,6 +24,7 @@ namespace Game1
         private int speedy;
         private int speedx;
         private bool canJump;
+        private static int frame = 0;
         //private AnimatedSprite currentSprite;
 
         /// <summary>
@@ -105,11 +106,20 @@ namespace Game1
                 if (speedy != 0) playery += speedy / Math.Abs(speedy);
                 SnapOnCollision();
             }
-
+            frame = (currentDirection==0?Game1.charaLeft:Game1.charaRight)[currentAction].currentFrame;
         }
         public void Draw()
         {
             (currentDirection==0? Game1.charaLeft[currentAction] :Game1.charaRight[currentAction]).Draw(Game1.spriteBatch, new Vector2(Game1.WINDOW_WIDTH/2, Game1.WINDOW_HEIGHT/2));
+            Game1.spriteBatch.Begin();
+            for (int i=0; i < Game1.playerEquippedItems.Length; i++)
+            {
+                if (Game1.playerEquippedItems[i]!=-1) {
+                    Game1.equippables.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[i]] * 8 + (currentDirection == 0 ? 0 : 4) + ((currentAction==1)? frame: 0),
+                        new Vector2(Game1.WINDOW_WIDTH / 2, Game1.WINDOW_HEIGHT / 2));
+                }
+            }
+            Game1.spriteBatch.End();
         }
         private void SnapOnCollision() // handles y collisions
         {

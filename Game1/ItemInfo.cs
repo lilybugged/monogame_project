@@ -18,7 +18,7 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 22;
+        public const int ITEM_COUNT = 23;
         public int[] ITEM_RANK = new int[ITEM_COUNT]; // for tools mainly
         public bool[] ITEM_EQUIPPABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_TOOL = new bool[ITEM_COUNT];
@@ -29,6 +29,7 @@ namespace Game1
         public bool[] ITEM_REQUIRE_SURFACE = new bool[ITEM_COUNT]; // if it's placeable, must it be placed on a surface?
         public bool[] ITEM_SOLID = new bool[ITEM_COUNT]; // if it's placeable, does it have a solid collision state?
         public int[] ITEM_BLOCKID = new int[ITEM_COUNT];
+        public int[] ITEM_EQUIPID = new int[ITEM_COUNT];
         public bool[] ITEM_STACKABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_AUTOTILE = new bool[ITEM_COUNT]; // should still work for things like beds
         public bool[] ITEM_BACKTILE = new bool[ITEM_COUNT]; // indicates whether the block should be on the layer behind
@@ -49,7 +50,12 @@ namespace Game1
                 ITEM_STACKABLE[i] = true;
                 ITEM_TOOL_TIER[i] = -1;
                 ITEM_TOOL_RANGE[i] = -1;
+                ITEM_EQUIPID[i] = -1;
             }
+
+            ITEM_EQUIPPABLE[22] = true;
+
+            ITEM_EQUIPID[22] = 0;
 
             ITEM_RANK[14] = 0;
             ITEM_RANK[16] = 1;
