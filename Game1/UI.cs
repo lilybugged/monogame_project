@@ -154,7 +154,14 @@ namespace Game1
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 11, this.uiy + 11, 130, 166), menu_0);
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 12, this.uiy + 12, 128, 164), menu_2);
 
-                    Game1.spriteBatch.Draw(Game1.portrait, new Vector2(this.uix + 12, this.uiy + 12), Color.White*0.5f);
+                    Game1.portrait_items.DrawTile(Game1.spriteBatch, 0, Color.White,
+                                new Vector2(this.uix + 12, this.uiy + 12));
+                    for (int i = 0; i < Game1.playerEquippedItems.Length; i++)
+                    {
+                        if (Game1.playerEquippedItems[i]!=-1) Game1.portrait_items.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[i]]+1, Color.White,
+                                new Vector2(this.uix + 12, this.uiy + 12));
+                    }
+                    //Game1.spriteBatch.Draw(Game1.portrait, new Vector2(this.uix + 12, this.uiy + 12), Color.White*0.5f);
 
                     for (int i = 0; i < 6; i++)
                     {
@@ -178,6 +185,21 @@ namespace Game1
                             Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 136 + 20 + (44 + 5) * a, this.uiy + 18 + (48) * i, 42, 42), menu_2);
                         }
                     }
+                    //Game1.spriteBatch.Begin();
+                    for (int i = 0; i < 6; i++)
+                    {
+                        for (int a = 0; a < 3; a++)
+                        {
+                            if (Game1.playerEquippedItems[i*3+a]==-1) Game1.equip_icons.DrawTile(Game1.spriteBatch, i*3 + a, (new Color(94, 79, 79)*0.5f),
+                                new Vector2(this.uix + 12 + (49) * a, this.uiy + 225 + (48) * i));
+                            else
+                            {
+                                Game1.items_32.DrawTile(Game1.spriteBatch, Game1.playerEquippedItems[i * 3 + a], Color.White,
+                                new Vector2(this.uix + 12 + (49) * a, this.uiy + 225 + (48) * i));
+                            }
+                        }
+                    }
+                    //Game1.spriteBatch.End();
                     DrawItems(this.uix + 136 + 19 + 5, this.uiy + 17 + 5);
                     Hover(this.uix + 136 + 19, this.uiy + 17);
                     break;
@@ -279,10 +301,7 @@ namespace Game1
         {
             //Game1.uiObjects[1].uix - 1, Game1.uiObjects[1].uiy - 1, 354, 396
             if (uiState == 3 && MouseKeyboardInfo.mouseState.RightButton == ButtonState.Pressed && cursorItem!=-1 && Game1.itemInfo.ITEM_PLACEABLE[cursorItem] && CanBePlaced(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16) && !(MouseKeyboardInfo.mouseState.X >= this.uix - 1 && MouseKeyboardInfo.mouseState.X <= this.uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= this.uiy - 1 && MouseKeyboardInfo.mouseState.Y <= this.uiy - 1 + 514) &&
-                (Game1.uiObjects[1] == null || !(MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396)) &&
-                (Player.RangeFromPoint((Player.playerx + MouseKeyboardInfo.mouseState.X)/16*16, (Player.playery + MouseKeyboardInfo.mouseState.Y)/16*16)[0] < Game1.PLAYER_RANGE_REQUIREMENT &&
-                Player.RangeFromPoint((Player.playerx + MouseKeyboardInfo.mouseState.X) / 16 * 16, (Player.playery + MouseKeyboardInfo.mouseState.Y) / 16 * 16)[1] < Game1.PLAYER_RANGE_REQUIREMENT ||
-                (inventoryItemIds[selectedCarry] != -1 && Game1.itemInfo.ITEM_TOOL[inventoryItemIds[selectedCarry]] && WithinItemRange(inventoryItemIds[selectedCarry], MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y))))
+                (Game1.uiObjects[1] == null || !(MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396)))
             {
                 (Game1.itemInfo.ITEM_BACKTILE[cursorItem]? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles)[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem;
                 // Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" placeItem:"+ ((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16))+","+((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))+" "+cursorItem);
@@ -747,7 +766,7 @@ namespace Game1
             //figures out for a REQUIRE_SURFACE item whether the cursor is on top of a surface (solid) or whether the space is free for item placement
             //TODO: make it so you can't place items over the player
             int[,] map = (Game1.itemInfo.ITEM_BACKTILE[cursorItem] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
-            if (!(Player.RangeFromPoint(x - Player.playerx, y - Player.playery)[0]<Game1.PLAYER_RANGE_REQUIREMENT && Player.RangeFromPoint(x, y)[1] < Game1.PLAYER_RANGE_REQUIREMENT || (Game1.uiObjects[2].inventoryItemIds[selectedCarry]!=-1 && Game1.itemInfo.ITEM_TOOL[Game1.uiObjects[2].inventoryItemIds[selectedCarry]] && WithinItemRange(Game1.uiObjects[2].inventoryItemIds[selectedCarry], x - Player.playerx, y - Player.playery)))) return false;
+            if (!(Player.RangeFromPoint(x, y)[0]<Game1.PLAYER_RANGE_REQUIREMENT && Player.RangeFromPoint(x, y)[1] < Game1.PLAYER_RANGE_REQUIREMENT || (Game1.uiObjects[2].inventoryItemIds[selectedCarry]!=-1 && Game1.itemInfo.ITEM_TOOL[Game1.uiObjects[2].inventoryItemIds[selectedCarry]] && WithinItemRange(Game1.uiObjects[2].inventoryItemIds[selectedCarry], x - Player.playerx, y - Player.playery)))) return false;
             if (MouseKeyboardInfo.mouseState.X >= 0 && MouseKeyboardInfo.mouseState.Y >= 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT && Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && map[x / 16, y / 16 + 1] != -1 && Game1.itemInfo.ITEM_SOLID[map[x / 16, y / 16 + 1]] && map[x / 16, y / 16] == -1) return true;
             if (MouseKeyboardInfo.mouseState.X >= 0 && MouseKeyboardInfo.mouseState.Y >= 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT && !Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && map[x / 16, y / 16] == -1) return true;
             return false;

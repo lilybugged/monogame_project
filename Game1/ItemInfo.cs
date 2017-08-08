@@ -30,6 +30,7 @@ namespace Game1
         public bool[] ITEM_SOLID = new bool[ITEM_COUNT]; // if it's placeable, does it have a solid collision state?
         public int[] ITEM_BLOCKID = new int[ITEM_COUNT];
         public int[] ITEM_EQUIPID = new int[ITEM_COUNT];
+        public int[] ITEM_EQUIP_SLOT = new int[ITEM_COUNT];
         public bool[] ITEM_STACKABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_AUTOTILE = new bool[ITEM_COUNT]; // should still work for things like beds
         public bool[] ITEM_BACKTILE = new bool[ITEM_COUNT]; // indicates whether the block should be on the layer behind
@@ -51,11 +52,14 @@ namespace Game1
                 ITEM_TOOL_TIER[i] = -1;
                 ITEM_TOOL_RANGE[i] = -1;
                 ITEM_EQUIPID[i] = -1;
+                ITEM_EQUIP_SLOT[i] = -1;
             }
 
             ITEM_EQUIPPABLE[22] = true;
 
             ITEM_EQUIPID[22] = 0;
+
+            ITEM_EQUIP_SLOT[22] = 7;
 
             ITEM_RANK[14] = 0;
             ITEM_RANK[16] = 1;

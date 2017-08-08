@@ -30,8 +30,8 @@ namespace Game1
         public static AnimatedSprite items_32;
         public static AnimatedSprite tiles;
         public static AnimatedSprite tiles2;
+        public static AnimatedSprite portrait_items;
         public static Texture2D pixel;
-        public static Texture2D portrait;
         public static Texture2D[] cursor = new Texture2D[4];
         public static int globalCursor = 0;
         public static SpriteFont font;
@@ -105,7 +105,7 @@ namespace Game1
             {
                 playerEquippedItems[i] = -1;
             }
-            playerEquippedItems[7] = 22;
+            //playerEquippedItems[7] = 22;
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Game1
             equip_icons = new AnimatedSprite(Content.Load<Texture2D>("img/equip_slots"), 5, 4);
             tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 10, 10);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
-            portrait = Content.Load<Texture2D>("img/portrait");
+            portrait_items = new AnimatedSprite(Content.Load<Texture2D>("img/portrait_items"), 1, 2);
             cursor[0] = Content.Load<Texture2D>("img/cursor");
             cursor[1] = Content.Load<Texture2D>("img/selectioncursor");
             cursor[2] = Content.Load<Texture2D>("img/breakcursor");
