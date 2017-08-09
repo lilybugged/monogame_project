@@ -18,7 +18,7 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 23;
+        public const int ITEM_COUNT = 24;
         public int[] ITEM_RANK = new int[ITEM_COUNT]; // for tools mainly
         public bool[] ITEM_EQUIPPABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_TOOL = new bool[ITEM_COUNT];
@@ -56,10 +56,13 @@ namespace Game1
             }
 
             ITEM_EQUIPPABLE[22] = true;
+            ITEM_EQUIPPABLE[23] = true;
 
             ITEM_EQUIPID[22] = 0;
+            ITEM_EQUIPID[23] = 1;
 
             ITEM_EQUIP_SLOT[22] = 7;
+            ITEM_EQUIP_SLOT[23] = 1;
 
             ITEM_RANK[14] = 0;
             ITEM_RANK[16] = 1;
@@ -138,6 +141,7 @@ namespace Game1
             ITEM_STACKABLE[14] = false;
             ITEM_STACKABLE[16] = false;
             ITEM_STACKABLE[22] = false;
+            ITEM_STACKABLE[23] = false;
 
             ITEM_AUTOTILE[5] = true;
             ITEM_AUTOTILE[6] = true;

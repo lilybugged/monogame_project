@@ -112,7 +112,7 @@ namespace Game1
         {
             (currentDirection==0? Game1.charaLeft[currentAction] :Game1.charaRight[currentAction]).Draw(Game1.spriteBatch, new Vector2(Game1.WINDOW_WIDTH/2, Game1.WINDOW_HEIGHT/2));
             Game1.spriteBatch.Begin();
-            for (int i=0; i < Game1.playerEquippedItems.Length; i++)
+            for (int i = Game1.playerEquippedItems.Length-1; i > 0; i--)
             {
                 if (Game1.playerEquippedItems[i]!=-1) {
                     Game1.equippables.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[i]] * 8 + (currentDirection == 0 ? 0 : 4) + ((currentAction==1)? frame: 0),

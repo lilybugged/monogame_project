@@ -156,7 +156,7 @@ namespace Game1
 
                     Game1.portrait_items.DrawTile(Game1.spriteBatch, 0, Color.White,
                                 new Vector2(this.uix + 12, this.uiy + 12));
-                    for (int i = 0; i < Game1.playerEquippedItems.Length; i++)
+                    for (int i = Game1.playerEquippedItems.Length - 1; i > 0; i--)
                     {
                         if (Game1.playerEquippedItems[i]!=-1) Game1.portrait_items.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[i]]+1, Color.White,
                                 new Vector2(this.uix + 12, this.uiy + 12));
@@ -433,7 +433,7 @@ namespace Game1
                 {
                     Game1.uiObjects[1] = new UI(Game1.uiPosX[1], Game1.uiPosY[1], Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]-7, Game1.chestInventories[Chest.FindChestId(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))*16)].inventory[0],
                         Game1.chestInventories[Chest.FindChestId(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))*16)].inventory[1],2,7);
-
+                    Game1.uiToggle = false;
 
                     if (Game1.openChest == Chest.FindChestId(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16))
                     {

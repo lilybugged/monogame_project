@@ -22,9 +22,9 @@
     <File>E:/monogame game1/monogame_project/Game1/Content/img/spr_chara_left_1.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/spr_chara_right_0.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/spr_chara_right_1.png</File>
-    <File>E:/monogame game1/monogame_project/Game1/Content/img/icons_32.png</File>
-    <File>E:/monogame game1/monogame_project/Game1/Content/img/equippable_items.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/equip_slots.png</File>
     <File>E:/monogame game1/monogame_project/Game1/Content/img/portrait_items.png</File>
+    <File>E:/monogame game1/monogame_project/Game1/Content/img/equippable_items.png</File>
+    <File>E:/monogame game1/monogame_project/Game1/Content/img/icons_32.png</File>
   </SourceFiles>
 </SourceFileCollection>
