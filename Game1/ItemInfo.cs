@@ -35,8 +35,8 @@ namespace Game1
         public bool[] ITEM_AUTOTILE = new bool[ITEM_COUNT]; // should still work for things like beds
         public bool[] ITEM_BACKTILE = new bool[ITEM_COUNT]; // indicates whether the block should be on the layer behind
         public int[] ITEM_END_POSITION = new int[ITEM_COUNT]; // where the "mask" should end (for collisions or stopping CanBePlaced())
-        public int[] ITEM_YIELD_IDS = new int[ITEM_COUNT]; // what items are dropped when the block is broken?
-        public int[] ITEM_YIELD_QUANTITIES = new int[ITEM_COUNT];// how many of each?
+        public int[][] ITEM_YIELD_IDS = new int[ITEM_COUNT][]; // what items are dropped when the block is broken?
+        public int[][] ITEM_YIELD_QUANTITIES = new int[ITEM_COUNT][];// how many of each?
         public UI[] ITEM_UI = new UI[ITEM_COUNT]; // ui associated with the item
         public Action[] ITEM_FUNCTION = new Action[ITEM_COUNT]; // for when you click an item with an empty cursor - think chests and other furniture
         public int[] ITEM_TOOL_TIER = new int[ITEM_COUNT]; // which tier of tool is required to break the item at minimum - "0" = wand
@@ -109,8 +109,8 @@ namespace Game1
 
             ITEM_TOOL_TIER[4] = 0;
             ITEM_TOOL_TIER[5] = 1;
-            ITEM_TOOL_TIER[17] = 1;
-            ITEM_TOOL_TIER[18] = 0;
+            ITEM_TOOL_TIER[17] = 0;
+            ITEM_TOOL_TIER[18] = 1;
 
             ITEM_BLOCKID[0] = -1;
             ITEM_BLOCKID[1] = -1;
@@ -137,6 +137,7 @@ namespace Game1
 
             ITEM_STACKABLE[14] = false;
             ITEM_STACKABLE[16] = false;
+            ITEM_STACKABLE[22] = false;
 
             ITEM_AUTOTILE[5] = true;
             ITEM_AUTOTILE[6] = true;
