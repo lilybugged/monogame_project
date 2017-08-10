@@ -31,7 +31,7 @@ namespace Game1
             }
             for (int i = 0; i < length; i++)
             {
-                for (int a = 80; a < height; a++)
+                for (int a = 120; a < height; a++)
                 {
                     mapTiles[i, a] = 4;
                 }
@@ -52,9 +52,12 @@ namespace Game1
                     }
                     if (mapTiles[i, a] != -1)
                     {
-                        if (!Game1.itemInfo.ITEM_AUTOTILE[mapTiles[i, a]])
-                            Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[mapTiles[i, a]], new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
-                        else ItemInfo.DrawAutoTile(mapTiles[i, a], new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                        if (!Game1.itemInfo.ITEM_BIGTILE[mapTiles[i, a]])
+                        {
+                            if (!Game1.itemInfo.ITEM_AUTOTILE[mapTiles[i, a]])
+                                Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[mapTiles[i, a]], new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            else ItemInfo.DrawAutoTile(mapTiles[i, a], new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                        }
                     }
                 }
             }

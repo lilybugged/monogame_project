@@ -34,7 +34,7 @@ namespace Game1
         {
             playerx = x;
             playery = y;
-            speedy = 0;
+            speedy = 3;
             speedx = 0;
             accelerationy = 1; 
             //currentSprite = Game1.charaLeft[0];
@@ -84,47 +84,87 @@ namespace Game1
                 }
             }
             (currentDirection == 0 ? Game1.charaLeft[currentAction] : Game1.charaRight[currentAction]).Update();
-            speedy += accelerationy;
+            //speedy += accelerationy;
             //below handles x collisions
+            SnapOnCollision();
             playerx += speedx;
-            if (speedx < 0 && (!(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16]]) ||
+            playery += speedy;
+            /*if (speedx < 0 && (!(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16]]) ||
                 !(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16]])))
             {
+                //playerx -= speedx/Math.Abs(speedx);
                 speedx = 0;
-                playerx++;
                 playerx = playerx / 16 * 16;
-                playerx++;
+                //playerx += 16;
             }
-            else if (speedx > 0 && (!(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 32) / 16 , (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 32) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16]])||
-                !(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 32) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 32) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16]])))
+            else if (speedx > 0 && (!(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 31) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 31) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16]])||
+                !(Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 31) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 31) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2) / 16]])))
             {
-                playerx -= speedx;
+                //playerx -= speedx / Math.Abs(speedx);
                 speedx = 0;
+                playerx = playerx / 16 * 16;
+                playerx -= 16;
+            }
+            else if (speedx < 0 && ((BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16)) != -1 && Game1.bigTiles[BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16))].solid) ||
+                (BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2), (Player.playery + Game1.WINDOW_HEIGHT / 2)) != -1 && Game1.bigTiles[BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2), (Player.playery + Game1.WINDOW_HEIGHT / 2))].solid)))
+            {
+                speedx = 0;
+                playerx = playerx / 16 * 16;
+                playerx += 16;
+            }
+            else if (speedx > 0 && ((BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 31), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16)) != -1 && Game1.bigTiles[BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 31), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16))].solid) ||
+                (BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 31), (Player.playery + Game1.WINDOW_HEIGHT / 2)) != -1 && Game1.bigTiles[BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 31), (Player.playery + Game1.WINDOW_HEIGHT / 2))].solid)))
+            {
+                speedx = 0;
+                playerx = playerx / 16 * 16;
+                //playerx -= 16;
             }
             for (int i = 0; i < Math.Abs(speedy); i++)
             {
                 if (speedy != 0) playery += speedy / Math.Abs(speedy);
                 SnapOnCollision();
-            }
+            }*/
             frame = (currentDirection==0?Game1.charaLeft:Game1.charaRight)[currentAction].currentFrame;
         }
         public void Draw()
         {
             (currentDirection==0? Game1.charaLeft[currentAction] :Game1.charaRight[currentAction]).Draw(Game1.spriteBatch, new Vector2(Game1.WINDOW_WIDTH/2, Game1.WINDOW_HEIGHT/2));
             Game1.spriteBatch.Begin();
-            for (int i = Game1.playerEquippedItems.Length-1; i > 0; i--)
+            for (int i = Game1.playerEquippedItems.Length-2; i > 0; i--)
             {
                 if (Game1.playerEquippedItems[i]!=-1) {
                     Game1.equippables.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[i]] * 8 + (currentDirection == 0 ? 0 : 4) + ((currentAction==1)? frame: 0),
                         new Vector2(Game1.WINDOW_WIDTH / 2, Game1.WINDOW_HEIGHT / 2));
                 }
             }
+            if (Game1.playerEquippedItems[17] != -1) Game1.equippables.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[17]] * 8 + (currentDirection == 0 ? 0 : 4) + ((currentAction == 1) ? frame : 0),
+                        new Vector2(Game1.WINDOW_WIDTH / 2, Game1.WINDOW_HEIGHT / 2));
             Game1.spriteBatch.End();
         }
-        private void SnapOnCollision() // handles y collisions
+        private void SnapOnCollision() //the improved one
         {
-            if ((Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 1) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32) / 16]!=-1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH/ 2 + 1) /16, (Player.playery + Game1.WINDOW_HEIGHT/ 2 + 32) /16]]) ||
-                    (Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32) / 16]]))
+            for (int i = 0; i < 32; i++) // left/right
+            {
+                for (int a = 0; a < 32; a++)
+                {
+                    if (((Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + i)/16, (Player.playerx + Game1.WINDOW_WIDTH / 2 + a)/16]!=-1) && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + i) / 16, (Player.playerx + Game1.WINDOW_WIDTH / 2 + a) / 16]]) ||
+                        (BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + i), (Player.playerx + Game1.WINDOW_WIDTH / 2 + a)) != -1 && Game1.bigTiles[BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + i), (Player.playerx + Game1.WINDOW_WIDTH / 2 + a))].solid))
+                    {
+                        playery -= speedy;
+                        playerx = playerx / 16 * 16;
+                        playery = playery / 16 * 16;
+                        speedy = 0;
+                    }
+                }
+            }
+        }
+        /*private void SnapOnCollision() // handles y collisions
+        {
+            Debug.WriteLine(""+ (BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 1), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32))));
+            if (((Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 1) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32) / 16]!=-1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH/ 2 + 1) /16, (Player.playery + Game1.WINDOW_HEIGHT/ 2 + 32) /16]]) ||
+                    (Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32) / 16]])) ||
+                    ((BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 1), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32)) != -1 && Game1.bigTiles[BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 1), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32))].solid) ||
+                (BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 17), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32)) != -1 && Game1.bigTiles[BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 17), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32))].solid)))
             {
                 //playerx = playerx / 16 * 16;
                 playery = playery / 16 * 16;
@@ -132,14 +172,16 @@ namespace Game1
                 canJump = true;
             }
             if ((Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 1) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 1) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16]]) ||
-                    (Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16]]))
+                    (Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16]]) ||
+                    ((BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 1), (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1)) != -1 && Game1.bigTiles[BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 1), (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1))].solid) ||
+                (BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 17), (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1)) != -1 && Game1.bigTiles[BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 17), (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1))].solid)))
             {
                 //playery++;
-                playery = playery / 16 * 16;
                 playery++;
+                playery = playery / 16 * 16;
                 speedy = 0;
             }
-        }
+        }*/
         /// <summary>
         /// Takes a world point and returns the player's x-distance and y-distance from it.
         /// </summary>

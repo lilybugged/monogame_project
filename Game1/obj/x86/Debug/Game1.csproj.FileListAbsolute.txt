@@ -199,5 +199,5 @@ E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\break
 C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\breakactivatecursor.xnb
 C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\breakcursor.xnb
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\equippable_items.xnb
-E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\equip_slots.xnb
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\portrait_items.xnb
+E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\equip_slots.xnb

@@ -18,8 +18,9 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 24;
+        public const int ITEM_COUNT = 28;
         public int[] ITEM_RANK = new int[ITEM_COUNT]; // for tools mainly
+        public bool[] ITEM_BIGTILE = new bool[ITEM_COUNT];
         public bool[] ITEM_EQUIPPABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_TOOL = new bool[ITEM_COUNT];
         public int[] ITEM_TOOL_RANGE = new int[ITEM_COUNT]; // range of tool - i.e. a square radius
@@ -55,14 +56,25 @@ namespace Game1
                 ITEM_EQUIP_SLOT[i] = -1;
             }
 
+            ITEM_BIGTILE[27] = true;
+
             ITEM_EQUIPPABLE[22] = true;
             ITEM_EQUIPPABLE[23] = true;
+            ITEM_EQUIPPABLE[24] = true;
+            ITEM_EQUIPPABLE[25] = true;
+            ITEM_EQUIPPABLE[26] = true;
 
             ITEM_EQUIPID[22] = 0;
             ITEM_EQUIPID[23] = 1;
+            ITEM_EQUIPID[24] = 2;
+            ITEM_EQUIPID[25] = 3;
+            ITEM_EQUIPID[26] = 4;
 
             ITEM_EQUIP_SLOT[22] = 7;
             ITEM_EQUIP_SLOT[23] = 1;
+            ITEM_EQUIP_SLOT[24] = 7;
+            ITEM_EQUIP_SLOT[25] = 1;
+            ITEM_EQUIP_SLOT[26] = 17;
 
             ITEM_RANK[14] = 0;
             ITEM_RANK[16] = 1;
@@ -90,6 +102,7 @@ namespace Game1
             ITEM_PLACEABLE[19] = true;
             ITEM_PLACEABLE[20] = true;
             ITEM_PLACEABLE[21] = true;
+            ITEM_PLACEABLE[27] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
@@ -104,6 +117,7 @@ namespace Game1
             ITEM_REQUIRE_SURFACE[12] = true;
             ITEM_REQUIRE_SURFACE[13] = true;
             ITEM_REQUIRE_SURFACE[19] = true;
+            ITEM_REQUIRE_SURFACE[27] = true;
 
             ITEM_SOLID[4] = true;
             ITEM_SOLID[5] = true;
@@ -142,6 +156,9 @@ namespace Game1
             ITEM_STACKABLE[16] = false;
             ITEM_STACKABLE[22] = false;
             ITEM_STACKABLE[23] = false;
+            ITEM_STACKABLE[24] = false;
+            ITEM_STACKABLE[25] = false;
+            ITEM_STACKABLE[26] = false;
 
             ITEM_AUTOTILE[5] = true;
             ITEM_AUTOTILE[6] = true;

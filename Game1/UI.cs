@@ -303,7 +303,11 @@ namespace Game1
             if (uiState == 3 && MouseKeyboardInfo.mouseState.RightButton == ButtonState.Pressed && cursorItem!=-1 && Game1.itemInfo.ITEM_PLACEABLE[cursorItem] && CanBePlaced(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16) && !(MouseKeyboardInfo.mouseState.X >= this.uix - 1 && MouseKeyboardInfo.mouseState.X <= this.uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= this.uiy - 1 && MouseKeyboardInfo.mouseState.Y <= this.uiy - 1 + 514) &&
                 (Game1.uiObjects[1] == null || !(MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396)))
             {
-                (Game1.itemInfo.ITEM_BACKTILE[cursorItem]? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles)[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem;
+                if (Game1.itemInfo.ITEM_BIGTILE[cursorItem])
+                {
+                    Game1.bigTiles.Add(new BigTile(cursorItem, ((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16))*16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))*16, 0, new int[0][]));
+                }
+                else (Game1.itemInfo.ITEM_BACKTILE[cursorItem]? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles)[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem;
                 // Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" placeItem:"+ ((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16))+","+((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))+" "+cursorItem);
                 if (cursorItem>=8&&cursorItem<=13) //small chest of any rank
                 {
@@ -423,8 +427,7 @@ namespace Game1
             {
                 Game1.globalCursor = 2;
             }
-            if (uiState == 3 && MouseKeyboardInfo.mouseClickedRight && cursorItem == -1 && !(MouseKeyboardInfo.mouseState.X >= this.uix - 1 && MouseKeyboardInfo.mouseState.X <= this.uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= this.uiy - 1 && MouseKeyboardInfo.mouseState.Y <= this.uiy - 1 + 514) &&
-                (Game1.uiObjects[1] == null || !(MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396)) && 
+            if (uiState == 3 && MouseKeyboardInfo.mouseClickedRight && cursorItem == -1 && CountUis()==0 && 
                 Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]!=-1 &&
                 (Player.RangeFromPoint((Player.playerx) + MouseKeyboardInfo.mouseState.X, (Player.playery) + MouseKeyboardInfo.mouseState.Y)[0]< Game1.PLAYER_RANGE_REQUIREMENT ||
                 (inventoryItemIds[selectedCarry]!=-1 && Game1.itemInfo.ITEM_TOOL[inventoryItemIds[selectedCarry]] && WithinItemRange(inventoryItemIds[selectedCarry], MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y))))
@@ -454,7 +457,11 @@ namespace Game1
                     cursorQuantity = -1;
                     cursorItemIndex = -1;
                     cursorItemOrigin = -1;
-
+                }
+                else if (Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]] &&
+                    BigTile.FindTileId(MouseKeyboardInfo.mouseState.X + Player.playerx, MouseKeyboardInfo.mouseState.Y + Player.playery)!=-1)
+                {
+                    Game1.bigTiles[BigTile.FindTileId(MouseKeyboardInfo.mouseState.X + Player.playerx, MouseKeyboardInfo.mouseState.Y + Player.playery)].Trigger();
                 }
             }
         }
@@ -632,6 +639,15 @@ namespace Game1
                         cursorItemOrigin = -1;
                         cursorItemIndex = -1;
                         Game1.globalCursor = 0;
+                    }
+                    else
+                    {
+                        int temp = Game1.playerEquippedItems[Game1.itemInfo.ITEM_EQUIP_SLOT[cursorItem]];
+                        Game1.playerEquippedItems[Game1.itemInfo.ITEM_EQUIP_SLOT[cursorItem]] = cursorItem;
+                        cursorItem = temp;
+                        cursorQuantity = 1;
+                        cursorItemOrigin = -1;
+                        cursorItemIndex = -1;
                     }
                 }
                 else
