@@ -379,6 +379,10 @@ namespace Game1
                                         Game1.itemInfo.ITEM_YIELD_QUANTITIES[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]][i]);
                                 }
                             }
+                            if (Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]])
+                            {
+                                Game1.bigTiles[BigTile.FindTileId((Player.playerx) + (MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)), (Player.playery) + (MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)))].Destroy();
+                            }
                             Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = -1;
                         }
                         else if (blockTimer == -1)

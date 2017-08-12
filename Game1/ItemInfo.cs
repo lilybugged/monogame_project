@@ -142,6 +142,7 @@ namespace Game1
             ITEM_TOOL_TIER[5] = 1;
             ITEM_TOOL_TIER[17] = 0;
             ITEM_TOOL_TIER[18] = 1;
+            ITEM_TOOL_TIER[28] = 1;
 
             ITEM_BLOCKID[0] = -1;
             ITEM_BLOCKID[1] = -1;

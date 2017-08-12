@@ -102,13 +102,34 @@ namespace Game1
                     break;
                 case 28:
                     Game1.spriteBatch.Begin();
-                    Game1.tiles.DrawTile(Game1.spriteBatch, 98, new Vector2(x, y - 16));
-                    Game1.tiles.DrawTile(Game1.spriteBatch, 99, new Vector2(x + 16, y - 16));
-                    Game1.tiles.DrawTile(Game1.spriteBatch, 101, new Vector2(x + 16, y));
-                    Game1.tiles.DrawTile(Game1.spriteBatch, 100, new Vector2(x, y));
+                    if (Game1.globalTick / 4 > 2)
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 98 + 1, new Vector2(x, y - 16));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 101 + 1, new Vector2(x + 16, y - 16));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 107 + 1, new Vector2(x + 16, y));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 104 + 1, new Vector2(x, y));
+                    }
+                    else
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 98 + Game1.globalTick / 4, new Vector2(x, y - 16));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 101 + Game1.globalTick / 4, new Vector2(x + 16, y - 16));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 107 + Game1.globalTick / 4, new Vector2(x + 16, y));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 104 + Game1.globalTick / 4, new Vector2(x, y));
+                    }
                     Game1.spriteBatch.End();
                     break;
             }
+        }
+        public void Destroy()
+        {
+            for (int i = tilex / 16 * 16; i < tilex + width * 16; i++)
+            {
+                for (int a = tiley / 16 * 16 - height * 16 + 16; a < tiley / 16 * 16 + 16; a++)
+                {
+                    Game1.currentMap.mapTiles[i / 16, a / 16] = -1;
+                }
+            }
+            Game1.bigTiles.Remove(this);
         }
         public static int FindTileId(int x, int y)
         {

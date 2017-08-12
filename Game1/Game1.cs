@@ -58,6 +58,8 @@ namespace Game1
         public static int carryRank = 3;
         public static UI carryUi;
 
+        public static int globalTick = 0;
+
         public static bool uiToggle = true;
         public static UI[] uiObjects = new UI[4];
         public static int[] uiPosX = new int[4];
@@ -214,6 +216,8 @@ namespace Game1
                 {
                     if (uiObjects[i] != null && (i == 2 || !uiToggle)) uiObjects[i].Update();
                 }
+                globalTick++;
+                if (globalTick > 15) globalTick = 0;
             }
 
         }
