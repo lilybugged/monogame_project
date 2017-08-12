@@ -53,7 +53,7 @@ namespace Game1
                     playerx -= 2;
                 }
                 else playerx += 2;
-                if (speedy<5) playerx = playerx / 16 * 16;
+                if (speedy < 5) playerx = playerx / 16 * 16;
                 speedx = 0;
             }
             if (WillCollide((playerx + Game1.WINDOW_WIDTH / 2), (playery + Game1.WINDOW_HEIGHT / 2), 32, 32))
@@ -63,8 +63,7 @@ namespace Game1
                 if (speedy < 0) playery += 10;
                 if (speedy < 0 && !WillCollide((playerx + Game1.WINDOW_WIDTH / 2), (playery + Game1.WINDOW_HEIGHT / 2), 32, 32)) playery += 5;
                 if (speedy > 0) canJump = true;
-                if (speedy!=0) playery = playery / 16 * 16;
-                
+                playery = playery / 16 * 16;
                 speedy = 0;
                 
             }
@@ -81,7 +80,7 @@ namespace Game1
                 canJump = false;
                 // Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" playerMove:"+playerx+","+playery);
             }
-            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A) && !WillCollide((playerx + Game1.WINDOW_WIDTH / 2), (playery + Game1.WINDOW_HEIGHT / 2), 32, 32))
+            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A) && !WillCollide((playerx + Game1.WINDOW_WIDTH / 2) - 2, (playery + Game1.WINDOW_HEIGHT / 2), 32, 32))
             {
                 //if (Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 - 16) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 - 16) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16]])
                 {
@@ -92,7 +91,7 @@ namespace Game1
                 }
                 // Game1.client.messageQueue.Add("" + Game1.CLIENT_ID + " playerMove:" + playerx + "," + playery);
             }
-            else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D) && !WillCollide((playerx + Game1.WINDOW_WIDTH / 2), (playery + Game1.WINDOW_HEIGHT / 2), 32, 32))
+            else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D) && !WillCollide((playerx + Game1.WINDOW_WIDTH / 2) + 2, (playery + Game1.WINDOW_HEIGHT / 2), 32, 32))
             {
                 speedx = 2;
                 //currentSprite = Game1.charaRight[1];
