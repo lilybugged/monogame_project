@@ -43,6 +43,7 @@ namespace Game1
         }
         public void Update()
         {
+            //handles *most* collisions
             if (speedy > 0) playery += speedy;
             if (speedy < 15) speedy += accelerationy;
             if (speedx != 0 && WillCollide(playerx + Game1.WINDOW_WIDTH / 2, (playery + Game1.WINDOW_HEIGHT / 2), 32, 28))
@@ -55,11 +56,13 @@ namespace Game1
                 if (speedy<5) playerx = playerx / 16 * 16;
                 speedx = 0;
             }
-            if (WillCollide((playerx + Game1.WINDOW_WIDTH / 2 + 2), (playery + Game1.WINDOW_HEIGHT / 2), 32, 32))
+            if (WillCollide((playerx + Game1.WINDOW_WIDTH / 2), (playery + Game1.WINDOW_HEIGHT / 2), 32, 32))
             {
                 //playerx = playerx / 16 * 16;
-                if (speedy > 0) canJump = true;
+                
                 if (speedy < 0) playery += 10;
+                if (speedy < 0 && !WillCollide((playerx + Game1.WINDOW_WIDTH / 2), (playery + Game1.WINDOW_HEIGHT / 2), 32, 32)) playery += 5;
+                if (speedy > 0) canJump = true;
                 if (speedy!=0) playery = playery / 16 * 16;
                 
                 speedy = 0;
@@ -68,9 +71,11 @@ namespace Game1
 
             if (speedx != 0 && WillCollide(playerx + Game1.WINDOW_WIDTH / 2, (playery + Game1.WINDOW_HEIGHT / 2), 32, 28)) canJump = false;
             if (speedy < 0) playery += speedy;
-            //Debug.WriteLine(""+RangeFromPoint(playerx+MouseKeyboardInfo.mouseState.X, playery + MouseKeyboardInfo.mouseState.Y)[0]);
+
+            //handles movement
             MouseKeyboardInfo.keyState = Keyboard.GetState();
-            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.W) && canJump && !WillCollide((playerx + Game1.WINDOW_WIDTH / 2), (playery + Game1.WINDOW_HEIGHT / 2) - 16, 32, 32))
+            Debug.WriteLine(WillCollide((playerx + Game1.WINDOW_WIDTH / 2), (playery + Game1.WINDOW_HEIGHT / 2) - 31, 32, 32));
+            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.W) && canJump && !WillCollide((playerx + Game1.WINDOW_WIDTH / 2), (playery + Game1.WINDOW_HEIGHT / 2) - 15, 32, 32))
             {
                 speedy = -13;
                 canJump = false;
@@ -134,37 +139,13 @@ namespace Game1
             {
                 for (int a = 0; a < height; a++)
                 {
-                    if ((Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + i) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + a) / 16] != -1))
+                    if (Game1.currentMap.mapTiles[(x + i) / 16, (y + a) / 16] != -1 && (BigTile.FindTileId((x + i), (y + a)) == -1 || Game1.bigTiles[BigTile.FindTileId((x + i), (y + a))].solid))
                     {
                         return true;
                     }
                 }
             }
             return false;
-        }
-        private void SnapOnCollision() // handles y collisions
-        {
-            Debug.WriteLine(""+ (BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 1), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32))));
-            if (((Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 1) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32) / 16]!=-1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH/ 2 + 1) /16, (Player.playery + Game1.WINDOW_HEIGHT/ 2 + 32) /16]]) ||
-                    (Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32) / 16]])) ||
-                    ((BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 1), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32)) != -1 && Game1.bigTiles[BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 1), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32))].solid) ||
-                (BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 17), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32)) != -1 && Game1.bigTiles[BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 17), (Player.playery + Game1.WINDOW_HEIGHT / 2 + 32))].solid)))
-            {
-                //playerx = playerx / 16 * 16;
-                playery = playery / 16 * 16;
-                speedy = 0;
-                canJump = true;
-            }
-            if ((Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 1) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 1) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16]]) ||
-                    (Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 + 17) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1) / 16]]) ||
-                    ((BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 1), (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1)) != -1 && Game1.bigTiles[BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 1), (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1))].solid) ||
-                (BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 17), (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1)) != -1 && Game1.bigTiles[BigTile.FindTileId((Player.playerx + Game1.WINDOW_WIDTH / 2 + 17), (Player.playery + Game1.WINDOW_HEIGHT / 2 - 1))].solid)))
-            {
-                //playery++;
-                playery++;
-                playery = playery / 16 * 16;
-                speedy = 0;
-            }
         }
         /// <summary>
         /// Takes a world point and returns the player's x-distance and y-distance from it.
