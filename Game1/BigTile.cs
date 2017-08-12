@@ -35,25 +35,15 @@ namespace Game1
             tileRank = rank;
             tileType = type;
 
-            switch (tileType)
+            width = Game1.itemInfo.ITEM_BIGTILE_WIDTH[tileType];
+            height = Game1.itemInfo.ITEM_BIGTILE_HEIGHT[tileType];
+            solid = Game1.itemInfo.ITEM_SOLID[tileType];
+            for (int i = x / 16 * 16; i < x + width * 16; i++)
             {
-                case 27:
-                    //door 
-                    width = 1;
-                    height = 2;
-                    solid = true;
-                    for (int i = x / 16 * 16; i< x+ width*16; i++)
-                    {
-                        for (int a = y / 16 * 16 - height*16 + 16; a < y /16 * 16 + 16; a++)
-                        {
-                            Game1.currentMap.mapTiles[i/16,a/16]=tileType;
-                        }
-                    }
-                    break;
-                default:
-                    width = 1;
-                    height = 1;
-                    break;
+                for (int a = y / 16 * 16 - height * 16 + 16; a < y / 16 * 16 + 16; a++)
+                {
+                    Game1.currentMap.mapTiles[i / 16, a / 16] = tileType;
+                }
             }
 
         }
@@ -85,25 +75,37 @@ namespace Game1
         }
         public void Draw()
         {
+            Draw(tilex - Player.playerx, tiley - Player.playery);
+        }
+        public void Draw(int x, int y)
+        {
             switch (tileType)
             {
                 case 27:
                     Game1.spriteBatch.Begin();
                     if (state == 0)
                     {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 92, new Vector2(tilex - Player.playerx, tiley - Player.playery - 16));
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 93, new Vector2(tilex - Player.playerx, tiley - Player.playery));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 92, new Vector2(x, y - 16));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 93, new Vector2(x, y));
                     }
                     else if (state == 1)
                     {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 96, new Vector2(tilex - Player.playerx, tiley - Player.playery - 16));
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 97, new Vector2(tilex - Player.playerx, tiley - Player.playery));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 96, new Vector2(x, y - 16));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 97, new Vector2(x, y));
                     }
                     else if (state == 2)
                     {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 94, new Vector2(tilex - Player.playerx, tiley - Player.playery - 16));
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 95, new Vector2(tilex - Player.playerx, tiley - Player.playery));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 94, new Vector2(x, y - 16));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 95, new Vector2(x, y));
                     }
+                    Game1.spriteBatch.End();
+                    break;
+                case 28:
+                    Game1.spriteBatch.Begin();
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 98, new Vector2(x, y - 16));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 99, new Vector2(x + 16, y - 16));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 101, new Vector2(x + 16, y));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 100, new Vector2(x, y));
                     Game1.spriteBatch.End();
                     break;
             }

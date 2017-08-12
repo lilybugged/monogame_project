@@ -18,9 +18,11 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 28;
+        public const int ITEM_COUNT = 29;
         public int[] ITEM_RANK = new int[ITEM_COUNT]; // for tools mainly
         public bool[] ITEM_BIGTILE = new bool[ITEM_COUNT];
+        public int[] ITEM_BIGTILE_WIDTH = new int[ITEM_COUNT];
+        public int[] ITEM_BIGTILE_HEIGHT = new int[ITEM_COUNT];
         public bool[] ITEM_EQUIPPABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_TOOL = new bool[ITEM_COUNT];
         public int[] ITEM_TOOL_RANGE = new int[ITEM_COUNT]; // range of tool - i.e. a square radius
@@ -35,7 +37,6 @@ namespace Game1
         public bool[] ITEM_STACKABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_AUTOTILE = new bool[ITEM_COUNT]; // should still work for things like beds
         public bool[] ITEM_BACKTILE = new bool[ITEM_COUNT]; // indicates whether the block should be on the layer behind
-        public int[] ITEM_END_POSITION = new int[ITEM_COUNT]; // where the "mask" should end (for collisions or stopping CanBePlaced())
         public int[][] ITEM_YIELD_IDS = new int[ITEM_COUNT][]; // what items are dropped when the block is broken?
         public int[][] ITEM_YIELD_QUANTITIES = new int[ITEM_COUNT][];// how many of each?
         public UI[] ITEM_UI = new UI[ITEM_COUNT]; // ui associated with the item
@@ -54,9 +55,18 @@ namespace Game1
                 ITEM_TOOL_RANGE[i] = -1;
                 ITEM_EQUIPID[i] = -1;
                 ITEM_EQUIP_SLOT[i] = -1;
+                ITEM_BIGTILE_WIDTH[i] = -1;
+                ITEM_BIGTILE_HEIGHT[i] = -1;
             }
 
             ITEM_BIGTILE[27] = true;
+            ITEM_BIGTILE[28] = true;
+
+            ITEM_BIGTILE_WIDTH[27] = 1;
+            ITEM_BIGTILE_WIDTH[28] = 2;
+
+            ITEM_BIGTILE_HEIGHT[27] = 2;
+            ITEM_BIGTILE_HEIGHT[28] = 2;
 
             ITEM_EQUIPPABLE[22] = true;
             ITEM_EQUIPPABLE[23] = true;
@@ -103,6 +113,7 @@ namespace Game1
             ITEM_PLACEABLE[20] = true;
             ITEM_PLACEABLE[21] = true;
             ITEM_PLACEABLE[27] = true;
+            ITEM_PLACEABLE[28] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
@@ -118,11 +129,14 @@ namespace Game1
             ITEM_REQUIRE_SURFACE[13] = true;
             ITEM_REQUIRE_SURFACE[19] = true;
             ITEM_REQUIRE_SURFACE[27] = true;
+            ITEM_REQUIRE_SURFACE[28] = true;
 
             ITEM_SOLID[4] = true;
             ITEM_SOLID[5] = true;
             ITEM_SOLID[6] = true;
             ITEM_SOLID[20] = true;
+            ITEM_SOLID[27] = true;
+            ITEM_SOLID[28] = true;
 
             ITEM_TOOL_TIER[4] = 0;
             ITEM_TOOL_TIER[5] = 1;

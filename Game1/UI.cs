@@ -530,6 +530,13 @@ namespace Game1
                     if (Game1.itemInfo.ITEM_STACKABLE[cursorItem]) Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y+24), Color.White);
                     Game1.spriteBatch.End();
                 }
+                else if (Game1.itemInfo.ITEM_PLACEABLE[cursorItem] && Game1.itemInfo.ITEM_BIGTILE[cursorItem])
+                {
+                    Game1.spriteBatch.Begin();
+                    Game1.items_32.DrawTile(Game1.spriteBatch, cursorItem, (CanBePlaced(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16) ? Color.White : Color.Red) * 0.5f, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y));
+                    if (Game1.itemInfo.ITEM_STACKABLE[cursorItem]) Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y + 24), Color.White);
+                    Game1.spriteBatch.End();
+                }
                 else if (Game1.itemInfo.ITEM_PLACEABLE[cursorItem])
                 {
                     Game1.spriteBatch.Begin();
@@ -824,6 +831,16 @@ namespace Game1
             //figures out for a REQUIRE_SURFACE item whether the cursor is on top of a surface (solid) or whether the space is free for item placement
             //TODO: make it so you can't place items over the player
             int[,] map = (Game1.itemInfo.ITEM_BACKTILE[cursorItem] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
+            if (Game1.itemInfo.ITEM_BIGTILE[cursorItem])
+            {
+                for (int i = x / 16 * 16; i < x + Game1.itemInfo.ITEM_BIGTILE_WIDTH[cursorItem] * 16; i++)
+                {
+                    for (int a = y / 16 * 16 - Game1.itemInfo.ITEM_BIGTILE_HEIGHT[cursorItem] * 16 + 16; a < y / 16 * 16 + 16; a++)
+                    {
+                        if (Game1.currentMap.mapTiles[i / 16, a / 16] !=-1) return false;
+                    }
+                }
+            }
             if (!(Player.RangeFromPoint(x, y)[0]<Game1.PLAYER_RANGE_REQUIREMENT && Player.RangeFromPoint(x, y)[1] < Game1.PLAYER_RANGE_REQUIREMENT || (Game1.uiObjects[2].inventoryItemIds[selectedCarry]!=-1 && Game1.itemInfo.ITEM_TOOL[Game1.uiObjects[2].inventoryItemIds[selectedCarry]] && WithinItemRange(Game1.uiObjects[2].inventoryItemIds[selectedCarry], x - Player.playerx, y - Player.playery)))) return false;
             if (MouseKeyboardInfo.mouseState.X >= 0 && MouseKeyboardInfo.mouseState.Y >= 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT && Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && map[x / 16, y / 16 + 1] != -1 && Game1.itemInfo.ITEM_SOLID[map[x / 16, y / 16 + 1]] && map[x / 16, y / 16] == -1) return true;
             if (MouseKeyboardInfo.mouseState.X >= 0 && MouseKeyboardInfo.mouseState.Y >= 0 && MouseKeyboardInfo.mouseState.X < Game1.WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y < Game1.WINDOW_HEIGHT && !Game1.itemInfo.ITEM_REQUIRE_SURFACE[cursorItem] && map[x / 16, y / 16] == -1) return true;
