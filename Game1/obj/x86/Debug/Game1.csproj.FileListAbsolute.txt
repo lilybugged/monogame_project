@@ -159,7 +159,6 @@ C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\D
 C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\grass2.xnb
 C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\grass3.xnb
 C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\icons_32.xnb
-C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\portrait.xnb
 C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\selectioncursor.xnb
 C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\spr_chara_left_0.xnb
 C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\spr_chara_left_1.xnb
@@ -201,3 +200,6 @@ C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\D
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\equippable_items.xnb
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\portrait_items.xnb
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\equip_slots.xnb
+C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\equippable_items.xnb
+C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\equip_slots.xnb
+C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\portrait_items.xnb

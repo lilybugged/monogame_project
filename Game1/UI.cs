@@ -141,6 +141,7 @@ namespace Game1
         public void Draw()
         {
             Game1.spriteBatch.Begin();
+            DrawCarry();
             switch (uiState)
             {
                 case 1:
@@ -247,7 +248,7 @@ namespace Game1
                     Hover(this.uix + 7, this.uiy + 7);
                     break;
             }
-            DrawCarry();
+            
             Game1.spriteBatch.End();
         }
         public void DrawCarry()

@@ -251,13 +251,13 @@ namespace Game1
             player.Draw();
 
             //draw all UIs
+            
             for (int i = 0; i < uiObjects.Length; i++)
             {
                 if (uiObjects[i] != null && (i==2 || !uiToggle)) uiObjects[i].Draw();
             }
-
             uiObjects[0].DrawCursorItem();
-
+            
             Game1.spriteBatch.Begin();
             spriteBatch.Draw(cursor[globalCursor], new Vector2(MouseKeyboardInfo.mouseState.X,MouseKeyboardInfo.mouseState.Y), Color.White);
             Game1.spriteBatch.End();
