@@ -526,7 +526,7 @@ namespace Game1
         /// </summary>
         public void DrawCursorItem()
         { 
-            if (cursorItem != -1 )
+            if (cursorItem > -1)
             {
                 if (!Game1.itemInfo.ITEM_PLACEABLE[cursorItem] || CountUis()>0)
                 {
@@ -626,7 +626,7 @@ namespace Game1
                 Game1.globalCursor = 1;
             }
             //pick up an item
-            else if (((CountUis() == 1 || uiState != 1 && uiState != 3) || uiState == 2) && cursorItem == -1 && gottenIndex>-1 && (gottenIndex) < inventoryItemIds.Length && inventoryItemIds[gottenIndex] != -1 && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
+            else if (((CountUis() == 1 || uiState != 1 && uiState != 3) || uiState == 2) && cursorItem == -1 && gottenIndex>-1 && (gottenIndex) < inventoryItemIds.Length && inventoryItemIds[gottenIndex] > 0 && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
                 cursorItem = inventoryItemIds[gottenIndex];
                 inventoryItemIds[gottenIndex] = -1;
@@ -641,7 +641,7 @@ namespace Game1
                 MouseKeyboardInfo.mouseState.Y > this.uiy + 225 && MouseKeyboardInfo.mouseState.Y < this.uiy + 225 + (48) * 6 &&
                 MouseKeyboardInfo.mouseClickedLeft)
             {
-                if (cursorItem != -1 && Game1.itemInfo.ITEM_EQUIPPABLE[cursorItem])
+                if (cursorItem > -1 && Game1.itemInfo.ITEM_EQUIPPABLE[cursorItem])
                 {
                     if (Game1.playerEquippedItems[Game1.itemInfo.ITEM_EQUIP_SLOT[cursorItem]] == -1) //nothing in the slot
                     {
@@ -676,7 +676,7 @@ namespace Game1
             //drop off an item
             else if ((WithinUi(uiState)&&(CountUis() == 1 || (uiState == 2))) && cursorItem != -1 && (gottenIndex) >-1 && (gottenIndex) < inventoryItemIds.Length && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
-                Debug.WriteLine(""+inventoryRows);
+                //Debug.WriteLine(""+inventoryRows);
                 //item in cursor is the same as the one in the slot
                 if (inventoryItemIds[gottenIndex]==cursorItem)
                 {
@@ -710,12 +710,13 @@ namespace Game1
                     }
                 }
                 //slot is empty
-                else if (inventoryItemIds[gottenIndex]==-1)
+                else if (inventoryItemIds[gottenIndex]<0)
                 {
                     if (cursorItemOrigin == 3)
                     {
                         Game1.uiObjects[2].inventoryItemQuantities[selectedCarry] = -1;
                         Game1.uiObjects[2].inventoryItemIds[selectedCarry] = -1;
+                        
                     }
                     inventoryItemIds[gottenIndex] = cursorItem;
                     inventoryItemQuantities[gottenIndex] = cursorQuantity;
@@ -724,6 +725,7 @@ namespace Game1
                     cursorItemOrigin = -1;
                     cursorQuantity = -1;
                     Game1.globalCursor = 0;
+                    Debug.WriteLine("works");
                 }
                 //item in cursor is different from the one in the slot
                 else
