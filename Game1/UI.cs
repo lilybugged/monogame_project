@@ -120,10 +120,14 @@ namespace Game1
                     cursorItem = inventoryItemIds[selectedCarry];
                     cursorQuantity = inventoryItemQuantities[selectedCarry];
 
-                    inventoryItemIds[cursorItemIndex] = temp;
-                    inventoryItemQuantities[cursorItemIndex] = temp2;
+                    if (cursorItemIndex > -1)
+                    {
+                        Debug.WriteLine("" + cursorItemIndex);
+                        inventoryItemIds[cursorItemIndex] = temp;
+                        inventoryItemQuantities[cursorItemIndex] = temp2;
+                    }
 
-                    if (cursorItem != -1 && !Game1.itemInfo.ITEM_PLACEABLE[cursorItem])
+                    if (cursorItem > -1 && !Game1.itemInfo.ITEM_PLACEABLE[cursorItem])
                     {
                         cursorItem = -1;
                         cursorQuantity = -1;
@@ -594,8 +598,7 @@ namespace Game1
             int gottenIndex = (MouseKeyboardInfo.mouseState.X - startx) / 49 + ((MouseKeyboardInfo.mouseState.Y - starty) / 48) * rowSize;
             
             //pick up part of an item on right click
-            
-            if ((CountUis()==1 || uiState != 1 && uiState != 3) && gottenIndex > -1 && (gottenIndex) < inventoryItemIds.Length && inventoryItemIds[gottenIndex] != -1 && ((cursorItem == inventoryItemIds[gottenIndex] && cursorItem!=-1) || cursorItem==-1) && MouseKeyboardInfo.mouseClickedRight && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
+            if ((CountUis() == 1 || uiState != 1 && uiState != 3) && (uiState != 3) && gottenIndex > -1 && (gottenIndex) < inventoryItemIds.Length && inventoryItemIds[gottenIndex] != -1 && ((cursorItem == inventoryItemIds[gottenIndex] && cursorItem!=-1) || cursorItem==-1) && MouseKeyboardInfo.mouseClickedRight && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
                 if (cursorItem == -1)
                 {
@@ -626,8 +629,9 @@ namespace Game1
                 Game1.globalCursor = 1;
             }
             //pick up an item
-            else if (((CountUis() == 1 || uiState != 1 && uiState != 3) || uiState == 2) && cursorItem == -1 && gottenIndex>-1 && (gottenIndex) < inventoryItemIds.Length && inventoryItemIds[gottenIndex] > 0 && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
+            else if (((CountUis() == 1 || uiState != 1 && uiState != 3) || uiState == 2) && uiState!=3 && cursorItem == -1 && gottenIndex>-1 && (gottenIndex) < inventoryItemIds.Length && inventoryItemIds[gottenIndex] > 0 && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
+                Debug.WriteLine("pick up");
                 cursorItem = inventoryItemIds[gottenIndex];
                 inventoryItemIds[gottenIndex] = -1;
                 cursorItemIndex = gottenIndex;
@@ -676,9 +680,9 @@ namespace Game1
             //drop off an item
             else if ((WithinUi(uiState)&&(CountUis() == 1 || (uiState == 2))) && cursorItem != -1 && (gottenIndex) >-1 && (gottenIndex) < inventoryItemIds.Length && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
-                //Debug.WriteLine(""+inventoryRows);
+                Debug.WriteLine("dropoff");
                 //item in cursor is the same as the one in the slot
-                if (inventoryItemIds[gottenIndex]==cursorItem)
+                if (inventoryItemIds[gottenIndex]==cursorItem && (uiState!=3 || selectedCarry != cursorItemIndex))
                 {
                     if (Game1.itemInfo.ITEM_STACKABLE[inventoryItemIds[gottenIndex]] && cursorQuantity + inventoryItemQuantities[gottenIndex] > Game1.ITEM_STACK_SIZE)
                     {
