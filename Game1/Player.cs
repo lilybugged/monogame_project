@@ -138,7 +138,7 @@ namespace Game1
             {
                 for (int a = 0; a < height; a++)
                 {
-                    if (Game1.currentMap.mapTiles[(x + i) / 16, (y + a) / 16] != -1 && (BigTile.FindTileId((x + i), (y + a)) == -1 || Game1.bigTiles[BigTile.FindTileId((x + i), (y + a))].solid))
+                    if (Game1.currentMap.mapTiles[(x + i) / 16, (y + a) / 16] != -1 && Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(x + i) / 16, (y + a) / 16]] && (BigTile.FindTileId((x + i), (y + a)) == -1 || Game1.bigTiles[BigTile.FindTileId((x + i), (y + a))].solid))
                     {
                         return true;
                     }

@@ -18,7 +18,7 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 29;
+        public const int ITEM_COUNT = 30;
         public int[] ITEM_RANK = new int[ITEM_COUNT]; // for tools mainly
         public bool[] ITEM_BIGTILE = new bool[ITEM_COUNT];
         public int[] ITEM_BIGTILE_WIDTH = new int[ITEM_COUNT];
@@ -61,12 +61,15 @@ namespace Game1
 
             ITEM_BIGTILE[27] = true;
             ITEM_BIGTILE[28] = true;
+            //ITEM_BIGTILE[29] = true;
 
             ITEM_BIGTILE_WIDTH[27] = 1;
             ITEM_BIGTILE_WIDTH[28] = 2;
+            ITEM_BIGTILE_WIDTH[29] = 1;
 
             ITEM_BIGTILE_HEIGHT[27] = 2;
             ITEM_BIGTILE_HEIGHT[28] = 2;
+            ITEM_BIGTILE_HEIGHT[29] = 1;
 
             ITEM_EQUIPPABLE[22] = true;
             ITEM_EQUIPPABLE[23] = true;
@@ -85,9 +88,10 @@ namespace Game1
             ITEM_EQUIP_SLOT[24] = 7;
             ITEM_EQUIP_SLOT[25] = 1;
             ITEM_EQUIP_SLOT[26] = 17;
-
+            
             ITEM_RANK[14] = 0;
             ITEM_RANK[16] = 1;
+            ITEM_RANK[29] = 0;
 
             ITEM_TOOL_RANGE[14] = 5*16;
             ITEM_TOOL_RANGE[16] = 8*16;
@@ -114,6 +118,7 @@ namespace Game1
             ITEM_PLACEABLE[21] = true;
             ITEM_PLACEABLE[27] = true;
             ITEM_PLACEABLE[28] = true;
+            ITEM_PLACEABLE[29] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
@@ -136,13 +141,15 @@ namespace Game1
             ITEM_SOLID[6] = true;
             ITEM_SOLID[20] = true;
             ITEM_SOLID[27] = true;
-            ITEM_SOLID[28] = true;
+            //ITEM_SOLID[28] = true;
 
             ITEM_TOOL_TIER[4] = 0;
             ITEM_TOOL_TIER[5] = 1;
+            ITEM_TOOL_TIER[6] = 1;
             ITEM_TOOL_TIER[17] = 0;
             ITEM_TOOL_TIER[18] = 1;
             ITEM_TOOL_TIER[28] = 1;
+            ITEM_TOOL_TIER[29] = 1;
 
             ITEM_BLOCKID[0] = -1;
             ITEM_BLOCKID[1] = -1;
@@ -166,6 +173,7 @@ namespace Game1
             ITEM_BLOCKID[19] = 89;
             ITEM_BLOCKID[20] = 90;
             ITEM_BLOCKID[21] = 91;
+            ITEM_BLOCKID[29] = 44;
 
             ITEM_STACKABLE[14] = false;
             ITEM_STACKABLE[16] = false;
@@ -181,6 +189,7 @@ namespace Game1
             ITEM_AUTOTILE[18] = true;
             ITEM_AUTOTILE[20] = true;
             ITEM_AUTOTILE[21] = true;
+            ITEM_AUTOTILE[29] = true;
         }
 
         public static void DrawAutoTile(int itemId, Vector2 position)
@@ -188,6 +197,17 @@ namespace Game1
             int[,] map = (Game1.itemInfo.ITEM_BACKTILE[itemId] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
             switch (itemId)
             {
+                case 29:
+                    //Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
+                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId))
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 44, position); //nounder
+                    }
+                    else
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 43, position); //else
+                    }
+                    break;
                 case 20:
                 case 21:
                     Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
