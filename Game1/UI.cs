@@ -503,7 +503,7 @@ namespace Game1
             int count = 0;
             for (int i = 0; i < Game1.uiObjects.Length; i++)
             {
-                if (Game1.uiObjects[i] != null && WithinUi(Game1.uiObjects[i].uiState))
+                if (Game1.uiObjects[i] != null && WithinUi(Game1.uiObjects[i].uiState)) //made a weird change here, if something breaks that's why
                 {
                     count++;
                 }
@@ -809,7 +809,7 @@ namespace Game1
                             
                             Debug.WriteLine("o k o");
                         }
-                        else if (Game1.uiObjects[1].FindFreeSlot() != -1)
+                        else if (Game1.uiObjects!=null && Game1.uiObjects[1].FindFreeSlot() != -1)
                         {
                             slot = Game1.uiObjects[1].FindFreeSlot();
 
