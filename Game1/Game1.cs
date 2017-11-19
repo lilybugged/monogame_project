@@ -89,8 +89,8 @@ namespace Game1
             this.IsMouseVisible = false;
             chestInventories = new List<Chest>();
             bigTiles = new List<BigTile>();
-            userInventory = new int[] { 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, -1, -1};
-            userInventoryQuantities = new int[] { 999, 999, 999, 999, 999, 999, 21, 10, 12, 31, 1, 999, 1, 999, 999, 999, 999, 999, 1, 1, 1, 1, 1, 99, 99, 99, -1, -1};
+            userInventory = new int[] { 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, -1};
+            userInventoryQuantities = new int[] { 999, 999, 999, 999, 999, 999, 21, 10, 12, 31, 1, 999, 1, 999, 999, 999, 999, 999, 1, 1, 1, 1, 1, 99, 99, 99, 99, -1};
             ui = new UI(0,100,4, userInventory, userInventoryQuantities, 1, 7);
 
             userCarry = new int[] { -1, -1, -1, -1 };
@@ -149,11 +149,11 @@ namespace Game1
             charaRight[0] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_0"), 1, 1);
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
 
-            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 6, 5);
+            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 6, 6);
             equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 7, 6);
 
             equip_icons = new AnimatedSprite(Content.Load<Texture2D>("img/equip_slots"), 5, 4);
-            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 11, 10);
+            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 11, 11);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
             portrait_items = new AnimatedSprite(Content.Load<Texture2D>("img/portrait_items"), 2, 3);
             cursor[0] = Content.Load<Texture2D>("img/cursor");

@@ -756,7 +756,7 @@ namespace Game1
                     //if item has a previous destination to return to, return it
                     int slot;
                     Debug.WriteLine("" + uiState);
-                    if (cursorItemOrigin != -1 && cursorItemIndex != -1)
+                    if (cursorItemOrigin != -1 && cursorItemIndex != -1 && Game1.uiObjects[cursorItemOrigin - 1].inventoryItemIds[cursorItemIndex]==-1)
                     {
                         if (cursorItem == (Game1.uiObjects[cursorItemOrigin - 1]).inventoryItemIds[cursorItemIndex])
                         {
@@ -809,7 +809,7 @@ namespace Game1
                             
                             Debug.WriteLine("o k o");
                         }
-                        else if (Game1.uiObjects!=null && Game1.uiObjects[1].FindFreeSlot() != -1)
+                        else if (Game1.uiObjects!=null && Game1.uiObjects[1]!=null && Game1.uiObjects[1].FindFreeSlot() != -1)
                         {
                             slot = Game1.uiObjects[1].FindFreeSlot();
 

@@ -18,7 +18,8 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 30;
+        public const int ITEM_COUNT = 31;
+        public bool[] ITEM_ENDPOINT = new bool[ITEM_COUNT]; // if true, this item is an endpoint for pipes
         public int[] ITEM_RANK = new int[ITEM_COUNT]; // for tools mainly
         public bool[] ITEM_BIGTILE = new bool[ITEM_COUNT];
         public int[] ITEM_BIGTILE_WIDTH = new int[ITEM_COUNT];
@@ -59,17 +60,28 @@ namespace Game1
                 ITEM_BIGTILE_HEIGHT[i] = -1;
             }
 
+            ITEM_ENDPOINT[8] = true;
+            ITEM_ENDPOINT[9] = true;
+            ITEM_ENDPOINT[10] = true;
+            ITEM_ENDPOINT[11] = true;
+            ITEM_ENDPOINT[12] = true;
+            ITEM_ENDPOINT[13] = true;
+            ITEM_ENDPOINT[29] = true;
+
             ITEM_BIGTILE[27] = true;
             ITEM_BIGTILE[28] = true;
             //ITEM_BIGTILE[29] = true;
+            //ITEM_BIGTILE[30] = true;
 
             ITEM_BIGTILE_WIDTH[27] = 1;
             ITEM_BIGTILE_WIDTH[28] = 2;
             ITEM_BIGTILE_WIDTH[29] = 1;
+            ITEM_BIGTILE_WIDTH[30] = 1;
 
             ITEM_BIGTILE_HEIGHT[27] = 2;
             ITEM_BIGTILE_HEIGHT[28] = 2;
             ITEM_BIGTILE_HEIGHT[29] = 1;
+            ITEM_BIGTILE_HEIGHT[30] = 1;
 
             ITEM_EQUIPPABLE[22] = true;
             ITEM_EQUIPPABLE[23] = true;
@@ -92,6 +104,7 @@ namespace Game1
             ITEM_RANK[14] = 0;
             ITEM_RANK[16] = 1;
             ITEM_RANK[29] = 0;
+            ITEM_RANK[30] = 0;
 
             ITEM_TOOL_RANGE[14] = 5*16;
             ITEM_TOOL_RANGE[16] = 8*16;
@@ -119,6 +132,7 @@ namespace Game1
             ITEM_PLACEABLE[27] = true;
             ITEM_PLACEABLE[28] = true;
             ITEM_PLACEABLE[29] = true;
+            ITEM_PLACEABLE[30] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
@@ -150,6 +164,7 @@ namespace Game1
             ITEM_TOOL_TIER[18] = 1;
             ITEM_TOOL_TIER[28] = 1;
             ITEM_TOOL_TIER[29] = 1;
+            ITEM_TOOL_TIER[30] = 1;
 
             ITEM_BLOCKID[0] = -1;
             ITEM_BLOCKID[1] = -1;
@@ -174,6 +189,7 @@ namespace Game1
             ITEM_BLOCKID[20] = 90;
             ITEM_BLOCKID[21] = 91;
             ITEM_BLOCKID[29] = 44;
+            ITEM_BLOCKID[30] = 110;
 
             ITEM_STACKABLE[14] = false;
             ITEM_STACKABLE[16] = false;
@@ -190,6 +206,7 @@ namespace Game1
             ITEM_AUTOTILE[20] = true;
             ITEM_AUTOTILE[21] = true;
             ITEM_AUTOTILE[29] = true;
+            ITEM_AUTOTILE[30] = true;
         }
 
         public static void DrawAutoTile(int itemId, Vector2 position)
@@ -197,6 +214,59 @@ namespace Game1
             int[,] map = (Game1.itemInfo.ITEM_BACKTILE[itemId] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
             switch (itemId)
             {
+                case 30:
+                    /*if ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId) &&
+                        (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId) &&
+                        (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId) &&
+                        (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId))
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 110, position); //all
+                    }
+                    else */if ((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]]) &&
+                            (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]]))
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 113, position); //left AND right
+                    }
+                    else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId)|| map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1&&Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]]) &&
+                        (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1)&&Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 114, position); //under AND above
+                    }
+                    else if (((map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId)||(map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] !=-1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]])) &&
+                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId)||(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])))
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 115, position); //downright
+                    }
+                    else if (((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId) || (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]])) &&
+                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])))
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 117, position); //downleft
+                    }
+                    else if ((map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId) &&
+                        (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId))
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 116, position); //upright
+                    }
+                    else if ((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId) &&
+                        (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId))
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 118, position); //upleft
+                    }
+                    else if ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId) ||
+                        (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId))
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 114, position); //under or above
+                    }
+                    else if ((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId) ||
+                            (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId))
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 113, position); //left or right
+                    }
+                    else
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 110, position); //none
+                    }
+                    break;
                 case 29:
                     //Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
                     if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId))
@@ -208,8 +278,8 @@ namespace Game1
                         Game1.tiles.DrawTile(Game1.spriteBatch, 43, position); //else
                     }
                     break;
-                case 20:
                 case 21:
+                case 20:
                     Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
                     if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId))
                     {
