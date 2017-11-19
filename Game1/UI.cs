@@ -32,12 +32,12 @@ namespace Game1
         public int[] inventoryItemIds;
         public int[] inventoryItemQuantities;
         public int rowSize;
-        private static bool itemIsCarried; //if you're trying to place a carried item, this is true
+        //private static bool itemIsCarried; //if you're trying to place a carried item, this is true
         //TODO: fix this script so that using a carried item updates the actual carried item
-        private static int cursorItem;
-        private static int cursorItemOrigin;
-        private static int cursorItemIndex;
-        private static int cursorQuantity;
+        public static int cursorItem;
+        public static int cursorItemOrigin;
+        public static int cursorItemIndex;
+        public static int cursorQuantity;
         private static int lastTileX = 0;
         private static int lastTileY = 0;
         private String toString;

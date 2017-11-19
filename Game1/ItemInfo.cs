@@ -18,7 +18,7 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 31;
+        public const int ITEM_COUNT = 33;
         public bool[] ITEM_ENDPOINT = new bool[ITEM_COUNT]; // if true, this item is an endpoint for pipes
         public int[] ITEM_RANK = new int[ITEM_COUNT]; // for tools mainly
         public bool[] ITEM_BIGTILE = new bool[ITEM_COUNT];
@@ -67,21 +67,29 @@ namespace Game1
             ITEM_ENDPOINT[12] = true;
             ITEM_ENDPOINT[13] = true;
             ITEM_ENDPOINT[29] = true;
+            ITEM_ENDPOINT[31] = true;
+            ITEM_ENDPOINT[32] = true;
 
             ITEM_BIGTILE[27] = true;
             ITEM_BIGTILE[28] = true;
             ITEM_BIGTILE[29] = true;
             ITEM_BIGTILE[30] = true;
+            ITEM_BIGTILE[31] = true;
+            ITEM_BIGTILE[32] = true;
 
             ITEM_BIGTILE_WIDTH[27] = 1;
             ITEM_BIGTILE_WIDTH[28] = 2;
             ITEM_BIGTILE_WIDTH[29] = 1;
             ITEM_BIGTILE_WIDTH[30] = 1;
+            ITEM_BIGTILE_WIDTH[31] = 1;
+            ITEM_BIGTILE_WIDTH[32] = 1;
 
             ITEM_BIGTILE_HEIGHT[27] = 2;
             ITEM_BIGTILE_HEIGHT[28] = 2;
             ITEM_BIGTILE_HEIGHT[29] = 1;
             ITEM_BIGTILE_HEIGHT[30] = 1;
+            ITEM_BIGTILE_HEIGHT[31] = 1;
+            ITEM_BIGTILE_HEIGHT[32] = 1;
 
             ITEM_EQUIPPABLE[22] = true;
             ITEM_EQUIPPABLE[23] = true;
@@ -133,6 +141,8 @@ namespace Game1
             ITEM_PLACEABLE[28] = true;
             ITEM_PLACEABLE[29] = true;
             ITEM_PLACEABLE[30] = true;
+            ITEM_PLACEABLE[31] = true;
+            ITEM_PLACEABLE[32] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
@@ -164,6 +174,8 @@ namespace Game1
             ITEM_TOOL_TIER[28] = 1;
             ITEM_TOOL_TIER[29] = 1;
             ITEM_TOOL_TIER[30] = 1;
+            ITEM_TOOL_TIER[31] = 1;
+            ITEM_TOOL_TIER[32] = 1;
 
             //do NOT add a blockID for BigTile items
             ITEM_BLOCKID[0] = -1;
@@ -204,7 +216,6 @@ namespace Game1
             ITEM_AUTOTILE[18] = true;
             ITEM_AUTOTILE[20] = true;
             ITEM_AUTOTILE[21] = true;
-            ITEM_AUTOTILE[29] = true;
         }
 
         public static void DrawAutoTile(int itemId, Vector2 position)

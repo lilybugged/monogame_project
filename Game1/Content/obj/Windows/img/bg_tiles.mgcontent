@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/lily.DESKTOP-0KJ3NCB/Documents/monogame_project/Game1/Content/img/bg_tiles.png</SourceFile>
-  <SourceTime>2017-11-18T22:51:46.1368012-05:00</SourceTime>
+  <SourceTime>2017-11-19T04:55:01.1989188-05:00</SourceTime>
   <DestFile>C:/Users/lily.DESKTOP-0KJ3NCB/Documents/monogame_project/Game1/Content/bin/Windows/img/bg_tiles.xnb</DestFile>
-  <DestTime>2017-11-18T22:53:47.859179-05:00</DestTime>
+  <DestTime>2017-11-19T04:55:59.0173388-05:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

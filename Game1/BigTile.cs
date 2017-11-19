@@ -49,11 +49,17 @@ namespace Game1
         }
         public void Update()
         {
+
         }
         public void Trigger()
         {
             switch (tileType)
             {
+                case 31:
+                case 32:
+                    state++;
+                    if (state > 4) state = 1;
+                    break;
                 case 27:
                     //door 
                     Debug.WriteLine("door trigger");
@@ -84,17 +90,63 @@ namespace Game1
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
             switch (tileType)
             {
-                case 29:
+                case 32:
                     Game1.spriteBatch.Begin();
                     //Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
-                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId))
+                    if (state == 0)
                     {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 44, position); //nounder
+                        if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 119, position); //under
+                            state = 1;
+                        }
+                        else if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 120, position); //above
+                            state = 2;
+                        }
+                        else if (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 121, position); //left
+                            state = 3;
+                        }
+                        else if (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 122, position); //right
+                            state = 4;
+                        }
+                        else Game1.tiles.DrawTile(Game1.spriteBatch, 119, position); //default to under
                     }
-                    else
+                    else Game1.tiles.DrawTile(Game1.spriteBatch, 119 + state - 1, position);
+                    Game1.spriteBatch.End();
+                    break;
+                case 31:
+                    Game1.spriteBatch.Begin();
+                    if (state == 0)
                     {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 43, position); //else
+                        if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 123, position); //under
+                            state = 1;
+                        }
+                        else if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 124, position); //above
+                            state = 2;
+                        }
+                        else if (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 125, position); //left
+                            state = 3;
+                        }
+                        else if (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 126, position); //right
+                            state = 4;
+                        }
+                        else Game1.tiles.DrawTile(Game1.spriteBatch, 123, position); //default to under
                     }
+                    else Game1.tiles.DrawTile(Game1.spriteBatch, 123 + state - 1, position);
                     Game1.spriteBatch.End();
                     break;
                 case 30:
@@ -105,13 +157,13 @@ namespace Game1
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 113, position); //left AND right
                     }
-                    else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId)|| map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1&&Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]]) &&
-                        (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1)&&Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])
+                    else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId) || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]]) &&
+                        (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1) && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 114, position); //under AND above
                     }
-                    else if (((map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId)||(map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] !=-1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]])) &&
-                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId)||(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])))
+                    else if (((map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId) || (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]])) &&
+                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])))
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 115, position); //downright
                     }
@@ -120,13 +172,13 @@ namespace Game1
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 117, position); //downleft
                     }
-                    else if ((map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId) &&
-                        (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId))
+                    else if (((map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId) || (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]])) &&
+                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])))
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 116, position); //upright
                     }
-                    else if ((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId) &&
-                        (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId))
+                    else if (((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId) || (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]])) &&
+                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])))
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 118, position); //upleft
                     }
@@ -147,22 +199,16 @@ namespace Game1
 
                     Game1.spriteBatch.End();
                     break;
-                case 27:
+                case 29:
                     Game1.spriteBatch.Begin();
-                    if (state == 0)
+                    //Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
+                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId))
                     {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 92, new Vector2(x, y - 16));
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 93, new Vector2(x, y));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 44, position); //nounder
                     }
-                    else if (state == 1)
+                    else
                     {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 96, new Vector2(x, y - 16));
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 97, new Vector2(x, y));
-                    }
-                    else if (state == 2)
-                    {
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 94, new Vector2(x, y - 16));
-                        Game1.tiles.DrawTile(Game1.spriteBatch, 95, new Vector2(x, y));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 43, position); //else
                     }
                     Game1.spriteBatch.End();
                     break;
@@ -181,6 +227,25 @@ namespace Game1
                         Game1.tiles.DrawTile(Game1.spriteBatch, 101 + Game1.globalTick / 4, new Vector2(x + 16, y - 16));
                         Game1.tiles.DrawTile(Game1.spriteBatch, 107 + Game1.globalTick / 4, new Vector2(x + 16, y));
                         Game1.tiles.DrawTile(Game1.spriteBatch, 104 + Game1.globalTick / 4, new Vector2(x, y));
+                    }
+                    Game1.spriteBatch.End();
+                    break;
+                case 27:
+                    Game1.spriteBatch.Begin();
+                    if (state == 0)
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 92, new Vector2(x, y - 16));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 93, new Vector2(x, y));
+                    }
+                    else if (state == 1)
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 96, new Vector2(x, y - 16));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 97, new Vector2(x, y));
+                    }
+                    else if (state == 2)
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 94, new Vector2(x, y - 16));
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 95, new Vector2(x, y));
                     }
                     Game1.spriteBatch.End();
                     break;
