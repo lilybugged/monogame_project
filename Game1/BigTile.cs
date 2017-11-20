@@ -18,8 +18,9 @@ namespace Game1
         public int tiley;
         public int width;
         public int height;
+        private int[] endpoint;
         public bool solid;
-        private int state = 0;
+        public int state = 0;
         public int[][] inventory; // first index is itemid(0)/quantity(1), second is position in the inventory
         public int tileState = 0; // dependent on what the tile is
         int tileRank = 0; //0-2 - small, medium, large
@@ -46,16 +47,60 @@ namespace Game1
                 }
             }
 
+            switch (tileType)
+            {
+                case 31:
+                    endpoint = new int[] { -1, -1 };
+                    endpoint = FindEndPoint(tilex / 16, tiley / 16, 3);
+                    Debug.WriteLine(""+endpoint[0]+","+endpoint[1]);
+
+                    break;
+                case 29:
+                    int inputItem = -1;
+                    int outputItem = -1;
+                    break;
+            }
+
         }
         public void Update()
         {
+            switch (tileType)
+            {
+                /*case 31:
+                    int[,] map = Game1.currentMap.mapTiles;
+                    Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
+                    switch (state)
+                    {
+                        case 1:
+                            if (Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])
+                            {
+                                BigTile.FindTileId(endpoint[0], endpoint[1]);
+                            }
+                            break;
+                        case 2:
 
+                            break;
+                        case 3:
+
+                            break;
+                        case 4:
+
+                            break;
+                    }
+                    break;*/
+            }
         }
         public void Trigger()
         {
             switch (tileType)
             {
                 case 31:
+                    state++;
+                    if (state > 4) state = 1;
+                    endpoint = FindEndPoint(tilex / 16, tiley / 16, state);
+                    Debug.WriteLine(""+endpoint[0]+", "+endpoint[1]);
+                    if (endpoint[0] != -1) Debug.WriteLine(""+Game1.currentMap.mapTiles[endpoint[0],endpoint[1]]);
+                    break;
                 case 32:
                     state++;
                     if (state > 4) state = 1;
@@ -85,8 +130,7 @@ namespace Game1
         }
         public void Draw(int x, int y)
         {
-            int itemId = Game1.currentMap.mapTiles[this.tilex / 16, this.tiley / 16];
-            int[,] map = (Game1.itemInfo.ITEM_BACKTILE[itemId] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
+            int[,] map = (Game1.itemInfo.ITEM_BACKTILE[tileType] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
             switch (tileType)
             {
@@ -152,49 +196,58 @@ namespace Game1
                 case 30:
                     Game1.spriteBatch.Begin();
 
-                    if ((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]]) &&
-                            (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]]))
+                    if ((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == tileType || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]]) &&
+                            (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == tileType || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]]))
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 113, position); //left AND right
+                        state = 3;
                     }
-                    else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId) || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]]) &&
-                        (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1) && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])
+                    else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == tileType) || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]]) &&
+                        (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == tileType) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1) && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 114, position); //under AND above
+                        state = 4;
                     }
-                    else if (((map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId) || (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]])) &&
-                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])))
+                    else if (((map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == tileType) || (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]])) &&
+                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == tileType) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])))
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 115, position); //downright
+                        state = 5;
                     }
-                    else if (((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId) || (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]])) &&
-                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])))
+                    else if (((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == tileType) || (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]])) &&
+                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == tileType) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])))
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 117, position); //downleft
+                        state = 7;
                     }
-                    else if (((map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId) || (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]])) &&
-                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])))
+                    else if (((map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == tileType) || (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]])) &&
+                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == tileType) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])))
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 116, position); //upright
+                        state = 6;
                     }
-                    else if (((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId) || (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]])) &&
-                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])))
+                    else if (((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == tileType) || (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]])) &&
+                        ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == tileType) || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])))
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 118, position); //upleft
+                        state = 8;
                     }
-                    else if ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId) ||
-                        (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == itemId))
+                    else if ((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == tileType) ||
+                        (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == tileType))
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 114, position); //under or above
+                        state = 4;
                     }
-                    else if ((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == itemId) ||
-                            (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == itemId))
+                    else if ((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == tileType) ||
+                            (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == tileType))
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 113, position); //left or right
+                        state = 3;
                     }
                     else
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 110, position); //none
+                        state = 0;
                     }
 
                     Game1.spriteBatch.End();
@@ -202,7 +255,7 @@ namespace Game1
                 case 29:
                     Game1.spriteBatch.Begin();
                     //Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
-                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == itemId))
+                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == tileType))
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 44, position); //nounder
                     }
@@ -262,17 +315,145 @@ namespace Game1
             }
             Game1.bigTiles.Remove(this);
         }
-        public static int FindTileId(int x, int y)
+        public static int FindTileId(int idx, int idy)
         {
             for (int i = 0; i < Game1.bigTiles.Count; i++)
             {
-                if (x >= Game1.bigTiles[i].tilex && x < Game1.bigTiles[i].tilex + Game1.bigTiles[i].width*16 &&
-                    y >= Game1.bigTiles[i].tiley - Game1.bigTiles[i].height * 16 + 16&& y < Game1.bigTiles[i].tiley + 16)
+                if (idx >= Game1.bigTiles[i].tilex && idx < Game1.bigTiles[i].tilex + Game1.bigTiles[i].width*16 &&
+                    idy >= Game1.bigTiles[i].tiley - Game1.bigTiles[i].height * 16 + 16&& idy < Game1.bigTiles[i].tiley + 16)
                 {
                     return i;
                 }
             }
             return -1;
+        }
+
+
+
+        // MORE FUNCTIONS
+
+        ///finds an endpoint pipe (a puller) from the given starting pipe (a pusher) and returns an array [x,y]
+        public static int[] FindEndPoint(int x, int y, int direction)
+        {
+            if (BigTile.FindTileId(x/16*16, y/16*16) < 0)
+            {
+                Debug.WriteLine("borked "+Game1.bigTiles.Count());
+                //return new int[] { -1, -1 };
+            }
+            if (Game1.currentMap.mapTiles[x, y] == 32)
+            {
+                Debug.WriteLine(""+x+","+y);
+                return new int[] { x, y };
+            }
+            else if (Game1.currentMap.mapTiles[x, y] == 31)
+            {
+                switch (direction)
+                {
+                    case 1:
+                        if (Game1.currentMap.mapTiles[x, y - 1] == 30 || Game1.currentMap.mapTiles[x, y - 1] == 31 || Game1.currentMap.mapTiles[x, y - 1] == 32)
+                        {
+                            return FindEndPoint(x, y - 1, 1);
+                        }
+                        else return new int[] { -1, -1 };
+                        break;
+                    case 2:
+                        if (Game1.currentMap.mapTiles[x, y + 1] == 30 || Game1.currentMap.mapTiles[x, y + 1] == 31 || Game1.currentMap.mapTiles[x, y + 1] == 32)
+                        {
+                            return FindEndPoint(x, y + 1, 2);
+                        }
+                        else return new int[] { -1, -1 };
+                        break;
+                    case 3:
+                        if (Game1.currentMap.mapTiles[x + 1, y] == 30 || Game1.currentMap.mapTiles[x + 1, y] == 31 || Game1.currentMap.mapTiles[x + 1, y] == 32)
+                        {
+                            return FindEndPoint(x +1, y, 3);
+                        }
+                        else return new int[] { -1, -1 };
+                        break;
+                    case 4:
+                        if (Game1.currentMap.mapTiles[x - 1, y] == 30 || Game1.currentMap.mapTiles[x - 1, y] == 31 || Game1.currentMap.mapTiles[x - 1, y] == 32)
+                        {
+                            return FindEndPoint(x - 1, y, 4);
+                        }
+                        else return new int[] { -1, -1 };
+                        break;
+                    default:
+                        return new int[] { -1, -1 };
+                }
+            }
+            else if (Game1.currentMap.mapTiles[x, y] == 30)
+            {
+                switch (direction)
+                {
+                    case 1:
+                        switch (Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].state)
+                        {
+                            case 4:
+                                return FindEndPoint(x, y - 1, 1);
+                                break;
+                            case 5:
+                                return FindEndPoint(x + 1, y, 3);
+                                break;
+                            case 7:
+                                return FindEndPoint(x - 1, y, 4);
+                                break;
+                            default:
+                                return new int[] { -1, -1 };
+                        }
+                        break;
+                    case 2:
+                        switch (Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].state)
+                        {
+                            case 4:
+                                return FindEndPoint(x, y + 1, 2);
+                                break;
+                            case 6:
+                                return FindEndPoint(x + 1, y, 3);
+                                break;
+                            case 8:
+                                return FindEndPoint(x - 1, y, 4);
+                                break;
+                            default:
+                                return new int[] { -1, -1 };
+                        }
+                        break;
+                    case 3:
+                        switch (Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].state)
+                        {
+                            case 3:
+                                return FindEndPoint(x + 1, y, 3);
+                                break;
+                            case 7:
+                                return FindEndPoint(x, y + 1, 2);
+                                break;
+                            case 8:
+                                return FindEndPoint(x, y - 1, 1);
+                                break;
+                            default:
+                                return new int[] { -1, -1 };
+                        }
+                        break;
+                    case 4:
+                        switch (Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].state)
+                        {
+                            case 3:
+                                return FindEndPoint(x - 1, y, 4);
+                                break;
+                            case 5:
+                                return FindEndPoint(x, y + 1, 2);
+                                break;
+                            case 6:
+                                return FindEndPoint(x, y - 1, 1);
+                                break;
+                            default:
+                                return new int[] { -1, -1 };
+                        }
+                        break;
+                    default:
+                        return new int[] { -1, -1 };
+                }
+            }
+            else return new int[] { -1, -1 };
         }
     }
 }
