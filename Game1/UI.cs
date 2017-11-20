@@ -145,7 +145,7 @@ namespace Game1
         public void Draw()
         {
             Game1.spriteBatch.Begin();
-            DrawCarry();
+            //DrawCarry();
             switch (uiState)
             {
                 case 1:

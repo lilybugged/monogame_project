@@ -250,8 +250,15 @@ namespace Game1
             base.Draw(gameTime);
             player.Draw();
 
+            //i just moved drawcarry out here instead of sitting in UI
+            //it has to run under uiState 3 only, don't remember why
+            //TODO: figure out why
+            Game1.spriteBatch.Begin();
+            uiObjects[2].DrawCarry();
+            Game1.spriteBatch.End();
+
             //draw all UIs
-            
+
             for (int i = 0; i < uiObjects.Length; i++)
             {
                 if (uiObjects[i] != null && (i==2 || !uiToggle)) uiObjects[i].Draw();
