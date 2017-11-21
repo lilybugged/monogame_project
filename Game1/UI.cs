@@ -333,7 +333,9 @@ namespace Game1
             {
                 if (Game1.itemInfo.ITEM_BIGTILE[cursorItem])
                 {
-                    Game1.bigTiles.Add(new BigTile(cursorItem, ((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16))*16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))*16, 0, new int[0][]));
+                    BigTile newTile = new BigTile(cursorItem, ((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16, 0, new int[0][]);
+                    Game1.bigTiles.Add(newTile);
+                    //(Game1.itemInfo.ITEM_BACKTILE[cursorItem] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles)[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem;
                     
                 }
                 else (Game1.itemInfo.ITEM_BACKTILE[cursorItem]? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles)[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem;
@@ -411,7 +413,6 @@ namespace Game1
                             if (BigTile.FindTileId((Player.playerx) + (MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)), (Player.playery) + (MouseKeyboardInfo.mouseState.Y + (Player.playery % 16))) != -1 && Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]])
                             {
                                 Game1.bigTiles[BigTile.FindTileId((Player.playerx) + (MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)), (Player.playery) + (MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)))].Destroy();
-                                Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = -1;
                             }
                             else if (!Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]]) {
                                 Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = -1;
