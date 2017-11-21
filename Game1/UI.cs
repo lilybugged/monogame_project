@@ -16,6 +16,7 @@ namespace Game1
     /// <summary>
     /// The UI System.
     /// [Notice that the player inventory (type 1) will always be open - it's safe to use that for single-instance!]
+    /// [This is not for machine inventories. see: ]
     /// </summary>
     public class UI
     {
@@ -251,6 +252,28 @@ namespace Game1
                     DrawItems(this.uix + 7 + 5, this.uiy + 7 + 5);
                     Hover(this.uix + 7, this.uiy + 7);
                     break;
+                case 4:
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix - 1, this.uiy - 1, 254, 302), Color.Black);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix, this.uiy, 252, 300), menu_0);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 2, this.uiy + 2, 248, 296), menu_3);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 4, this.uiy + 4, 244, 292), menu_0);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 6, this.uiy + 6, 240, 288), menu_1);
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (i != 2)
+                        {
+                            for (int a = 0; a < rowSize; a++)
+                            {
+                                Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 7 + (44 + 5) * a + 24, this.uiy + 7 + (48) * i + 24, 44, 44), menu_0);
+                                Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 8 + (44 + 5) * a + 24, this.uiy + 8 + (48) * i + 24, 42, 42), menu_2);
+                            }
+                        }
+                    }
+                    Game1.spriteBatch.End();
+                    Game1.ui_arrow.Draw(Game1.spriteBatch, new Vector2(this.uix + 7 + 96, this.uiy + 5 + 96 + 24));
+                    Game1.spriteBatch.Begin();
+                    break;
             }
             
             Game1.spriteBatch.End();
@@ -278,7 +301,7 @@ namespace Game1
         }
         public void DragUi()
         {
-            if (uiState !=3 && cursorItem == -1 && MouseKeyboardInfo.mouseClickedLeft && uiDragging==-1 && ((CountUis()==1 && WithinUi(this.uiState)) || (uiState == 2 && WithinUi(this.uiState)))) { 
+            if (uiState !=3 && cursorItem == -1 && MouseKeyboardInfo.mouseClickedLeft && uiDragging==-1 && ((CountUis()==1 && WithinUi(this.uiState)) || ((uiState == 2 || uiState>3) && WithinUi(this.uiState)))) { 
                 {
                     posx = MouseKeyboardInfo.mouseState.X - uix;
                     posy = MouseKeyboardInfo.mouseState.Y - uiy;
@@ -385,11 +408,14 @@ namespace Game1
                                         Game1.itemInfo.ITEM_YIELD_QUANTITIES[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]][i]);
                                 }
                             }
-                            if (BigTile.FindTileId((Player.playerx) + (MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)), (Player.playery) + (MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)))!=-1 && Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]])
+                            if (BigTile.FindTileId((Player.playerx) + (MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)), (Player.playery) + (MouseKeyboardInfo.mouseState.Y + (Player.playery % 16))) != -1 && Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]])
                             {
                                 Game1.bigTiles[BigTile.FindTileId((Player.playerx) + (MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)), (Player.playery) + (MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)))].Destroy();
+                                Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = -1;
                             }
-                            Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = -1;
+                            else if (!Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]]) {
+                                Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = -1;
+                            }
                         }
                         else if (blockTimer == -1)
                         {
@@ -499,6 +525,10 @@ namespace Game1
                 }
             }
         }
+        /// <summary>
+        /// returns uis that the cursor is within
+        /// </summary>
+        /// <returns></returns>
         public int CountUis()
         {
             int count = 0;
@@ -522,6 +552,8 @@ namespace Game1
                     return (Game1.uiObjects[1] != null && (MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396));
                 case 3:
                     return ((MouseKeyboardInfo.mouseState.X >= Game1.carryUi.uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.carryUi.uix + (Game1.carryUi.rowSize * (49)) && MouseKeyboardInfo.mouseState.Y >= Game1.carryUi.uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.carryUi.uiy - 1 + 42));
+                case 4:
+                    return ((MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 514));
                 default:
                     return false;
             }
@@ -849,7 +881,7 @@ namespace Game1
                 {
                     for (int a = y / 16 * 16 - Game1.itemInfo.ITEM_BIGTILE_HEIGHT[cursorItem] * 16 + 16; a < y / 16 * 16 + 16; a++)
                     {
-                        if (Game1.currentMap.mapTiles[i / 16, a / 16] !=-1) return false;
+                        if (i>0 && a>0 && i< Game1.currentMap.mapTiles.GetLength(0) && a< Game1.currentMap.mapTiles.GetLength(1) && Game1.currentMap.mapTiles[i / 16, a / 16] !=-1) return false;
                     }
                 }
             }

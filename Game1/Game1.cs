@@ -25,6 +25,7 @@ namespace Game1
         public static AnimatedSprite[] charaLeft = new AnimatedSprite[12];
         public static AnimatedSprite[] charaRight = new AnimatedSprite[12];
         public static AnimatedSprite[] chestSprites = new AnimatedSprite[4];
+        public static AnimatedSprite ui_arrow;
         public static AnimatedSprite equippables;
         public static AnimatedSprite equip_icons;
         public static AnimatedSprite items_32;
@@ -46,6 +47,8 @@ namespace Game1
         
         public static MapInfo map0;
         public static MapInfo currentMap;
+
+        public static bool insideWindow = false;
 
         public static List<Chest> chestInventories; //access using the chest id
         public static int openChest = -1;
@@ -102,6 +105,7 @@ namespace Game1
             ui.id = uiObjects.Length;
             uiObjects[0] = ui;
             uiObjects[2] = carryUi;
+            uiObjects[1] = new UI(0, 0, 4, new int[16], new int[16], 4, 4);
             //chest.id = uiObjects.Length;
             //uiObjects[1] = chest;
 
@@ -149,6 +153,7 @@ namespace Game1
             charaRight[0] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_0"), 1, 1);
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
 
+            ui_arrow = new AnimatedSprite(Content.Load<Texture2D>("img/uiArrow"), 3, 2);
             items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 6, 6);
             equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 7, 6);
 
@@ -191,9 +196,11 @@ namespace Game1
             //SYNC INFORMATION
             //client.Update();
 
-            //update all the things, only if the window is active
+            //update all the things, only if the window is active and mouse is inside
             if (this.IsActive)
             {
+                insideWindow = (MouseKeyboardInfo.mouseState.X > 0 && MouseKeyboardInfo.mouseState.X < WINDOW_WIDTH && MouseKeyboardInfo.mouseState.Y > 0 && MouseKeyboardInfo.mouseState.Y < WINDOW_HEIGHT);
+
                 for (int i = 0; i < chestInventories.Count; i++)
                 {
                     chestInventories[i].Update();
@@ -202,10 +209,17 @@ namespace Game1
                 // TODO: Add your update logic here
                 player.Update();
                 tiles.Update();
+                ui_arrow.Update();
                 chestSprites[0].Update();
                 chestSprites[1].Update();
 
                 base.Update(gameTime);
+
+                //update all BigTiles
+                for (int i = 0; i < bigTiles.Count(); i++)
+                {
+                    bigTiles[i].Update();
+                }
 
                 if (MouseKeyboardInfo.keyClickedI)
                 {

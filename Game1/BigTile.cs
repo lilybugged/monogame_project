@@ -22,6 +22,7 @@ namespace Game1
         public bool solid;
         public int state = 0;
         public int[][] inventory; // first index is itemid(0)/quantity(1), second is position in the inventory
+        public int[][] output; // first index is itemid(0)/quantity(1), second is position in the inventory
         public int tileState = 0; // dependent on what the tile is
         int tileRank = 0; //0-2 - small, medium, large
         Color[] tileRankColors = new Color[] {Color.White, new Color(128,128,128,255), new Color(229,137,104, 255),
@@ -56,8 +57,6 @@ namespace Game1
 
                     break;
                 case 29:
-                    int inputItem = -1;
-                    int outputItem = -1;
                     break;
             }
 
@@ -66,15 +65,20 @@ namespace Game1
         {
             switch (tileType)
             {
-                /*case 31:
+                case 31:
                     int[,] map = Game1.currentMap.mapTiles;
                     Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
                     switch (state)
                     {
                         case 1:
-                            if (Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])
+                            if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]!=-1&&Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])
                             {
-                                BigTile.FindTileId(endpoint[0], endpoint[1]);
+                                endpoint = FindEndPoint(tilex / 16, tiley / 16, 1);
+                                if (BigTile.FindTileId(endpoint[0]*16,endpoint[1]*16)!= -1)
+                                {
+                                    Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state = 1;
+                                }
+                                else Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state = 0;
                             }
                             break;
                         case 2:
@@ -87,7 +91,7 @@ namespace Game1
 
                             break;
                     }
-                    break;*/
+                    break;
             }
         }
         public void Trigger()
@@ -258,10 +262,18 @@ namespace Game1
                     if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == tileType))
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 44, position); //nounder
+                        if (state == 1)
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 128, position); //lit
+                        }
                     }
                     else
                     {
                         Game1.tiles.DrawTile(Game1.spriteBatch, 43, position); //else
+                        if (state == 1)
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 127, position); //lit
+                        }
                     }
                     Game1.spriteBatch.End();
                     break;
@@ -335,15 +347,34 @@ namespace Game1
         ///finds an endpoint pipe (a puller) from the given starting pipe (a pusher) and returns an array [x,y]
         public static int[] FindEndPoint(int x, int y, int direction)
         {
-            if (BigTile.FindTileId(x/16*16, y/16*16) < 0)
-            {
-                Debug.WriteLine("borked "+Game1.bigTiles.Count());
-                //return new int[] { -1, -1 };
-            }
             if (Game1.currentMap.mapTiles[x, y] == 32)
             {
-                Debug.WriteLine(""+x+","+y);
-                return new int[] { x, y };
+                //Debug.WriteLine(""+x+","+y);
+                if (BigTile.FindTileId(x*16, y* 16) != -1)
+                {
+                    switch(Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].state)
+                    {
+                        case 1:
+                            if (direction == 2) return new int[] { x, y };
+                            else return new int[] { -1, -1 };
+                            break;
+                        case 2:
+                            if (direction == 1) return new int[] { x, y };
+                            else return new int[] { -1, -1 };
+                            break;
+                        case 3:
+                            if (direction == 4) return new int[] { x, y };
+                            else return new int[] { -1, -1 };
+                            break;
+                        case 4:
+                            if (direction == 3) return new int[] { x, y };
+                            else return new int[] { -1, -1 };
+                            break;
+                        default:
+                            return new int[] { -1, -1 };
+                    }
+                }
+                else return new int[] { -1, -1 };
             }
             else if (Game1.currentMap.mapTiles[x, y] == 31)
             {
