@@ -18,8 +18,6 @@ namespace Game1
         public int tiley;
         public int width;
         public int height;
-        public int timer = -1;
-        private int lastTick = 0;
         private int[] endpoint;
         public bool solid;
         public int state = 0;
@@ -49,7 +47,7 @@ namespace Game1
                     Game1.currentMap.mapTiles[i / 16, a / 16] = tileType;
                 }
             }
-            
+
             switch (tileType)
             {
                 case 31:
@@ -60,27 +58,6 @@ namespace Game1
                     Debug.WriteLine(""+endpoint[0]+","+endpoint[1]);
                     break;
                 case 29:
-                    inventory = new int[2][];
-                    inventory[0] = new int[8];
-                    inventory[1] = new int[8];
-                    for (int i=0;i<2;i++)
-                    {
-                        for (int a = 0; a < 8; a++)
-                        {
-                            inventory[i][a] = -1;
-                        }
-                    }
-
-                    output = new int[2][];
-                    output[0] = new int[8];
-                    output[1] = new int[8];
-                    for (int i = 0; i < 2; i++)
-                    {
-                        for (int a = 0; a < 8; a++)
-                        {
-                            output[i][a] = -1;
-                        }
-                    }
                     break;
                 case 30:
                     PipeUpdate();
@@ -156,17 +133,6 @@ namespace Game1
                             break;
                     }
                     break;
-                case 29:
-                    //WIP
-                    if (Game1.globalTick>14 && Array.IndexOf(inventory[0], 33) != -1 && inventory[1][Array.IndexOf(inventory[0], 33)]>0)
-                    {
-                        inventory[1][Array.IndexOf(inventory[0], 33)]--;
-                        output[0][0] = 34;
-                        output[1][0]++;
-                        Debug.WriteLine(""+output[0]);
-                        Debug.WriteLine("" + output[1]);
-                    }
-                    break;
             }
         }
         public void Trigger()
@@ -192,11 +158,8 @@ namespace Game1
                     //UpdateNearbyPipes();
                     break;
                 case 29:
-                    if (Game1.uiObjects[1] != null)
-                    {
-                        Game1.uiObjects[1] = null;
-                    }
-                    else Game1.uiObjects[1] = new UI(Game1.uiPosX[1], Game1.uiPosY[1], 2, inventory[0],inventory[1],output[0],output[1], 4, 4);
+                    Game1.uiObjects[1] = new UI(Game1.uiPosX[1], Game1.uiPosY[1], 2, Game1.chestInventories[Chest.FindChestId(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16)].inventory[0],
+                        Game1.chestInventories[Chest.FindChestId(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16)].inventory[1], 2, 7);
                     break;
                 case 27:
                     //door 

@@ -92,20 +92,20 @@ namespace Game1
             this.IsMouseVisible = false;
             chestInventories = new List<Chest>();
             bigTiles = new List<BigTile>();
-            userInventory = new int[] { 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 32, 28, 29, 30, 31};
+            userInventory = new int[] { 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 32, 33, 29, 30, 31};
             userInventoryQuantities = new int[] { 999, 999, 999, 999, 999, 999, 21, 10, 12, 31, 1, 999, 1, 999, 999, 999, 999, 999, 1, 1, 1, 1, 1, 99, 99, 99, 99, 99};
-            ui = new UI(0,100,4, userInventory, userInventoryQuantities, 1, 7);
+            ui = new UI(0,100,4, userInventory, userInventoryQuantities, null, null, 1, 7);
 
             userCarry = new int[] { -1, -1, -1, -1 };
             userCarryQuantities = new int[] { -1, -1, -1, -1 };
-            carryUi = new UI(0, 0, 1, userCarry, userCarryQuantities, 3, carryRank+1);
+            carryUi = new UI(0, 0, 1, userCarry, userCarryQuantities, null, null, 3, carryRank+1);
 
             //so far, there can only be four uis up at once
             //each ui slot is its own type
             ui.id = uiObjects.Length;
             uiObjects[0] = ui;
             uiObjects[2] = carryUi;
-            uiObjects[1] = new UI(0, 0, 4, new int[16], new int[16], 4, 4);
+            //uiObjects[1] = new UI(0, 0, 4, new int[16], new int[16],null,null, 4, 4);
             //chest.id = uiObjects.Length;
             //uiObjects[1] = chest;
 
