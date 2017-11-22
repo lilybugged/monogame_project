@@ -32,6 +32,7 @@ namespace Game1
         private int inventoryRows;
         public int[] inventoryItemIds;
         public int[] inventoryItemQuantities;
+        public BigTile attachment;
         int[] inventoryOutputIds;
         int[] inventoryOutputQuants;
         public int rowSize;
@@ -280,9 +281,19 @@ namespace Game1
                             }
                         }
                     }
-                    Game1.spriteBatch.End();
-                    Game1.ui_arrow.Draw(Game1.spriteBatch, new Vector2(this.uix + 7 + 96, this.uiy + 5 + 96 + 24));
-                    Game1.spriteBatch.Begin();
+                    
+                    if (attachment == null || attachment.recipeInProgressIndex == -1 || attachment.timer<0)
+                    {
+                        Game1.ui_arrow.DrawTile(Game1.spriteBatch, 0, new Vector2(this.uix + 7 + 96, this.uiy + 5 + 96 + 24));
+                        //Debug.WriteLine("timer is "+ attachment.timer);
+                    }
+                    else
+                    {
+                        Game1.ui_arrow.DrawTile(Game1.spriteBatch, (int)((Recipes.recipeProcessingTime[attachment.recipeInProgressIndex]-attachment.timer)/ (Recipes.recipeProcessingTime[attachment.recipeInProgressIndex]*1.0) * 6), new Vector2(this.uix + 7 + 96, this.uiy + 5 + 96 + 24));
+                        //Debug.WriteLine("drawing timer: "+ (int)(attachment.timer));
+                        //Debug.WriteLine("drawing frame: " + Recipes.recipeProcessingTime[attachment.recipeInProgressIndex]);
+                    }
+
                     DrawItems(this.uix + 7 + 5 + 24, this.uiy + 7 + 5 + 24, inventoryItemIds, inventoryItemQuantities);
                     Hover(this.uix + 7 + 24, this.uiy + 7 + 24);
 
@@ -679,7 +690,7 @@ namespace Game1
                 Game1.globalCursor = 1;
             }
             //pick up an item
-            else if (((CountUis() == 1 || uiState != 1 && uiState != 3) || uiState == 2) && uiState!=3 && cursorItem == -1 && gottenIndex>-1 && (gottenIndex) < invIds.Length && invIds[gottenIndex] > 0 && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
+            else if (((CountUis() == 1 || uiState != 1 && uiState != 3) || uiState == 2 || uiState>3) && uiState!=3 && cursorItem == -1 && gottenIndex>-1 && (gottenIndex) < invIds.Length && invIds[gottenIndex] > 0 && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
                 Debug.WriteLine("pick up");
                 cursorItem = invIds[gottenIndex];
@@ -688,6 +699,7 @@ namespace Game1
                 cursorItemOrigin = uiState;
                 cursorQuantity = invQuants[gottenIndex];
                 Game1.globalCursor = 1;
+                invQuants[gottenIndex] = -1;
             }
             //equip or unequip
             else if ((WithinUi(this.uiState) && CountUis() == 1 || uiState == 2)  &&

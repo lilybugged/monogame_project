@@ -142,14 +142,14 @@ namespace Game1
                     break;
                 case 29:
                     //WIP
-                    //if (Game1.globalTick>14 && Array.IndexOf(inventory[0], 33) != -1 && inventory[1][Array.IndexOf(inventory[0], 33)]>0)
+                    if (Game1.globalTick>14 && Array.IndexOf(inventory[0], 33) != -1 && inventory[1][Array.IndexOf(inventory[0], 33)]>0)
                     {
                         if (timer == -1)
                         {
-                            //if (Array.IndexOf(inventory[0], Recipes.recipeInputIds[i]) != -1 && (Array.IndexOf(inventory[0], Recipes.recipeOutputIds[i]) != -1 || Array.IndexOf(inventory[0], -1) == -1))
-                            for (int a = 0; a < inventory[0].Length; a++)
+                            for (int i = 0; i < Recipes.RECIPES; i++)
                             {
-                                for (int i = 0; i < Recipes.RECIPES; i++)
+                                //if (Array.IndexOf(inventory[0], Recipes.recipeInputIds[i]) != -1 && (Array.IndexOf(inventory[0], Recipes.recipeOutputIds[i]) != -1 || Array.IndexOf(inventory[0], -1) == -1))
+                                for (int a = 0; a < inventory[0].Length; a++)
                                 {
                                     if (Array.IndexOf(output[0], Recipes.recipeOutputIds[i]) == -1 && Array.IndexOf(output[0], -1) == -1)
                                     {
@@ -160,17 +160,21 @@ namespace Game1
                                         timer = Recipes.recipeProcessingTime[i];
                                         recipeInProgressIndex = i;
                                         inventory[1][a] -= Recipes.recipeInputQuants[i][0];
-                                        state = 1;
 
                                         if (inventory[1][a] < 1)
                                         {
                                             inventory[0][a] = -1;
                                             inventory[1][a] = -1;
                                         }
-                                        goto Outerloop;
-                                        
-                                        //we'll check for an open output slot when the timer goes off if need be
-                                        //items can move around during processing time is why
+                                        if (Array.IndexOf(output[0], Recipes.recipeOutputIds[i]) == -1)
+                                        {
+                                            recipeOutputIndex = Array.IndexOf(output[0], -1);
+                                        }
+                                        else
+                                        {
+                                            recipeOutputIndex = -1; // means we'll check again for an open output slot when the timer goes off
+                                            //items can move around during processing time is why
+                                        }
                                     }
                                 }
                             }
@@ -183,36 +187,27 @@ namespace Game1
                                 for (int b = 0; b < output[0].Length; b++)
                                 {
                                     if (output[0][b] == Recipes.recipeOutputIds[recipeInProgressIndex][0]
-                                        && output[1][b] + Recipes.recipeOutputQuants[recipeInProgressIndex][0] <= Game1.ITEM_STACK_SIZE)
+                                        && output[1][b] == Recipes.recipeOutputQuants[recipeInProgressIndex][0])
                                     {
                                         recipeOutputIndex = b;
                                         break;
                                     }
                                 }
-                                if (recipeOutputIndex == -1)
-                                {
-                                    recipeOutputIndex = Array.IndexOf(output[0],-1);
-                                }
                             }
                             if (recipeOutputIndex != -1)
                             {
-                                output[0][recipeOutputIndex] = Recipes.recipeOutputIds[recipeInProgressIndex][0];
-                                output[1][recipeOutputIndex] = (output[1][recipeOutputIndex]<1)?Recipes.recipeOutputQuants[recipeInProgressIndex][0]:
-                                    output[1][recipeOutputIndex]+ Recipes.recipeOutputQuants[recipeInProgressIndex][0];
+                                output[0][recipeOutputIndex] = recipeInProgressIndex;
+                                output[1][recipeOutputIndex] = (output[1][0] > 0) ? output[1][0] + 1 : 1;
 
                                 timer = -1;
-                                recipeInProgressIndex = -1;
-                                recipeOutputIndex = -1;
-                                state = 0;
                             }
-
-                            /*inventory[1][Array.IndexOf(inventory[0], 33)] = (inventory[1][Array.IndexOf(inventory[0], 33)] > 1) ? (inventory[1][Array.IndexOf(inventory[0], 33)] - 1) : -1;
+                            inventory[1][Array.IndexOf(inventory[0], 33)] = (inventory[1][Array.IndexOf(inventory[0], 33)] > 1) ? (inventory[1][Array.IndexOf(inventory[0], 33)] - 1) : -1;
                             if (inventory[1][Array.IndexOf(inventory[0], 33)] < 1) inventory[0][Array.IndexOf(inventory[0], 33)] = -1;
                             output[0][0] = 34;
 
                             output[1][0] = (output[1][0] > 0) ? output[1][0] + 1 : 1;
                             Debug.WriteLine("" + output[0]);
-                            Debug.WriteLine("" + output[1]);*/
+                            Debug.WriteLine("" + output[1]);
                         }
                     }
                     break;
@@ -245,12 +240,7 @@ namespace Game1
                     {
                         Game1.uiObjects[1] = null;
                     }
-                    else
-                    {
-                        UI ui = new UI(Game1.uiPosX[1], Game1.uiPosY[1], 2, inventory[0], inventory[1], output[0], output[1], 4, 4);
-                        ui.attachment = this;
-                        Game1.uiObjects[1] = ui;
-                    }
+                    else Game1.uiObjects[1] = new UI(Game1.uiPosX[1], Game1.uiPosY[1], 2, inventory[0],inventory[1],output[0],output[1], 4, 4);
                     break;
                 case 27:
                     //door 

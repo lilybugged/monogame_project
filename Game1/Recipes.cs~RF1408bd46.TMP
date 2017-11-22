@@ -15,6 +15,7 @@ namespace Game1
         public static int[][] recipeOutputQuants = new int[1][];
 
         public static int[] recipeTileType = new int[1];
+        public static int[] recipeProcessingTime = new int[1];
 
         static Recipes()
         {
@@ -24,6 +25,7 @@ namespace Game1
             Recipes.recipeOutputIds[0] = new int[] { 34 };
             Recipes.recipeOutputQuants[0] = new int[] { 1 };
             Recipes.recipeTileType[0] = 29;
+            Recipes.recipeProcessingTime[0] = 29;
 
         }
         

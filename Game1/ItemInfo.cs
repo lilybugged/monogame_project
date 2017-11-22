@@ -18,7 +18,7 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 35;
+        public const int ITEM_COUNT = 36;
         public bool[] ITEM_ENDPOINT = new bool[ITEM_COUNT]; // if true, this item is an endpoint for pipes
         public int[] ITEM_RANK = new int[ITEM_COUNT]; // for tools mainly
         public bool[] ITEM_BIGTILE = new bool[ITEM_COUNT];
@@ -145,6 +145,7 @@ namespace Game1
             ITEM_PLACEABLE[32] = true;
             ITEM_PLACEABLE[33] = true;
             ITEM_PLACEABLE[34] = true;
+            ITEM_PLACEABLE[35] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
@@ -169,6 +170,7 @@ namespace Game1
             ITEM_SOLID[27] = true;
             ITEM_SOLID[33] = true;
             ITEM_SOLID[34] = true;
+            ITEM_SOLID[35] = true;
 
             ITEM_TOOL_TIER[4] = 0;
             ITEM_TOOL_TIER[5] = 1;
@@ -182,6 +184,7 @@ namespace Game1
             ITEM_TOOL_TIER[32] = 1;
             ITEM_TOOL_TIER[33] = 0;
             ITEM_TOOL_TIER[34] = 1;
+            ITEM_TOOL_TIER[35] = 0;
 
             //do NOT add a blockID for BigTile items
             ITEM_BLOCKID[0] = -1;
@@ -209,6 +212,7 @@ namespace Game1
             ITEM_BLOCKID[29] = 44;
             ITEM_BLOCKID[33] = 5;
             ITEM_BLOCKID[34] = 4;
+            ITEM_BLOCKID[35] = 129;
 
             ITEM_STACKABLE[14] = false;
             ITEM_STACKABLE[16] = false;
@@ -225,6 +229,7 @@ namespace Game1
             ITEM_AUTOTILE[20] = true;
             ITEM_AUTOTILE[21] = true;
             ITEM_AUTOTILE[34] = true;
+            ITEM_AUTOTILE[35] = true;
         }
 
         public static void DrawAutoTile(int itemId, Vector2 position)
