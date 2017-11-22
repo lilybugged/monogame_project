@@ -95,11 +95,11 @@ namespace Game1
                 case 9:
                 case 8:
                     inventory = new int[2][];
-                    inventory[0] = new int[(tileType-7)*7];
-                    inventory[1] = new int[(tileType - 7) * 7];
+                    inventory[0] = new int[8];
+                    inventory[1] = new int[8];
                     for (int i = 0; i < 2; i++)
                     {
-                        for (int a = 0; a < (tileType - 7) * 7; a++)
+                        for (int a = 0; a < 8; a++)
                         {
                             inventory[i][a] = -1;
                         }
@@ -138,12 +138,8 @@ namespace Game1
                                 && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != 32
                                 && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != 31)
                             {
-                                endpoint = FindEndPoint(tilex / 16, tiley / 16 + 1, 2);
-                                if (Game1.globalTick > 14 && BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16) != -1)
-                                {
-                                    PushAnItem(Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)], endpoint);
-                                }
-
+                                endpoint = FindEndPoint(tilex / 16, tiley / 16, 2);
+                                
                             }
                             break;
                         case 3:
@@ -152,11 +148,7 @@ namespace Game1
                                 && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != 32
                                 && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != 31)
                             {
-                                endpoint = FindEndPoint(tilex / 16 + 1, tiley / 16, 3);
-                                if (Game1.globalTick > 14 && BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery)) != -1)
-                                {
-                                    PushAnItem(Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))], endpoint);
-                                }
+                                endpoint = FindEndPoint(tilex / 16, tiley / 16, 3);
                             }
                             break;
                         case 4:
@@ -165,11 +157,7 @@ namespace Game1
                                 && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != 32
                                 && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != 31)
                             {
-                                endpoint = FindEndPoint(tilex / 16 - 1, tiley / 16, 4);
-                                if (Game1.globalTick > 14 && BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery)) != -1)
-                                {
-                                    PushAnItem(Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))], endpoint);
-                                }
+                                endpoint = FindEndPoint(tilex / 16, tiley / 16, 4);
                             }
                             break;
                     }
@@ -262,7 +250,6 @@ namespace Game1
                         state = 0;
                         Game1.uiObjects[1] = null;
                         Game1.openChest = -1;
-                        Debug.WriteLine("shut");
                     }
                     if (state == 1 && Game1.chestSprites[0].currentFrame == 3)
                     {
@@ -272,10 +259,9 @@ namespace Game1
                     {
                         state = 0;
                     }
-                    if (state == 2 && (Game1.bigTiles[Game1.openChest] != this))
+                    if (state == 2 && Game1.bigTiles[Game1.openChest] != this)
                     {
                         state = 3;
-                        Debug.WriteLine("closing");
                     }
                     break;
             }
@@ -343,18 +329,12 @@ namespace Game1
                         solid = true;
                     }
                     break;
-                case 13:
-                case 12:
-                case 11:
-                case 10:
-                case 9:
                 case 8:
                     Game1.uiObjects[1] = new UI(Game1.uiPosX[1], Game1.uiPosY[1], tileType-7, this.inventory[0],this.inventory[1], null, null, 2, 7);
                     Game1.uiToggle = false;
-                    
-                    if (state == 2 && Game1.openChest == BigTile.FindTileId(tilex,tiley))
+
+                    if (Game1.openChest == BigTile.FindTileId(tilex*16,tiley*16))
                     {
-                        Debug.WriteLine("closed");
                         Game1.uiObjects[1] = null;
                         if (UI.cursorItemOrigin == 2)
                         {
@@ -367,8 +347,7 @@ namespace Game1
                     else
                     {
                         state = 1;
-                        Game1.openChest = BigTile.FindTileId(tilex, tiley);
-                        Debug.WriteLine(Game1.openChest);
+                        Game1.openChest = BigTile.FindTileId(tilex * 16, tiley * 16);
                     }
                     UI.cursorItem = -1;
                     UI.cursorQuantity = -1;
@@ -531,7 +510,7 @@ namespace Game1
                     {
                         case 0:
                             Game1.spriteBatch.Begin();
-                            Game1.tiles.DrawTile(Game1.spriteBatch, 35, new Vector2(tilex - Player.playerx, tiley - Player.playery));
+                            Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[8], new Vector2(tilex - Player.playerx, tiley - Player.playery));
                             if (tileType > 8) Game1.tiles.DrawTile(Game1.spriteBatch, 37, Chest.chestRankColors[tileType - 8], new Vector2(tilex - Player.playerx, tiley - Player.playery));
                             Game1.spriteBatch.End();
                             break;
@@ -598,6 +577,7 @@ namespace Game1
         public static void PushAnItem(BigTile startInv, int[] endPoint)
         {
             BigTile end;
+            Chest chest;
             //check if there are items in the starting inventory's output
             for (int i = 0; i < startInv.output[0].Length; i++)
             {
@@ -629,78 +609,38 @@ namespace Game1
                                     }
                                 }
                             }
+                            else if (Chest.FindChestId(endPoint[0]*16, endPoint[1]*16 + 16) != -1)
+                            {
+                                chest = Game1.chestInventories[Chest.FindChestId(endPoint[0] * 16, endPoint[1] * 16 + 16)];
+
+                                for (int a = 0; a < chest.inventory[0].Length; a++)
+                                {
+                                    if (chest.inventory[0][a] == -1)
+                                    {
+                                        chest.inventory[0][a] = startInv.output[0][i];
+                                        chest.inventory[1][a] = 1;
+                                        startInv.output[1][i]--;
+                                        if (startInv.output[1][i] < 1) startInv.output[0][i] = -1;
+                                        goto OuterLoop;
+                                    }
+                                    else if (chest.inventory[0][a] == startInv.output[0][i] && chest.inventory[1][a] + 1 <= Game1.ITEM_STACK_SIZE)
+                                    {
+                                        chest.inventory[1][a]++;
+                                        startInv.output[1][i]--;
+                                        if (startInv.output[1][i] < 1) startInv.output[0][i] = -1;
+                                        goto OuterLoop;
+                                    }
+                                }
+                            }
                             break;
                         case 2:
-                            if (BigTile.FindTileId(endPoint[0] * 16, endPoint[1] * 16 - 16) != -1)
-                            {
-                                end = Game1.bigTiles[BigTile.FindTileId(endPoint[0] * 16, endPoint[1] * 16 - 16)];
-                                for (int a = 0; a < end.inventory[0].Length; a++)
-                                {
-                                    if (end.inventory[0][a] == -1)
-                                    {
-                                        end.inventory[0][a] = startInv.output[0][i];
-                                        end.inventory[1][a] = 1;
-                                        startInv.output[1][i]--;
-                                        if (startInv.output[1][i] < 1) startInv.output[0][i] = -1;
-                                        goto OuterLoop;
-                                    }
-                                    else if (end.inventory[0][a] == startInv.output[0][i] && end.inventory[1][a] + 1 <= Game1.ITEM_STACK_SIZE)
-                                    {
-                                        end.inventory[1][a]++;
-                                        startInv.output[1][i]--;
-                                        if (startInv.output[1][i] < 1) startInv.output[0][i] = -1;
-                                        goto OuterLoop;
-                                    }
-                                }
-                            }
+                            
                             break;
                         case 3:
-                            if (BigTile.FindTileId(endPoint[0] * 16 - 16, endPoint[1] * 16) != -1)
-                            {
-                                end = Game1.bigTiles[BigTile.FindTileId(endPoint[0] * 16 - 16, endPoint[1] * 16)];
-                                for (int a = 0; a < end.inventory[0].Length; a++)
-                                {
-                                    if (end.inventory[0][a] == -1)
-                                    {
-                                        end.inventory[0][a] = startInv.output[0][i];
-                                        end.inventory[1][a] = 1;
-                                        startInv.output[1][i]--;
-                                        if (startInv.output[1][i] < 1) startInv.output[0][i] = -1;
-                                        goto OuterLoop;
-                                    }
-                                    else if (end.inventory[0][a] == startInv.output[0][i] && end.inventory[1][a] + 1 <= Game1.ITEM_STACK_SIZE)
-                                    {
-                                        end.inventory[1][a]++;
-                                        startInv.output[1][i]--;
-                                        if (startInv.output[1][i] < 1) startInv.output[0][i] = -1;
-                                        goto OuterLoop;
-                                    }
-                                }
-                            }
+
                             break;
                         case 4:
-                            if (BigTile.FindTileId(endPoint[0] * 16 + 16, endPoint[1] * 16) != -1)
-                            {
-                                end = Game1.bigTiles[BigTile.FindTileId(endPoint[0] * 16 + 16, endPoint[1] * 16)];
-                                for (int a = 0; a < end.inventory[0].Length; a++)
-                                {
-                                    if (end.inventory[0][a] == -1)
-                                    {
-                                        end.inventory[0][a] = startInv.output[0][i];
-                                        end.inventory[1][a] = 1;
-                                        startInv.output[1][i]--;
-                                        if (startInv.output[1][i] < 1) startInv.output[0][i] = -1;
-                                        goto OuterLoop;
-                                    }
-                                    else if (end.inventory[0][a] == startInv.output[0][i] && end.inventory[1][a] + 1 <= Game1.ITEM_STACK_SIZE)
-                                    {
-                                        end.inventory[1][a]++;
-                                        startInv.output[1][i]--;
-                                        if (startInv.output[1][i] < 1) startInv.output[0][i] = -1;
-                                        goto OuterLoop;
-                                    }
-                                }
-                            }
+                            
                             break;
                     }
                 }

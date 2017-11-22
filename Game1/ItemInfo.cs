@@ -70,6 +70,12 @@ namespace Game1
             ITEM_ENDPOINT[31] = true;
             ITEM_ENDPOINT[32] = true;
 
+            ITEM_BIGTILE[8] = true;
+            ITEM_BIGTILE[9] = true;
+            ITEM_BIGTILE[10] = true;
+            ITEM_BIGTILE[11] = true;
+            ITEM_BIGTILE[12] = true;
+            ITEM_BIGTILE[13] = true;
             ITEM_BIGTILE[27] = true;
             ITEM_BIGTILE[28] = true;
             ITEM_BIGTILE[29] = true;
@@ -77,6 +83,12 @@ namespace Game1
             ITEM_BIGTILE[31] = true;
             ITEM_BIGTILE[32] = true;
 
+            ITEM_BIGTILE_WIDTH[8] = 1;
+            ITEM_BIGTILE_WIDTH[9] = 1;
+            ITEM_BIGTILE_WIDTH[10] = 1;
+            ITEM_BIGTILE_WIDTH[11] = 1;
+            ITEM_BIGTILE_WIDTH[12] = 1;
+            ITEM_BIGTILE_WIDTH[13] = 1;
             ITEM_BIGTILE_WIDTH[27] = 1;
             ITEM_BIGTILE_WIDTH[28] = 2;
             ITEM_BIGTILE_WIDTH[29] = 1;
@@ -84,6 +96,12 @@ namespace Game1
             ITEM_BIGTILE_WIDTH[31] = 1;
             ITEM_BIGTILE_WIDTH[32] = 1;
 
+            ITEM_BIGTILE_HEIGHT[8] = 1;
+            ITEM_BIGTILE_HEIGHT[9] = 1;
+            ITEM_BIGTILE_HEIGHT[10] = 1;
+            ITEM_BIGTILE_HEIGHT[11] = 1;
+            ITEM_BIGTILE_HEIGHT[12] = 1;
+            ITEM_BIGTILE_HEIGHT[13] = 1;
             ITEM_BIGTILE_HEIGHT[27] = 2;
             ITEM_BIGTILE_HEIGHT[28] = 2;
             ITEM_BIGTILE_HEIGHT[29] = 1;
@@ -195,12 +213,12 @@ namespace Game1
             ITEM_BLOCKID[5] = 0;
             ITEM_BLOCKID[6] = 39;
             ITEM_BLOCKID[7] = 86;
-            ITEM_BLOCKID[8] = 35;
+            /*ITEM_BLOCKID[8] = 35;
             ITEM_BLOCKID[9] = 35;
             ITEM_BLOCKID[10] = 35;
             ITEM_BLOCKID[11] = 35;
             ITEM_BLOCKID[12] = 35;
-            ITEM_BLOCKID[13] = 35;
+            ITEM_BLOCKID[13] = 35;*/
             ITEM_BLOCKID[14] = -1;
             ITEM_BLOCKID[15] = -1;
             ITEM_BLOCKID[16] = -1;
@@ -224,7 +242,7 @@ namespace Game1
 
             ITEM_AUTOTILE[5] = true;
             ITEM_AUTOTILE[6] = true;
-            ITEM_AUTOTILE[8] = true;
+            //ITEM_AUTOTILE[8] = true;
             ITEM_AUTOTILE[18] = true;
             ITEM_AUTOTILE[20] = true;
             ITEM_AUTOTILE[21] = true;

@@ -366,7 +366,7 @@ namespace Game1
                 }
                 else (Game1.itemInfo.ITEM_BACKTILE[cursorItem]? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles)[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem;
                 // Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" placeItem:"+ ((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16))+","+((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))+" "+cursorItem);
-                if (cursorItem>=8&&cursorItem<=13) //small chest of any rank
+                /*if (cursorItem>=8&&cursorItem<=13) //small chest of any rank
                 {
                     int[][] inv = new int[2][];
                     for (int i = 0; i < 2; i++)
@@ -379,7 +379,7 @@ namespace Game1
                     }
                     Chest chest = new Chest(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16, cursorItem-8, inv);
                     Game1.chestInventories.Add(chest);
-                }
+                }*/
                 if (cursorQuantity > 1)
                 {
                     //if (itemIsCarried) Game1.uiObjects[2].inventoryItemQuantities[UI.selectedCarry]--;
@@ -495,7 +495,7 @@ namespace Game1
                 (Player.RangeFromPoint((Player.playerx) + MouseKeyboardInfo.mouseState.X, (Player.playery) + MouseKeyboardInfo.mouseState.Y)[0]< Game1.PLAYER_RANGE_REQUIREMENT ||
                 (inventoryItemIds[selectedCarry]!=-1 && Game1.itemInfo.ITEM_TOOL[inventoryItemIds[selectedCarry]] && WithinItemRange(inventoryItemIds[selectedCarry], MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y))))
             {
-                if (Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] >= 8 && Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] <= 13)
+                /*if (Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] >= 8 && Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] <= 13)
                 {
                     Game1.uiObjects[1] = new UI(Game1.uiPosX[1], Game1.uiPosY[1], Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]-7, Game1.chestInventories[Chest.FindChestId(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))*16)].inventory[0],
                         Game1.chestInventories[Chest.FindChestId(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))*16)].inventory[1],null,null,2,7);
@@ -521,7 +521,7 @@ namespace Game1
                     cursorItemIndex = -1;
                     cursorItemOrigin = -1;
                 }
-                else if (Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]] &&
+                else */if (Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]] &&
                     BigTile.FindTileId(MouseKeyboardInfo.mouseState.X + Player.playerx, MouseKeyboardInfo.mouseState.Y + Player.playery)!=-1)
                 {
                     Game1.bigTiles[BigTile.FindTileId(MouseKeyboardInfo.mouseState.X + Player.playerx, MouseKeyboardInfo.mouseState.Y + Player.playery)].Trigger();

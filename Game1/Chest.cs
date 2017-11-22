@@ -18,7 +18,7 @@ namespace Game1
         public int[][] inventory; // first index is itemid(0)/quantity(1), second is position in the inventory
         public int chestState = 0; //0-3 - closed, opening, open, closing
         int chestRank = 0; //0-2 - small, medium, large
-        Color[] chestRankColors = new Color[] {Color.White, new Color(128,128,128,255), new Color(229,137,104, 255),
+        public static Color[] chestRankColors = new Color[] {Color.White, new Color(128,128,128,255), new Color(229,137,104, 255),
         new Color(199,199,199, 255),new Color(244,220,151, 255),new Color(188,216,237, 255)};
 
         public Chest(int x, int y, int size, int[][] inv)
