@@ -18,8 +18,11 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 36;
+        public const int ITEM_COUNT = 43;
+        public const int SCHEMATICS_COUNT = 2;
         public bool[] ITEM_ENDPOINT = new bool[ITEM_COUNT]; // if true, this item is an endpoint for pipes
+        public String[] ITEM_NAME = new String[ITEM_COUNT];
+        public String[] ITEM_DESC = new String[ITEM_COUNT];
         public int[] ITEM_RANK = new int[ITEM_COUNT]; // for tools mainly
         public bool[] ITEM_BIGTILE = new bool[ITEM_COUNT];
         public int[] ITEM_BIGTILE_WIDTH = new int[ITEM_COUNT];
@@ -32,12 +35,14 @@ namespace Game1
         public bool[] ITEM_PLACEABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_REQUIRE_SURFACE = new bool[ITEM_COUNT]; // if it's placeable, must it be placed on a surface?
         public bool[] ITEM_SOLID = new bool[ITEM_COUNT]; // if it's placeable, does it have a solid collision state?
+        public int[] ITEM_ITEMID = new int[ITEM_COUNT];
         public int[] ITEM_BLOCKID = new int[ITEM_COUNT];
         public int[] ITEM_EQUIPID = new int[ITEM_COUNT];
         public int[] ITEM_EQUIP_SLOT = new int[ITEM_COUNT];
         public bool[] ITEM_STACKABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_AUTOTILE = new bool[ITEM_COUNT]; // should still work for things like beds
         public bool[] ITEM_BACKTILE = new bool[ITEM_COUNT]; // indicates whether the block should be on the layer behind
+        public bool[] ITEM_YIELD = new bool[ITEM_COUNT]; // indicates whether the block will yield something other than one item of itself
         public int[][] ITEM_YIELD_IDS = new int[ITEM_COUNT][]; // what items are dropped when the block is broken?
         public int[][] ITEM_YIELD_QUANTITIES = new int[ITEM_COUNT][];// how many of each?
         public UI[] ITEM_UI = new UI[ITEM_COUNT]; // ui associated with the item
@@ -46,7 +51,7 @@ namespace Game1
         public static int chestState = 0; // 0-4 values - closed, opening, open, closing
         public ItemInfo()
         {
-            for (int i = 0; i < ITEM_COUNT; i++)
+            for (int i = 0; i < ITEM_COUNT - SCHEMATICS_COUNT; i++)
             {
                 ITEM_UNIT_WIDTH[i] = 1;
                 ITEM_UNIT_HEIGHT[i] = 1;
@@ -58,7 +63,21 @@ namespace Game1
                 ITEM_EQUIP_SLOT[i] = -1;
                 ITEM_BIGTILE_WIDTH[i] = -1;
                 ITEM_BIGTILE_HEIGHT[i] = -1;
+                ITEM_ITEMID[i] = i;
             }
+            for (int i = ITEM_COUNT - SCHEMATICS_COUNT*2; i < ITEM_COUNT - SCHEMATICS_COUNT; i++)
+            {
+                //recipes
+                ITEM_ITEMID[i] = 37;
+                ITEM_STACKABLE[i] = true;
+            }
+            for (int i = ITEM_COUNT - SCHEMATICS_COUNT; i < ITEM_COUNT; i++)
+            {
+                //blueprints
+                ITEM_ITEMID[i] = 38;
+                ITEM_STACKABLE[i] = true;
+            }
+
 
             ITEM_ENDPOINT[8] = true;
             ITEM_ENDPOINT[9] = true;
@@ -248,6 +267,57 @@ namespace Game1
             ITEM_AUTOTILE[21] = true;
             ITEM_AUTOTILE[34] = true;
             ITEM_AUTOTILE[35] = true;
+
+            ITEM_NAME[0] = "Apple";
+            ITEM_NAME[1] = "Banana";
+            ITEM_NAME[2] = "Teacup";
+            ITEM_NAME[3] = "Stick";
+            ITEM_NAME[4] = "Wood";
+            ITEM_NAME[5] = "White Block";
+            ITEM_NAME[6] = "Wooden Table";
+            ITEM_NAME[7] = "Mushroom";
+            ITEM_NAME[8] = "Wooden Chest";
+            ITEM_NAME[9] = "Stone Chest";
+            ITEM_NAME[10] = "Bronze Chest";
+            ITEM_NAME[11] = "Iron Chest";
+            ITEM_NAME[12] = "Gold Chest";
+            ITEM_NAME[13] = "Diamond Chest";
+            ITEM_NAME[14] = "Novice's Wand";
+            ITEM_NAME[15] = "Everwood Stick";
+            ITEM_NAME[16] = "Everwood Wand";
+            ITEM_NAME[17] = "Wood Panel";
+            ITEM_NAME[18] = "White Block Panel";
+            ITEM_NAME[19] = "Timberlands";
+            ITEM_NAME[20] = "Glass";
+            ITEM_NAME[21] = "Glass Panel";
+            ITEM_NAME[22] = "Lavender Top";
+            ITEM_NAME[23] = "Navy Hat";
+            ITEM_NAME[24] = "Navy Top";
+            ITEM_NAME[25] = "Lavender Hat";
+            ITEM_NAME[26] = "Cat";
+            ITEM_NAME[27] = "Door";
+            ITEM_NAME[28] = "Heart Statue";
+            ITEM_NAME[29] = "Furnace";
+            ITEM_NAME[30] = "Pipe";
+            ITEM_NAME[31] = "Push Pipe";
+            ITEM_NAME[32] = "Pull Pipe";
+            ITEM_NAME[33] = "Cobblestone";
+            ITEM_NAME[34] = "Stone";
+            ITEM_NAME[35] = "Sand";
+            ITEM_NAME[36] = "Controller";
+            ITEM_NAME[37] = "Blank Recipe";
+            ITEM_NAME[38] = "Blank Blueprint";
+
+            //recipes
+            ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + 0] = "Recipe: Furnace";
+            ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + 1] = "Recipe: Assembler";
+
+            for (int i = 0; i < SCHEMATICS_COUNT; i++)
+            {
+                //blueprints
+                ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT + i] = "Blueprint: "+ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + i].Substring(8);
+            }
+
         }
 
         public static void DrawAutoTile(int itemId, Vector2 position)

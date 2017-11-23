@@ -43,6 +43,7 @@ namespace Game1
 
         //public static AnimatedSprite[] chestSprites = new AnimatedSprite[4];
 
+        public static int zoom = 1;
         public static ItemInfo itemInfo;
         
         public static MapInfo map0;
@@ -69,10 +70,14 @@ namespace Game1
         public static int[] uiPosY = new int[4];
         public static List<BigTile> bigTiles; //access using the tile id
 
-        public const int WINDOW_WIDTH = 1280;
-        public const int WINDOW_HEIGHT = 960;
+        //public static int STARTING_WINDOW_WIDTH = 1280;
+        //public static int STARTING_WINDOW_HEIGHT = 960;
+        public static int WINDOW_WIDTH = 1368;
+        public static int WINDOW_HEIGHT = 912;
         public const int ITEM_STACK_SIZE = 99;
         public const int PLAYER_RANGE_REQUIREMENT = 64;
+
+        RenderTarget2D target;
 
         public static NetworkClient client;
 
@@ -92,9 +97,21 @@ namespace Game1
             this.IsMouseVisible = false;
             chestInventories = new List<Chest>();
             bigTiles = new List<BigTile>();
-            userInventory = new int[] { 35, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 32, 33, 29, 30, 31,-1, -1, -1, -1, -1, -1, -1 };
-            userInventoryQuantities = new int[] { 999, 999, 999, 999, 999, 999, 21, 10, 12, 31, 1, 999, 1, 999, 999, 999, 999, 999, 1, 1, 1, 1, 1, 99, 99, 99, 99, 99, -1, -1, -1, -1, -1, -1, -1 };
-            ui = new UI(0,100,5, userInventory, userInventoryQuantities, null, null, 1, 7);
+            userInventory = new int[49];
+            userInventoryQuantities = new int[49];
+            for (int i = 0; i < userInventory.Length; i++)
+            {
+                if (i < ItemInfo.ITEM_COUNT) {
+                    userInventory[i] = i;
+                    userInventoryQuantities[i] = 999;
+                }
+                else
+                {
+                    userInventory[i] = -1;
+                    userInventoryQuantities[i] = -1;
+                }
+            }
+            ui = new UI(0,100,7, userInventory, userInventoryQuantities, null, null, 1, 7);
 
             userCarry = new int[] { -1, -1, -1, -1 };
             userCarryQuantities = new int[] { -1, -1, -1, -1 };
@@ -125,12 +142,14 @@ namespace Game1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            this.graphics.PreferredBackBufferWidth = WINDOW_WIDTH;
-            this.graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
-            this.graphics.IsFullScreen = false;
+            target = new RenderTarget2D(GraphicsDevice, WINDOW_WIDTH, WINDOW_HEIGHT);
+            this.graphics.PreferredBackBufferWidth = WINDOW_WIDTH * 2;
+            this.graphics.PreferredBackBufferHeight = WINDOW_HEIGHT * 2;
+            this.graphics.IsFullScreen = true;
+            this.graphics.PreferMultiSampling = false;
             this.graphics.ApplyChanges();
             graphics.ApplyChanges();
-
+            
             base.Initialize();
         }
 
@@ -154,11 +173,11 @@ namespace Game1
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
 
             ui_arrow = new AnimatedSprite(Content.Load<Texture2D>("img/uiArrow"), 3, 2);
-            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 6, 6);
+            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 7, 6);
             equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 7, 6);
 
             equip_icons = new AnimatedSprite(Content.Load<Texture2D>("img/equip_slots"), 5, 4);
-            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 12, 11);
+            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 12, 12);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
             portrait_items = new AnimatedSprite(Content.Load<Texture2D>("img/portrait_items"), 2, 3);
             cursor[0] = Content.Load<Texture2D>("img/cursor");
@@ -225,6 +244,21 @@ namespace Game1
                 {
                     uiToggle = !uiToggle;
                 }
+                
+                //ZOOM IS CURRENTLY WIP - don't mess with it right now
+                /*if (UI.lastScroll < MouseKeyboardInfo.mouseState.ScrollWheelValue)
+                {
+                    zoom++;
+                    WINDOW_WIDTH = STARTING_WINDOW_WIDTH / zoom;
+                    WINDOW_HEIGHT = STARTING_WINDOW_HEIGHT / zoom;
+                }
+                else if (UI.lastScroll > MouseKeyboardInfo.mouseState.ScrollWheelValue)
+                {
+                    zoom--;
+                    WINDOW_WIDTH = STARTING_WINDOW_WIDTH / zoom;
+                    WINDOW_HEIGHT = STARTING_WINDOW_HEIGHT / zoom;
+                }*/
+
                 //update all UIs
                 for (int i = 0; i < uiObjects.Length; i++)
                 {
@@ -232,6 +266,8 @@ namespace Game1
                 }
                 globalTick++;
                 if (globalTick > 15) globalTick = 0;
+
+                
             }
 
         }
@@ -242,12 +278,14 @@ namespace Game1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.SetRenderTarget(target);
             GraphicsDevice.Clear(new Color(230, 247, 255));
 
             //spriteBatch.Draw(grass2, new Vector2(400, 240), Color.White);
             //spriteBatch.Draw(grass3, new Vector2(450, 240), Color.White);
 
             Game1.spriteBatch.Begin();
+            
             map0.DrawMap();
             Game1.spriteBatch.End();
 
@@ -281,6 +319,11 @@ namespace Game1
             
             Game1.spriteBatch.Begin();
             spriteBatch.Draw(cursor[globalCursor], new Vector2(MouseKeyboardInfo.mouseState.X,MouseKeyboardInfo.mouseState.Y), Color.White);
+            Game1.spriteBatch.End();
+
+            Game1.spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            spriteBatch.Draw(target, new Rectangle(0, 0, (int)(WINDOW_WIDTH * 2), (int)(WINDOW_HEIGHT * 2)), new Rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), Color.White);
+            GraphicsDevice.SetRenderTarget(null);
             Game1.spriteBatch.End();
         }
     }

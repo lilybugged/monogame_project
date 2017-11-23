@@ -48,7 +48,7 @@ namespace Game1
         public static int selectedCarry = 0; //for carryUi
         private static int blockTimer = -1;
         public int id;
-        private int lastScroll = MouseKeyboardInfo.mouseState.ScrollWheelValue;
+        public static int lastScroll = MouseKeyboardInfo.mouseState.ScrollWheelValue;
         /// <summary>
         /// Initializes the UI System. [Only pass arrays as large as the chosen ui type's inventory.]
         /// </summary>
@@ -86,18 +86,18 @@ namespace Game1
             switch (uiState)
             {
                 case 1:
-                    DragAndDrop(this.uix + 136 + 19, this.uiy + 17, inventoryItemIds,inventoryItemQuantities);
+                    DragAndDrop((this.uix + 136 + 19)*Game1.zoom, (this.uiy + 17) * Game1.zoom, inventoryItemIds,inventoryItemQuantities);
                     break;
                 case 2:
-                    DragAndDrop(this.uix + 7, this.uiy + 7, inventoryItemIds, inventoryItemQuantities);
+                    DragAndDrop((this.uix + 7) * Game1.zoom, (this.uiy + 7)*Game1.zoom, inventoryItemIds, inventoryItemQuantities);
                     break;
                 case 3:
-                    DragAndDrop(this.uix + 7, this.uiy + 7, inventoryItemIds, inventoryItemQuantities);
+                    DragAndDrop((this.uix + 7) * Game1.zoom, (this.uiy + 7)*Game1.zoom, inventoryItemIds, inventoryItemQuantities);
                     break;
                 case 4:
-                    DragAndDrop(this.uix + 7 + 24, this.uiy + 7 + 24, inventoryItemIds, inventoryItemQuantities);
+                    DragAndDrop((this.uix + 7 + 24) * Game1.zoom, (this.uiy + 7 + 24)*Game1.zoom, inventoryItemIds, inventoryItemQuantities);
 
-                    DragAndDrop(this.uix + 7 + 24, this.uiy + 7 + 24 + 144, inventoryOutputIds, inventoryOutputQuants);
+                    DragAndDrop((this.uix + 7 + 24) * Game1.zoom, (this.uiy + 7 + 24 + 144) * Game1.zoom, inventoryOutputIds, inventoryOutputQuants);
                     break;
             }
             if (uiState == 3)
@@ -218,7 +218,7 @@ namespace Game1
                     }
                     //Game1.spriteBatch.End();
                     DrawItems(this.uix + 136 + 19 + 5, this.uiy + 17 + 5, inventoryItemIds, inventoryItemQuantities);
-                    Hover(this.uix + 136 + 19, this.uiy + 17);
+                    Hover(this.uix + 136 + 19, this.uiy + 17, inventoryItemIds);
                     break;
                 case 2:
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix - 1, this.uiy - 1, 354, 396), Color.Black);
@@ -236,7 +236,7 @@ namespace Game1
                         }
                     }
                     DrawItems(this.uix + 7 + 5, this.uiy + 7 + 5, inventoryItemIds, inventoryItemQuantities);
-                    Hover(this.uix + 7, this.uiy + 7);
+                    Hover(this.uix + 7, this.uiy + 7, inventoryItemIds);
                     break;
 
                 case 3:
@@ -261,7 +261,7 @@ namespace Game1
                         }
                     }
                     DrawItems(this.uix + 7 + 5, this.uiy + 7 + 5, inventoryItemIds, inventoryItemQuantities);
-                    Hover(this.uix + 7, this.uiy + 7);
+                    Hover(this.uix + 7, this.uiy + 7, inventoryItemIds);
                     break;
                 case 4:
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix - 1, this.uiy - 1, 254, 302), Color.Black);
@@ -295,10 +295,10 @@ namespace Game1
                     }
 
                     DrawItems(this.uix + 7 + 5 + 24, this.uiy + 7 + 5 + 24, inventoryItemIds, inventoryItemQuantities);
-                    Hover(this.uix + 7 + 24, this.uiy + 7 + 24);
+                    Hover(this.uix + 7 + 24, this.uiy + 7 + 24, inventoryItemIds);
 
                     DrawItems(this.uix + 7 + 5 + 24, this.uiy + 7 + 5 + 24 + 144, inventoryOutputIds, inventoryOutputQuants);
-                    Hover(this.uix + 7 + 24, this.uiy + 7 + 24 + 144);
+                    Hover(this.uix + 7 + 24, this.uiy + 7 + 24 + 144, inventoryOutputIds);
                     break;
             }
             
@@ -314,11 +314,11 @@ namespace Game1
                     case 1:
                         if (Player.currentDirection == 0)
                         {
-                            Game1.items_32.DrawTile(Game1.spriteBatch, inventoryItemIds[selectedCarry], new Vector2(Game1.WINDOW_WIDTH / 2 - 15, Game1.WINDOW_HEIGHT / 2 - 1));
+                            Game1.items_32.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_ITEMID[inventoryItemIds[selectedCarry]], new Vector2(Player.screenPosX - 15, Player.screenPosY - 1));
                         }
                         else
                         {
-                            Game1.items_32.DrawTile(Game1.spriteBatch, inventoryItemIds[selectedCarry], new Vector2(Game1.WINDOW_WIDTH / 2 + 15, Game1.WINDOW_HEIGHT / 2 - 1),true);
+                            Game1.items_32.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_ITEMID[inventoryItemIds[selectedCarry]], new Vector2(Player.screenPosX + 15, Player.screenPosY - 1),true);
                         }
                         break;
                 }
@@ -596,14 +596,14 @@ namespace Game1
                 if (!Game1.itemInfo.ITEM_PLACEABLE[cursorItem] || CountUis()>0)
                 {
                     Game1.spriteBatch.Begin();
-                    Game1.items_32.DrawTile(Game1.spriteBatch, cursorItem, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y));
+                    Game1.items_32.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_ITEMID[cursorItem], new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y));
                     if (Game1.itemInfo.ITEM_STACKABLE[cursorItem]) Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y+24), Color.White);
                     Game1.spriteBatch.End();
                 }
                 else if (Game1.itemInfo.ITEM_PLACEABLE[cursorItem] && Game1.itemInfo.ITEM_BIGTILE[cursorItem])
                 {
                     Game1.spriteBatch.Begin();
-                    Game1.items_32.DrawTile(Game1.spriteBatch, cursorItem, (CanBePlaced(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16) ? Color.White : Color.Red) * 0.5f, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y));
+                    Game1.items_32.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_ITEMID[cursorItem], (CanBePlaced(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16) ? Color.White : Color.Red) * 0.5f, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y));
                     if (Game1.itemInfo.ITEM_STACKABLE[cursorItem]) Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y + 24), Color.White);
                     Game1.spriteBatch.End();
                 }
@@ -624,17 +624,23 @@ namespace Game1
             for (int i=0; i< invIds.Length; i++) {
                 if (invIds[i] > -1)
                 {
-                    Game1.items_32.DrawTile(Game1.spriteBatch, invIds[i], new Vector2(startx + 49 * (i % rowSize) + 1, starty + 48 * (i / rowSize) + 1));
+                    Game1.items_32.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_ITEMID[invIds[i]], new Vector2(startx + 49 * (i % rowSize) + 1, starty + 48 * (i / rowSize) + 1));
                     if (Game1.itemInfo.ITEM_STACKABLE[invIds[i]]) Game1.spriteBatch.DrawString(Game1.font, ""+ invQuants[i], new Vector2(startx + 49 * (i % rowSize) + 1, starty + 48 * (i / rowSize) + 24), Color.White);
                 }
             }
         }
 
-        private void Hover(int startx, int starty)
+        private void Hover(int startx, int starty, int[] invIds)
         {
             if (MouseKeyboardInfo.mouseState.X>=startx && MouseKeyboardInfo.mouseState.X<=startx+(rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
+                int gottenIndex = (MouseKeyboardInfo.mouseState.X - startx) / 49 + ((MouseKeyboardInfo.mouseState.Y - starty) / 48) * rowSize;
                 Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(startx + 49 * ((MouseKeyboardInfo.mouseState.X - startx) / 49) + 1, starty + 48 * ((MouseKeyboardInfo.mouseState.Y-starty) / 48) + 1, 42, 42), Color.White*0.25f);
+
+                //tooltips
+                if (gottenIndex > -1 && (gottenIndex) < invIds.Length && invIds[gottenIndex] != -1 && cursorItem==-1) {
+                    Game1.spriteBatch.DrawString(Game1.font, Game1.itemInfo.ITEM_NAME[invIds[gottenIndex]], new Vector2(MouseKeyboardInfo.mouseState.X+16,MouseKeyboardInfo.mouseState.Y+16), Color.Black);
+                }
             }
         }
         private int FindFreeSlot() //for just checking the cursor's item

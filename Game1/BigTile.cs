@@ -272,7 +272,7 @@ namespace Game1
                     {
                         state = 0;
                     }
-                    if (state == 2 && (Game1.bigTiles[Game1.openChest] != this))
+                    if (state == 2 && (Game1.openChest==-1 || Game1.bigTiles[Game1.openChest] != this))
                     {
                         state = 3;
                         Debug.WriteLine("closing");
@@ -321,12 +321,14 @@ namespace Game1
                     if (Game1.uiObjects[1] != null)
                     {
                         Game1.uiObjects[1] = null;
+                        Game1.openChest = -1;
                     }
                     else
                     {
                         UI ui = new UI(Game1.uiPosX[1], Game1.uiPosY[1], 2, inventory[0], inventory[1], output[0], output[1], 4, 4);
                         ui.attachment = this;
                         Game1.uiObjects[1] = ui;
+                        Game1.openChest = -1;
                     }
                     break;
                 case 27:

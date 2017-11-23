@@ -48,7 +48,7 @@ namespace Game1
             int column = currentFrame % Columns;
 
             Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
-            Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
+            Rectangle destinationRectangle = new Rectangle((int)location.X * Game1.zoom, (int)location.Y * Game1.zoom, width * Game1.zoom, height * Game1.zoom);
 
             sprBatch.Begin();
             sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White);
@@ -63,7 +63,7 @@ namespace Game1
             int column = currentFrame % Columns;
 
             Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
-            Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
+            Rectangle destinationRectangle = new Rectangle((int)location.X * Game1.zoom, (int)location.Y * Game1.zoom, width * Game1.zoom, height * Game1.zoom);
 
             sprBatch.Begin();
             sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, color);
@@ -97,7 +97,7 @@ namespace Game1
             int column = tileId % Columns;
 
             Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
-            Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
+            Rectangle destinationRectangle = new Rectangle((int)location.X * Game1.zoom, (int)location.Y * Game1.zoom, width * Game1.zoom, height * Game1.zoom);
 
             //sprBatch.Begin();
             sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White);
@@ -114,7 +114,7 @@ namespace Game1
             int column = tileId % Columns;
 
             Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
-            Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
+            Rectangle destinationRectangle = new Rectangle((int)location.X * Game1.zoom, (int)location.Y * Game1.zoom, width * Game1.zoom, height * Game1.zoom);
 
             //sprBatch.Begin();
             sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White,0,new Vector2(0,0),SpriteEffects.FlipHorizontally,0);
@@ -126,7 +126,7 @@ namespace Game1
             int column = tileId % Columns;
 
             Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
-            Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
+            Rectangle destinationRectangle = new Rectangle((int)location.X * Game1.zoom, (int)location.Y * Game1.zoom, width * Game1.zoom, height * Game1.zoom);
 
             //sprBatch.Begin();
             sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White);
@@ -140,7 +140,7 @@ namespace Game1
             int column = tileId % Columns;
 
             Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
-            Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
+            Rectangle destinationRectangle = new Rectangle((int)location.X * Game1.zoom, (int)location.Y * Game1.zoom, width * Game1.zoom, height * Game1.zoom);
 
             //sprBatch.Begin();
             sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, color);

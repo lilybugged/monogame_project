@@ -23,6 +23,8 @@ namespace Game1
         public static int currentDirection;
         private int speedy;
         private int speedx;
+        public static int screenPosX;
+        public static int screenPosY;
         private bool canJump;
         private static int frame = 0;
         //private AnimatedSprite currentSprite;
@@ -36,7 +38,9 @@ namespace Game1
             playery = y;
             speedy = 0;
             speedx = 0;
-            accelerationy = 1; 
+            accelerationy = 1;
+            screenPosX = ((Game1.WINDOW_WIDTH / 2) - (Game1.WINDOW_WIDTH / 2) % 16);
+            screenPosY = ((Game1.WINDOW_HEIGHT / 2) - (Game1.WINDOW_HEIGHT / 2) % 16);
             //currentSprite = Game1.charaLeft[0];
             currentAction = 0;
             currentDirection = 0; //left
@@ -46,7 +50,7 @@ namespace Game1
             //handles *most* collisions
             if (speedy > 0) playery += speedy;
             if (speedy < 15) speedy += accelerationy;
-            if (speedx != 0 && WillCollide(playerx + Game1.WINDOW_WIDTH / 2, (playery + Game1.WINDOW_HEIGHT / 2), 32, 28))
+            if (speedx != 0 && WillCollide(playerx + screenPosX, (playery + screenPosY), 32, 28))
             {
                 if (speedx > 0)
                 {
@@ -56,33 +60,33 @@ namespace Game1
                 if (speedy < 5) playerx = playerx / 16 * 16;
                 speedx = 0;
             }
-            if (WillCollide((playerx + Game1.WINDOW_WIDTH / 2), (playery + Game1.WINDOW_HEIGHT / 2), 32, 32))
+            if (WillCollide((playerx + screenPosX), (playery + screenPosY), 32, 32))
             {
                 //playerx = playerx / 16 * 16;
                 
                 if (speedy < 0) playery += 10;
-                if (speedy < 0 && !WillCollide((playerx + Game1.WINDOW_WIDTH / 2), (playery + Game1.WINDOW_HEIGHT / 2), 32, 32)) playery += 5;
+                if (speedy < 0 && !WillCollide((playerx + screenPosX), (playery + screenPosY), 32, 32)) playery += 5;
                 if (speedy > 0) canJump = true;
                 playery = playery / 16 * 16;
                 speedy = 0;
                 
             }
 
-            if (speedx != 0 && WillCollide(playerx + Game1.WINDOW_WIDTH / 2, (playery + Game1.WINDOW_HEIGHT / 2), 32, 28)) canJump = false;
+            if (speedx != 0 && WillCollide(playerx + screenPosX, (playery + screenPosY), 32, 28)) canJump = false;
             if (speedy < 0) playery += speedy;
 
             //handles movement
             MouseKeyboardInfo.keyState = Keyboard.GetState();
-            //Debug.WriteLine(WillCollide((playerx + Game1.WINDOW_WIDTH / 2), (playery + Game1.WINDOW_HEIGHT / 2) - 31, 32, 32));
-            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.W) && canJump && !WillCollide((playerx + Game1.WINDOW_WIDTH / 2), (playery + Game1.WINDOW_HEIGHT / 2) - 15, 32, 32))
+            //Debug.WriteLine(WillCollide((playerx + screenPosX), (playery + screenPosY) - 31, 32, 32));
+            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.W) && canJump && !WillCollide((playerx + screenPosX), (playery + screenPosY) - 15, 32, 32))
             {
                 speedy = -13;
                 canJump = false;
                 // Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" playerMove:"+playerx+","+playery);
             }
-            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A) && !WillCollide((playerx + Game1.WINDOW_WIDTH / 2) - 2, (playery + Game1.WINDOW_HEIGHT / 2), 32, 32))
+            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A) && !WillCollide((playerx + screenPosX) - 2, (playery + screenPosY), 32, 32))
             {
-                //if (Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 - 16) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + Game1.WINDOW_WIDTH / 2 - 16) / 16, (Player.playery + Game1.WINDOW_HEIGHT / 2 + 16) / 16]])
+                //if (Game1.currentMap.mapTiles[(Player.playerx + screenPosX - 16) / 16, (Player.playery + screenPosY + 16) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + screenPosX - 16) / 16, (Player.playery + screenPosY + 16) / 16]])
                 {
                     speedx = -2;
                     currentAction = 1;
@@ -91,7 +95,7 @@ namespace Game1
                 }
                 // Game1.client.messageQueue.Add("" + Game1.CLIENT_ID + " playerMove:" + playerx + "," + playery);
             }
-            else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D) && !WillCollide((playerx + Game1.WINDOW_WIDTH / 2) + 2, (playery + Game1.WINDOW_HEIGHT / 2), 32, 32))
+            else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D) && !WillCollide((playerx + screenPosX) + 2, (playery + screenPosY), 32, 32))
             {
                 speedx = 2;
                 //currentSprite = Game1.charaRight[1];
@@ -119,17 +123,17 @@ namespace Game1
         }
         public void Draw()
         {
-            (currentDirection==0? Game1.charaLeft[currentAction] :Game1.charaRight[currentAction]).Draw(Game1.spriteBatch, new Vector2(Game1.WINDOW_WIDTH/2, Game1.WINDOW_HEIGHT/2));
+            (currentDirection==0? Game1.charaLeft[currentAction] :Game1.charaRight[currentAction]).Draw(Game1.spriteBatch, new Vector2(screenPosX, screenPosY));
             Game1.spriteBatch.Begin();
             for (int i = Game1.playerEquippedItems.Length-2; i > 0; i--)
             {
                 if (Game1.playerEquippedItems[i]!=-1) {
                     Game1.equippables.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[i]] * 8 + (currentDirection == 0 ? 0 : 4) + ((currentAction==1)? frame: 0),
-                        new Vector2(Game1.WINDOW_WIDTH / 2, Game1.WINDOW_HEIGHT / 2));
+                        new Vector2(screenPosX, screenPosY));
                 }
             }
             if (Game1.playerEquippedItems[17] != -1) Game1.equippables.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[17]] * 8 + (currentDirection == 0 ? 0 : 4) + ((currentAction == 1) ? frame : 0),
-                        new Vector2(Game1.WINDOW_WIDTH / 2, Game1.WINDOW_HEIGHT / 2));
+                        new Vector2(screenPosX, screenPosY));
             Game1.spriteBatch.End();
         }
         public bool WillCollide(int x, int y, int width, int height) //checks if, in a given rectangle, any solid collision will occur
@@ -151,7 +155,7 @@ namespace Game1
         /// </summary>
         public static int[] RangeFromPoint(int pointx, int pointy)
         {
-            return new int[] {Math.Abs(playerx + Game1.WINDOW_WIDTH/2 - pointx), Math.Abs(playery + Game1.WINDOW_HEIGHT / 2 - pointy)};
+            return new int[] {Math.Abs(playerx + screenPosX - pointx), Math.Abs(playery + screenPosY - pointy)};
         }
     }
 }
