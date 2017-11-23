@@ -28,6 +28,8 @@ namespace Game1
         public int[][] inventory; // first index is itemid(0)/quantity(1), second is position in the inventory
         public int[][] output; // first index is itemid(0)/quantity(1), second is position in the inventory
         public int tileState = 0; // dependent on what the tile is
+        public int fluidId = 0; // for tanks and stuff containing fluids
+        public int fluidPercent = 0; // the percentage of this item's capacity that is filled by liquid
         int tileRank = 0; //0-2 - small, medium, large
         Color[] tileRankColors = new Color[] {Color.White, new Color(128,128,128,255), new Color(229,137,104, 255),
         new Color(199,199,199, 255),new Color(244,220,151, 255),new Color(188,216,237, 255)};
@@ -54,6 +56,11 @@ namespace Game1
             
             switch (tileType)
             {
+                case 41:
+                    Random random = new Random();
+                    int randomNumber = random.Next(0, 100);
+                    fluidPercent = randomNumber;
+                    break;
                 case 31:
                     int[,] map = (Game1.itemInfo.ITEM_BACKTILE[tileType] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
                     Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
@@ -114,6 +121,51 @@ namespace Game1
             if (timer > 0) timer--;
             switch (tileType)
             {
+                case 41:
+                    if (Game1.currentMap.mapTiles[tilex/ 16, tiley / 16 + 1]==tileType && BigTile.FindTileId(tilex, tiley + 16) != -1)
+                    {
+                        if (Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidId == fluidId)
+                        {
+                            if (Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent + fluidPercent > 100)
+                            {
+                                fluidPercent = fluidPercent - (100 - Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent);
+                                Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent = 100;
+                            }
+                            else
+                            {
+                                Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent += fluidPercent;
+                                fluidPercent = 0;
+                            }
+
+                            
+
+                        }
+                    }
+
+                    //if (fluidPercent > 0)
+                    //{
+                        int total = 0;
+                        /*if (BigTile.FindTileId(tilex - 16, tiley) != -1 && BigTile.FindTileId(tilex + 16, tiley) != -1)
+                        {
+                            total = Game1.bigTiles[BigTile.FindTileId(tilex, tiley)].fluidPercent + Game1.bigTiles[BigTile.FindTileId(tilex + 16, tiley)].fluidPercent + Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidPercent;
+                            Game1.bigTiles[BigTile.FindTileId(tilex + 16, tiley)].fluidPercent = total / 3;
+                            Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidPercent = total / 3;
+                            fluidPercent = total / 3;
+                        }
+                        else */if (BigTile.FindTileId(tilex - 16, tiley) != -1)
+                        {
+                            total = Game1.bigTiles[BigTile.FindTileId(tilex, tiley)].fluidPercent + Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidPercent;
+                            Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidPercent = total / 2 + total % 2;
+                            fluidPercent = total / 2;
+                        }
+                        /*else if (BigTile.FindTileId(tilex + 16, tiley) != -1)
+                        {
+                            total = Game1.bigTiles[BigTile.FindTileId(tilex, tiley)].fluidPercent + Game1.bigTiles[BigTile.FindTileId(tilex + 16, tiley)].fluidPercent;
+                            Game1.bigTiles[BigTile.FindTileId(tilex + 16, tiley)].fluidPercent = total / 2;
+                            fluidPercent = total / 2;
+                        }*/
+                    //}
+                    break;
                 case 31:
                     int[,] map = Game1.currentMap.mapTiles;
                     Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
@@ -176,79 +228,75 @@ namespace Game1
                     
                     break;
                 case 29:
-                    //WIP
-                    //if (Game1.globalTick>14 && Array.IndexOf(inventory[0], 33) != -1 && inventory[1][Array.IndexOf(inventory[0], 33)]>0)
+                    if (timer == -1)
                     {
-                        if (timer == -1)
+                        //if (Array.IndexOf(inventory[0], Recipes.recipeInputIds[i]) != -1 && (Array.IndexOf(inventory[0], Recipes.recipeOutputIds[i]) != -1 || Array.IndexOf(inventory[0], -1) == -1))
+                        for (int a = 0; a < inventory[0].Length; a++)
                         {
-                            //if (Array.IndexOf(inventory[0], Recipes.recipeInputIds[i]) != -1 && (Array.IndexOf(inventory[0], Recipes.recipeOutputIds[i]) != -1 || Array.IndexOf(inventory[0], -1) == -1))
-                            for (int a = 0; a < inventory[0].Length; a++)
+                            for (int i = 0; i < Recipes.RECIPES; i++)
                             {
-                                for (int i = 0; i < Recipes.RECIPES; i++)
+                                if (Array.IndexOf(output[0], Recipes.recipeOutputIds[i]) == -1 && Array.IndexOf(output[0], -1) == -1)
                                 {
-                                    if (Array.IndexOf(output[0], Recipes.recipeOutputIds[i]) == -1 && Array.IndexOf(output[0], -1) == -1)
-                                    {
-                                        break;
-                                    }
-                                    if (Recipes.recipeInputIds[i][0] == inventory[0][a] && Recipes.recipeInputQuants[i][0] <= inventory[1][a])
-                                    {
-                                        timer = Recipes.recipeProcessingTime[i];
-                                        recipeInProgressIndex = i;
-                                        inventory[1][a] -= Recipes.recipeInputQuants[i][0];
-                                        state = 1;
+                                    break;
+                                }
+                                if (Recipes.recipeInputIds[i][0] == inventory[0][a] && Recipes.recipeInputQuants[i][0] <= inventory[1][a])
+                                {
+                                    timer = Recipes.recipeProcessingTime[i];
+                                    recipeInProgressIndex = i;
+                                    inventory[1][a] -= Recipes.recipeInputQuants[i][0];
+                                    state = 1;
 
-                                        if (inventory[1][a] < 1)
-                                        {
-                                            inventory[0][a] = -1;
-                                            inventory[1][a] = -1;
-                                        }
-                                        goto Outerloop;
-                                        
-                                        //we'll check for an open output slot when the timer goes off if need be
-                                        //items can move around during processing time is why
+                                    if (inventory[1][a] < 1)
+                                    {
+                                        inventory[0][a] = -1;
+                                        inventory[1][a] = -1;
                                     }
+                                    goto Outerloop;
+                                        
+                                    //we'll check for an open output slot when the timer goes off if need be
+                                    //items can move around during processing time is why
                                 }
                             }
                         }
-                        Outerloop: Debug.Write("");
-                        if (timer == 0)
+                    }
+                    Outerloop: Debug.Write("");
+                    if (timer == 0)
+                    {
+                        if (recipeOutputIndex == -1)
                         {
+                            for (int b = 0; b < output[0].Length; b++)
+                            {
+                                if (output[0][b] == Recipes.recipeOutputIds[recipeInProgressIndex][0]
+                                    && output[1][b] + Recipes.recipeOutputQuants[recipeInProgressIndex][0] <= Game1.ITEM_STACK_SIZE)
+                                {
+                                    recipeOutputIndex = b;
+                                    break;
+                                }
+                            }
                             if (recipeOutputIndex == -1)
                             {
-                                for (int b = 0; b < output[0].Length; b++)
-                                {
-                                    if (output[0][b] == Recipes.recipeOutputIds[recipeInProgressIndex][0]
-                                        && output[1][b] + Recipes.recipeOutputQuants[recipeInProgressIndex][0] <= Game1.ITEM_STACK_SIZE)
-                                    {
-                                        recipeOutputIndex = b;
-                                        break;
-                                    }
-                                }
-                                if (recipeOutputIndex == -1)
-                                {
-                                    recipeOutputIndex = Array.IndexOf(output[0],-1);
-                                }
+                                recipeOutputIndex = Array.IndexOf(output[0],-1);
                             }
-                            if (recipeOutputIndex != -1)
-                            {
-                                output[0][recipeOutputIndex] = Recipes.recipeOutputIds[recipeInProgressIndex][0];
-                                output[1][recipeOutputIndex] = (output[1][recipeOutputIndex]<1)?Recipes.recipeOutputQuants[recipeInProgressIndex][0]:
-                                    output[1][recipeOutputIndex]+ Recipes.recipeOutputQuants[recipeInProgressIndex][0];
-
-                                timer = -1;
-                                recipeInProgressIndex = -1;
-                                recipeOutputIndex = -1;
-                                state = 0;
-                            }
-
-                            /*inventory[1][Array.IndexOf(inventory[0], 33)] = (inventory[1][Array.IndexOf(inventory[0], 33)] > 1) ? (inventory[1][Array.IndexOf(inventory[0], 33)] - 1) : -1;
-                            if (inventory[1][Array.IndexOf(inventory[0], 33)] < 1) inventory[0][Array.IndexOf(inventory[0], 33)] = -1;
-                            output[0][0] = 34;
-
-                            output[1][0] = (output[1][0] > 0) ? output[1][0] + 1 : 1;
-                            Debug.WriteLine("" + output[0]);
-                            Debug.WriteLine("" + output[1]);*/
                         }
+                        if (recipeOutputIndex != -1)
+                        {
+                            output[0][recipeOutputIndex] = Recipes.recipeOutputIds[recipeInProgressIndex][0];
+                            output[1][recipeOutputIndex] = (output[1][recipeOutputIndex]<1)?Recipes.recipeOutputQuants[recipeInProgressIndex][0]:
+                                output[1][recipeOutputIndex]+ Recipes.recipeOutputQuants[recipeInProgressIndex][0];
+
+                            timer = -1;
+                            recipeInProgressIndex = -1;
+                            recipeOutputIndex = -1;
+                            state = 0;
+                        }
+
+                        /*inventory[1][Array.IndexOf(inventory[0], 33)] = (inventory[1][Array.IndexOf(inventory[0], 33)] > 1) ? (inventory[1][Array.IndexOf(inventory[0], 33)] - 1) : -1;
+                        if (inventory[1][Array.IndexOf(inventory[0], 33)] < 1) inventory[0][Array.IndexOf(inventory[0], 33)] = -1;
+                        output[0][0] = 34;
+
+                        output[1][0] = (output[1][0] > 0) ? output[1][0] + 1 : 1;
+                        Debug.WriteLine("" + output[0]);
+                        Debug.WriteLine("" + output[1]);*/
                     }
                     break;
                 case 13:
@@ -284,6 +332,19 @@ namespace Game1
         {
             switch (tileType)
             {
+                case 39:
+                    if (Game1.currentMap.mapTiles[tilex / 16, tiley / 16 - 1] == 39
+                        && Game1.currentMap.mapTiles[tilex / 16 + 1, tiley / 16] == 39
+                        && Game1.currentMap.mapTiles[tilex / 16 + 1, tiley / 16 - 1] == 39)
+                    {
+                        Game1.bigTiles[BigTile.FindTileId(tilex, tiley - 16)].Destroy();
+                        Game1.bigTiles[BigTile.FindTileId(tilex + 16, tiley)].Destroy();
+                        Game1.bigTiles[BigTile.FindTileId(tilex + 16, tiley - 16)].Destroy();
+                        BigTile newTile = new BigTile(40, tilex, tiley, 0, new int[0][]);
+                        Game1.bigTiles.Add(newTile);
+                        Game1.bigTiles.Remove(this);
+                    }
+                    break;
                 case 32:
                     state++;
                     if (state > 4) state = 1;
@@ -393,6 +454,31 @@ namespace Game1
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
             switch (tileType)
             {
+                case 41:
+                    Game1.spriteBatch.Begin();
+                    //draw fluids first
+                    for (int i = 0; i < 16; i++)
+                    {
+                        if (i<(int)(fluidPercent/100.0*16)) Game1.fluids.DrawTile(Game1.spriteBatch, fluidId, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery+15-i));
+                    }
+
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 153, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                    Game1.spriteBatch.End();
+                    DrawFullAutoTile(136);
+                    break;
+                case 40:
+                    Game1.spriteBatch.Begin();
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 134, new Vector2(this.tilex - Player.playerx + 16, this.tiley - Player.playery - 16));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 132, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery - 16));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 133, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 135, new Vector2(this.tilex - Player.playerx + 16, this.tiley - Player.playery));
+                    Game1.spriteBatch.End();
+                    break;
+                case 39:
+                    Game1.spriteBatch.Begin();
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 131, position);
+                    Game1.spriteBatch.End();
+                    break;
                 case 32:
                     Game1.spriteBatch.Begin();
                     //Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
@@ -708,6 +794,102 @@ namespace Game1
                 }
             }
             OuterLoop:;
+        }
+        ///fully draws an autotile of this item - keep tileorder in the spritesheet in mind
+        private void DrawFullAutoTile(int startTileId)
+        {
+            int[,] surround = new int[3, 3];
+            int[,] map = Game1.currentMap.mapTiles;
+            Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
+
+            surround[0, 0] = map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16 - 1];
+            surround[1, 0] = map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1];
+            surround[2, 0] = map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16 - 1];
+            surround[0, 1] = map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16];
+            surround[2, 1] = map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16];
+            surround[0, 2] = map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16 + 1];
+            surround[1, 2] = map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1];
+            surround[2, 2] = map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16 + 1];
+
+            Game1.spriteBatch.Begin();
+            if (surround[1, 0] != tileType && surround[1, 2] != tileType && surround[0, 1] != tileType && surround[2, 1] != tileType)
+            {
+                Game1.tiles.DrawTile(Game1.spriteBatch, startTileId, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+            }
+            else
+            {
+                if (surround[1, 0] != tileType && surround[1, 2] != tileType && surround[0, 1] == tileType && surround[2, 1] != tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 5, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+                else if (surround[1, 0] == tileType && surround[1, 2] != tileType && surround[0, 1] != tileType && surround[2, 1] != tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 6, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+                else if (surround[1, 0] != tileType && surround[1, 2] == tileType && surround[0, 1] != tileType && surround[2, 1] != tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 7, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+                else if (surround[1, 0] != tileType && surround[1, 2] != tileType && surround[0, 1] != tileType && surround[2, 1] == tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 8, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+
+                else if (surround[1, 0] == tileType && surround[1, 2] != tileType && surround[0, 1] != tileType && surround[2, 1] == tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 1, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+                else if (surround[1, 0] == tileType && surround[1, 2] != tileType && surround[0, 1] == tileType && surround[2, 1] != tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 2, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+                else if (surround[1, 0] != tileType && surround[1, 2] == tileType && surround[0, 1] == tileType && surround[2, 1] != tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 3, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+                else if (surround[1, 0] != tileType && surround[1, 2] == tileType && surround[0, 1] != tileType && surround[2, 1] == tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 4, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+
+                else if (surround[1, 0] == tileType && surround[1, 2] == tileType && surround[2, 1] != tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 12, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                    if (surround[0, 1] != tileType) Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 11, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+                else if (surround[1, 0] == tileType && surround[1, 2] == tileType && surround[0, 1] != tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 11, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+
+                else if (surround[0, 1] == tileType && surround[2, 1] == tileType && surround[1, 2] != tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 10, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                    if (surround[1, 0] != tileType) Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 9, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+                else if (surround[0, 1] == tileType && surround[2, 1] == tileType && surround[1, 0] != tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 9, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+                
+                if (surround[0, 1] == tileType && surround[1, 2] == tileType && surround[0, 2] != tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 13, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+                if (surround[0, 1] == tileType && surround[1, 0] == tileType && surround[0, 0] != tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 14, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+                if (surround[2, 1] == tileType && surround[1, 2] == tileType && surround[2, 2] != tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 15, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+                if (surround[2, 1] == tileType && surround[1, 0] == tileType && surround[2, 0] != tileType)
+                {
+                    Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 16, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
+                }
+            }
+            Game1.spriteBatch.End();
         }
         ///finds an endpoint pipe (a puller) from the given starting pipe (a pusher) and returns an array [x,y]
         public static int[] FindEndPoint(int x, int y, int direction)

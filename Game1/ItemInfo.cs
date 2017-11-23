@@ -18,7 +18,7 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 43;
+        public const int ITEM_COUNT = 46;
         public const int SCHEMATICS_COUNT = 2;
         public bool[] ITEM_ENDPOINT = new bool[ITEM_COUNT]; // if true, this item is an endpoint for pipes
         public String[] ITEM_NAME = new String[ITEM_COUNT];
@@ -78,6 +78,11 @@ namespace Game1
                 ITEM_STACKABLE[i] = true;
             }
 
+            ITEM_YIELD[34] = true;
+
+            ITEM_YIELD_IDS[34] = new int[] { 33 };
+
+            ITEM_YIELD_QUANTITIES[34] = new int[] { 2 };
 
             ITEM_ENDPOINT[8] = true;
             ITEM_ENDPOINT[9] = true;
@@ -101,6 +106,9 @@ namespace Game1
             ITEM_BIGTILE[30] = true;
             ITEM_BIGTILE[31] = true;
             ITEM_BIGTILE[32] = true;
+            ITEM_BIGTILE[39] = true;
+            ITEM_BIGTILE[40] = true;
+            ITEM_BIGTILE[41] = true;
 
             ITEM_BIGTILE_WIDTH[8] = 1;
             ITEM_BIGTILE_WIDTH[9] = 1;
@@ -114,6 +122,9 @@ namespace Game1
             ITEM_BIGTILE_WIDTH[30] = 1;
             ITEM_BIGTILE_WIDTH[31] = 1;
             ITEM_BIGTILE_WIDTH[32] = 1;
+            ITEM_BIGTILE_WIDTH[39] = 1;
+            ITEM_BIGTILE_WIDTH[40] = 2;
+            ITEM_BIGTILE_WIDTH[41] = 1;
 
             ITEM_BIGTILE_HEIGHT[8] = 1;
             ITEM_BIGTILE_HEIGHT[9] = 1;
@@ -127,6 +138,9 @@ namespace Game1
             ITEM_BIGTILE_HEIGHT[30] = 1;
             ITEM_BIGTILE_HEIGHT[31] = 1;
             ITEM_BIGTILE_HEIGHT[32] = 1;
+            ITEM_BIGTILE_HEIGHT[39] = 1;
+            ITEM_BIGTILE_HEIGHT[40] = 2;
+            ITEM_BIGTILE_HEIGHT[41] = 1;
 
             ITEM_EQUIPPABLE[22] = true;
             ITEM_EQUIPPABLE[23] = true;
@@ -183,6 +197,10 @@ namespace Game1
             ITEM_PLACEABLE[33] = true;
             ITEM_PLACEABLE[34] = true;
             ITEM_PLACEABLE[35] = true;
+            ITEM_PLACEABLE[36] = true;
+            ITEM_PLACEABLE[39] = true;
+            ITEM_PLACEABLE[40] = true;
+            ITEM_PLACEABLE[41] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
@@ -199,6 +217,7 @@ namespace Game1
             ITEM_REQUIRE_SURFACE[19] = true;
             ITEM_REQUIRE_SURFACE[27] = true;
             ITEM_REQUIRE_SURFACE[28] = true;
+            ITEM_REQUIRE_SURFACE[36] = true;
 
             ITEM_SOLID[4] = true;
             ITEM_SOLID[5] = true;
@@ -222,6 +241,8 @@ namespace Game1
             ITEM_TOOL_TIER[33] = 0;
             ITEM_TOOL_TIER[34] = 1;
             ITEM_TOOL_TIER[35] = 0;
+            ITEM_TOOL_TIER[36] = 0;
+            ITEM_TOOL_TIER[39] = 0;
 
             //do NOT add a blockID for BigTile items
             ITEM_BLOCKID[0] = -1;
@@ -232,12 +253,6 @@ namespace Game1
             ITEM_BLOCKID[5] = 0;
             ITEM_BLOCKID[6] = 39;
             ITEM_BLOCKID[7] = 86;
-            /*ITEM_BLOCKID[8] = 35;
-            ITEM_BLOCKID[9] = 35;
-            ITEM_BLOCKID[10] = 35;
-            ITEM_BLOCKID[11] = 35;
-            ITEM_BLOCKID[12] = 35;
-            ITEM_BLOCKID[13] = 35;*/
             ITEM_BLOCKID[14] = -1;
             ITEM_BLOCKID[15] = -1;
             ITEM_BLOCKID[16] = -1;
@@ -250,6 +265,8 @@ namespace Game1
             ITEM_BLOCKID[33] = 5;
             ITEM_BLOCKID[34] = 4;
             ITEM_BLOCKID[35] = 129;
+            ITEM_BLOCKID[36] = 130;
+            ITEM_BLOCKID[39] = 131;
 
             ITEM_STACKABLE[14] = false;
             ITEM_STACKABLE[16] = false;
@@ -307,6 +324,9 @@ namespace Game1
             ITEM_NAME[36] = "Controller";
             ITEM_NAME[37] = "Blank Recipe";
             ITEM_NAME[38] = "Blank Blueprint";
+            ITEM_NAME[39] = "Assembler";
+            ITEM_NAME[40] = "Large Assembler";
+            ITEM_NAME[41] = "Tank";
 
             //recipes
             ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + 0] = "Recipe: Furnace";

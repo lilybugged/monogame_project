@@ -30,7 +30,7 @@ namespace Game1
         public static AnimatedSprite equip_icons;
         public static AnimatedSprite items_32;
         public static AnimatedSprite tiles;
-        public static AnimatedSprite tiles2;
+        public static AnimatedSprite fluids;
         public static AnimatedSprite portrait_items;
         public static Texture2D pixel;
         public static Texture2D[] cursor = new Texture2D[4];
@@ -70,10 +70,12 @@ namespace Game1
         public static int[] uiPosY = new int[4];
         public static List<BigTile> bigTiles; //access using the tile id
 
-        //public static int STARTING_WINDOW_WIDTH = 1280;
-        //public static int STARTING_WINDOW_HEIGHT = 960;
-        public static int WINDOW_WIDTH = 1368;
-        public static int WINDOW_HEIGHT = 912;
+        //STARTING_WINDOW_WIDTH = 1280;
+        //STARTING_WINDOW_HEIGHT = 960;
+        public static int WINDOW_WIDTH = 1280;
+        public static int WINDOW_HEIGHT = 960;
+        public static bool WINDOW_FULLSCREEN = false;
+
         public const int ITEM_STACK_SIZE = 99;
         public const int PLAYER_RANGE_REQUIREMENT = 64;
 
@@ -142,10 +144,23 @@ namespace Game1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            if (WINDOW_FULLSCREEN)
+            {
+                WINDOW_WIDTH = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2;
+                WINDOW_HEIGHT = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2;
+                this.graphics.IsFullScreen = true;
+            }
+            else
+            {
+                WINDOW_WIDTH = 1280;
+                WINDOW_HEIGHT = 960;
+                this.graphics.IsFullScreen = false;
+            }
+            
             target = new RenderTarget2D(GraphicsDevice, WINDOW_WIDTH, WINDOW_HEIGHT);
             this.graphics.PreferredBackBufferWidth = WINDOW_WIDTH * 2;
             this.graphics.PreferredBackBufferHeight = WINDOW_HEIGHT * 2;
-            this.graphics.IsFullScreen = true;
+            
             this.graphics.PreferMultiSampling = false;
             this.graphics.ApplyChanges();
             graphics.ApplyChanges();
@@ -177,7 +192,8 @@ namespace Game1
             equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 7, 6);
 
             equip_icons = new AnimatedSprite(Content.Load<Texture2D>("img/equip_slots"), 5, 4);
-            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 12, 12);
+            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 13, 12);
+            fluids = new AnimatedSprite(Content.Load<Texture2D>("img/bg_fluids"), 2, 1);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
             portrait_items = new AnimatedSprite(Content.Load<Texture2D>("img/portrait_items"), 2, 3);
             cursor[0] = Content.Load<Texture2D>("img/cursor");

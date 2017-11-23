@@ -366,20 +366,7 @@ namespace Game1
                 }
                 else (Game1.itemInfo.ITEM_BACKTILE[cursorItem]? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles)[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem;
                 // Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" placeItem:"+ ((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16))+","+((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))+" "+cursorItem);
-                /*if (cursorItem>=8&&cursorItem<=13) //small chest of any rank
-                {
-                    int[][] inv = new int[2][];
-                    for (int i = 0; i < 2; i++)
-                    {
-                        inv[i] = new int[7*(cursorItem-7)];
-                        for (int a = 0; a < 7 * (cursorItem-7); a++)
-                        {
-                            inv[i][a] = -1;
-                        }
-                    }
-                    Chest chest = new Chest(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16, cursorItem-8, inv);
-                    Game1.chestInventories.Add(chest);
-                }*/
+                
                 if (cursorQuantity > 1)
                 {
                     //if (itemIsCarried) Game1.uiObjects[2].inventoryItemQuantities[UI.selectedCarry]--;
@@ -388,11 +375,6 @@ namespace Game1
                 }
                 else
                 {
-                    /*if (itemIsCarried)
-                    {
-                        Game1.uiObjects[2].inventoryItemIds[UI.selectedCarry] = -1;
-                        Game1.uiObjects[2].inventoryItemQuantities[UI.selectedCarry] = -1;
-                    }*/
                     cursorItem = -1;
                     cursorQuantity = -1;
                     Game1.globalCursor = 0;
@@ -424,18 +406,20 @@ namespace Game1
                         if (blockTimer == 0)
                         {
                             blockTimer = -1;
-                            if (Game1.itemInfo.ITEM_YIELD_IDS[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]] == null)
+                            if ((BigTile.FindTileId((Player.playerx) + (MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)), (Player.playery) + (MouseKeyboardInfo.mouseState.Y + (Player.playery % 16))) != -1 && Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]] || !Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]]) 
+                                && Game1.itemInfo.ITEM_YIELD[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]])
                             {
-                                UI.AddToInventory(Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))], 1);
-                            }
-                            else
-                            {
-                                for (int i=0; i < Game1.itemInfo.ITEM_YIELD_IDS[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]].Length; i++)
+                                if (Game1.itemInfo.ITEM_YIELD_IDS[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]]!=null)
                                 {
-                                    UI.AddToInventory(Game1.itemInfo.ITEM_YIELD_IDS[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]][i],
-                                        Game1.itemInfo.ITEM_YIELD_QUANTITIES[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]][i]);
+                                    for (int i=0;i< Game1.itemInfo.ITEM_YIELD_IDS[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]].Length; i++)
+                                    {
+                                        UI.AddToInventory(Game1.itemInfo.ITEM_YIELD_IDS[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]][i],
+                                            Game1.itemInfo.ITEM_YIELD_QUANTITIES[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]][i]);
+                                    }
                                 }
+                                else UI.AddToInventory(Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))], 1);
                             }
+                            else UI.AddToInventory(Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))], 1);
                             if (BigTile.FindTileId((Player.playerx) + (MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)), (Player.playery) + (MouseKeyboardInfo.mouseState.Y + (Player.playery % 16))) != -1 && Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]])
                             {
                                 Game1.bigTiles[BigTile.FindTileId((Player.playerx) + (MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)), (Player.playery) + (MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)))].Destroy();
@@ -916,9 +900,9 @@ namespace Game1
             {
                 for (int i = x / 16 * 16; i < x + Game1.itemInfo.ITEM_BIGTILE_WIDTH[cursorItem] * 16; i++)
                 {
-                    for (int a = y / 16 * 16 - Game1.itemInfo.ITEM_BIGTILE_HEIGHT[cursorItem] * 16 + 16; a < y / 16 * 16 + 16; a++)
+                    for (int a = y / 16 * 16 - (Game1.itemInfo.ITEM_BIGTILE_HEIGHT[cursorItem]) * 16 + 16; a < y / 16 * 16 + 16; a++)
                     {
-                        if (i>0 && a>0 && i< Game1.currentMap.mapTiles.GetLength(0) && a< Game1.currentMap.mapTiles.GetLength(1) && Game1.currentMap.mapTiles[i / 16, a / 16] !=-1) return false;
+                        if (i>0 && a>0 && i< Game1.currentMap.mapTiles.GetLength(0)*16 && a< Game1.currentMap.mapTiles.GetLength(1)*16 && Game1.currentMap.mapTiles[i / 16, a / 16] !=-1) return false;
                     }
                 }
             }
