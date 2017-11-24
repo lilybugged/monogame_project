@@ -79,10 +79,13 @@ namespace Game1
             }
 
             ITEM_YIELD[34] = true;
+            ITEM_YIELD[40] = true;
 
             ITEM_YIELD_IDS[34] = new int[] { 33 };
+            ITEM_YIELD_IDS[40] = new int[] { 39 };
 
             ITEM_YIELD_QUANTITIES[34] = new int[] { 2 };
+            ITEM_YIELD_QUANTITIES[40] = new int[] { 4 };
 
             ITEM_ENDPOINT[8] = true;
             ITEM_ENDPOINT[9] = true;
@@ -243,6 +246,7 @@ namespace Game1
             ITEM_TOOL_TIER[35] = 0;
             ITEM_TOOL_TIER[36] = 0;
             ITEM_TOOL_TIER[39] = 0;
+            ITEM_TOOL_TIER[40] = 0;
 
             //do NOT add a blockID for BigTile items
             ITEM_BLOCKID[0] = -1;
