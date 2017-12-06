@@ -29,7 +29,7 @@ namespace Game1
         public int[][] output; // first index is itemid(0)/quantity(1), second is position in the inventory
         public int tileState = 0; // dependent on what the tile is
         public int fluidId = 0; // for tanks and stuff containing fluids
-        public int fluidPercent = 0; // the percentage of this item's capacity that is filled by liquid
+        public double fluidPercent = 0; // the percentage of this item's capacity that is filled by liquid
         int tileRank = 0; //0-2 - small, medium, large
         Color[] tileRankColors = new Color[] {Color.White, new Color(128,128,128,255), new Color(229,137,104, 255),
         new Color(199,199,199, 255),new Color(244,220,151, 255),new Color(188,216,237, 255)};
@@ -53,26 +53,28 @@ namespace Game1
                     Game1.currentMap.mapTiles[i / 16, a / 16] = tileType;
                 }
             }
-            
+
             switch (tileType)
             {
                 case 41:
-                    Random random = new Random();
-                    int randomNumber = random.Next(0, 100);
-                    fluidPercent = randomNumber;
+                    foreach (BigTile tile in Game1.bigTiles)
+                    {
+                        if (tile.tileType == 41) tile.timer = 200;
+                    }
+                    timer = 200;
                     break;
                 case 31:
                     int[,] map = (Game1.itemInfo.ITEM_BACKTILE[tileType] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
                     Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
                     endpoint = new int[] { -1, -1 };
                     endpoint = FindEndPoint(tilex / 16, tiley / 16, 3);
-                    Debug.WriteLine(""+endpoint[0]+","+endpoint[1]);
+                    Debug.WriteLine("" + endpoint[0] + "," + endpoint[1]);
                     break;
                 case 29:
                     inventory = new int[2][];
                     inventory[0] = new int[8];
                     inventory[1] = new int[8];
-                    for (int i=0;i<2;i++)
+                    for (int i = 0; i < 2; i++)
                     {
                         for (int a = 0; a < 8; a++)
                         {
@@ -102,7 +104,7 @@ namespace Game1
                 case 9:
                 case 8:
                     inventory = new int[2][];
-                    inventory[0] = new int[(tileType-7)*7];
+                    inventory[0] = new int[(tileType - 7) * 7];
                     inventory[1] = new int[(tileType - 7) * 7];
                     for (int i = 0; i < 2; i++)
                     {
@@ -122,49 +124,7 @@ namespace Game1
             switch (tileType)
             {
                 case 41:
-                    if (Game1.currentMap.mapTiles[tilex/ 16, tiley / 16 + 1]==tileType && BigTile.FindTileId(tilex, tiley + 16) != -1)
-                    {
-                        if (Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidId == fluidId)
-                        {
-                            if (Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent + fluidPercent > 100)
-                            {
-                                fluidPercent = fluidPercent - (100 - Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent);
-                                Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent = 100;
-                            }
-                            else
-                            {
-                                Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent += fluidPercent;
-                                fluidPercent = 0;
-                            }
-
-                            
-
-                        }
-                    }
-
-                    //if (fluidPercent > 0)
-                    //{
-                        int total = 0;
-                        /*if (BigTile.FindTileId(tilex - 16, tiley) != -1 && BigTile.FindTileId(tilex + 16, tiley) != -1)
-                        {
-                            total = Game1.bigTiles[BigTile.FindTileId(tilex, tiley)].fluidPercent + Game1.bigTiles[BigTile.FindTileId(tilex + 16, tiley)].fluidPercent + Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidPercent;
-                            Game1.bigTiles[BigTile.FindTileId(tilex + 16, tiley)].fluidPercent = total / 3;
-                            Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidPercent = total / 3;
-                            fluidPercent = total / 3;
-                        }
-                        else */if (BigTile.FindTileId(tilex - 16, tiley) != -1)
-                        {
-                            total = Game1.bigTiles[BigTile.FindTileId(tilex, tiley)].fluidPercent + Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidPercent;
-                            Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidPercent = total / 2 + total % 2;
-                            fluidPercent = total / 2;
-                        }
-                        /*else if (BigTile.FindTileId(tilex + 16, tiley) != -1)
-                        {
-                            total = Game1.bigTiles[BigTile.FindTileId(tilex, tiley)].fluidPercent + Game1.bigTiles[BigTile.FindTileId(tilex + 16, tiley)].fluidPercent;
-                            Game1.bigTiles[BigTile.FindTileId(tilex + 16, tiley)].fluidPercent = total / 2;
-                            fluidPercent = total / 2;
-                        }*/
-                    //}
+                    if (timer > 0) TankUpdate();
                     break;
                 case 31:
                     int[,] map = Game1.currentMap.mapTiles;
@@ -172,20 +132,20 @@ namespace Game1
                     switch (state)
                     {
                         case 1:
-                            if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]!=-1
+                            if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1
                                 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]]
                                 && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != 32
                                 && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != 31)
                             {
                                 endpoint = FindEndPoint(tilex / 16, tiley / 16 - 1, 1);
-                                if (Game1.globalTick > 14 && BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)!=-1)
+                                if (Game1.globalTick > 14 && BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16) != -1)
                                 {
-                                    PushAnItem(Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)],endpoint);
+                                    PushAnItem(Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)], endpoint);
                                 }
                             }
                             break;
                         case 2:
-                            if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 
+                            if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1
                                 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]]
                                 && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != 32
                                 && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != 31)
@@ -199,7 +159,7 @@ namespace Game1
                             }
                             break;
                         case 3:
-                            if (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 
+                            if (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1
                                 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]]
                                 && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != 32
                                 && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != 31)
@@ -212,7 +172,7 @@ namespace Game1
                             }
                             break;
                         case 4:
-                            if (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 
+                            if (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1
                                 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]]
                                 && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != 32
                                 && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != 31)
@@ -225,7 +185,7 @@ namespace Game1
                             }
                             break;
                     }
-                    
+
                     break;
                 case 29:
                     if (timer == -1)
@@ -252,7 +212,7 @@ namespace Game1
                                         inventory[1][a] = -1;
                                     }
                                     goto Outerloop;
-                                        
+
                                     //we'll check for an open output slot when the timer goes off if need be
                                     //items can move around during processing time is why
                                 }
@@ -275,14 +235,14 @@ namespace Game1
                             }
                             if (recipeOutputIndex == -1)
                             {
-                                recipeOutputIndex = Array.IndexOf(output[0],-1);
+                                recipeOutputIndex = Array.IndexOf(output[0], -1);
                             }
                         }
                         if (recipeOutputIndex != -1)
                         {
                             output[0][recipeOutputIndex] = Recipes.recipeOutputIds[recipeInProgressIndex][0];
-                            output[1][recipeOutputIndex] = (output[1][recipeOutputIndex]<1)?Recipes.recipeOutputQuants[recipeInProgressIndex][0]:
-                                output[1][recipeOutputIndex]+ Recipes.recipeOutputQuants[recipeInProgressIndex][0];
+                            output[1][recipeOutputIndex] = (output[1][recipeOutputIndex] < 1) ? Recipes.recipeOutputQuants[recipeInProgressIndex][0] :
+                                output[1][recipeOutputIndex] + Recipes.recipeOutputQuants[recipeInProgressIndex][0];
 
                             timer = -1;
                             recipeInProgressIndex = -1;
@@ -320,7 +280,7 @@ namespace Game1
                     {
                         state = 0;
                     }
-                    if (state == 2 && (Game1.openChest==-1 || Game1.bigTiles[Game1.openChest] != this))
+                    if (state == 2 && (Game1.openChest == -1 || Game1.bigTiles[Game1.openChest] != this))
                     {
                         state = 3;
                         Debug.WriteLine("closing");
@@ -332,6 +292,13 @@ namespace Game1
         {
             switch (tileType)
             {
+                case 41:
+                    fluidPercent = 100;
+                    foreach (BigTile tile in Game1.bigTiles)
+                    {
+                        if (tile.tileType == 41) tile.timer = 100;
+                    }
+                    break;
                 case 39:
                     if (Game1.currentMap.mapTiles[tilex / 16, tiley / 16 - 1] == 39
                         && Game1.currentMap.mapTiles[tilex / 16 + 1, tiley / 16] == 39
@@ -368,9 +335,9 @@ namespace Game1
                             endpoint = FindEndPoint(tilex / 16 - 1, tiley / 16, state);
                             break;
                     }
-                    
-                    Debug.WriteLine(""+endpoint[0]+", "+endpoint[1]);
-                    if (endpoint[0] != -1) Debug.WriteLine(""+Game1.currentMap.mapTiles[endpoint[0],endpoint[1]]);
+
+                    Debug.WriteLine("" + endpoint[0] + ", " + endpoint[1]);
+                    if (endpoint[0] != -1) Debug.WriteLine("" + Game1.currentMap.mapTiles[endpoint[0], endpoint[1]]);
                     UpdateNearbyPipes();
                     break;
                 case 30:
@@ -412,10 +379,10 @@ namespace Game1
                 case 10:
                 case 9:
                 case 8:
-                    Game1.uiObjects[1] = new UI(Game1.uiPosX[1], Game1.uiPosY[1], tileType-7, this.inventory[0],this.inventory[1], null, null, 2, 7);
+                    Game1.uiObjects[1] = new UI(Game1.uiPosX[1], Game1.uiPosY[1], tileType - 7, this.inventory[0], this.inventory[1], null, null, 2, 7);
                     Game1.uiToggle = false;
-                    
-                    if (state == 2 && Game1.openChest == BigTile.FindTileId(tilex,tiley))
+
+                    if (state == 2 && Game1.openChest == BigTile.FindTileId(tilex, tiley))
                     {
                         Debug.WriteLine("closed");
                         Game1.uiObjects[1] = null;
@@ -441,7 +408,7 @@ namespace Game1
                 default:
                     Debug.WriteLine("default trigger");
                     break;
-                
+
             }
         }
         public void Draw()
@@ -459,7 +426,7 @@ namespace Game1
                     //draw fluids first
                     for (int i = 0; i < 16; i++)
                     {
-                        if (i<(int)(fluidPercent/100.0*16)) Game1.fluids.DrawTile(Game1.spriteBatch, fluidId, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery+15-i));
+                        if (i < (int)(Math.Round(fluidPercent) / 100.0 * 16)) Game1.fluids.DrawTile(Game1.spriteBatch, fluidId, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery + 15 - i));
                     }
 
                     Game1.tiles.DrawTile(Game1.spriteBatch, 153, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
@@ -491,19 +458,19 @@ namespace Game1
                             state = 1;
                         }
                         else if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]]
-                            && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]!=31 && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]!=32)
+                            && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != 31 && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != 32)
                         {
                             Game1.tiles.DrawTile(Game1.spriteBatch, 120, position); //above
                             state = 2;
                         }
                         else if (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]]
-                            && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]!=31 && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]!=32)
+                            && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != 31 && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != 32)
                         {
                             Game1.tiles.DrawTile(Game1.spriteBatch, 121, position); //left
                             state = 3;
                         }
                         else if (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]]
-                            && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]!=31 && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]!=32)
+                            && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != 31 && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != 32)
                         {
                             Game1.tiles.DrawTile(Game1.spriteBatch, 122, position); //right
                             state = 4;
@@ -548,7 +515,7 @@ namespace Game1
                     break;
                 case 30:
                     Game1.spriteBatch.Begin();
-                    Game1.tiles.DrawTile(Game1.spriteBatch, 110+state, position);
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 110 + state, position);
                     Game1.spriteBatch.End();
                     break;
                 case 29:
@@ -643,7 +610,7 @@ namespace Game1
         }
         public void Destroy()
         {
-            if (width==1 && height == 1)
+            if (width == 1 && height == 1)
             {
                 Game1.currentMap.mapTiles[tilex / 16, tiley / 16] = -1;
             }
@@ -657,7 +624,7 @@ namespace Game1
                     }
                 }
             }
-            if (tileType==30) UpdateNearbyPipes();
+            if (tileType == 30) UpdateNearbyPipes();
             Game1.bigTiles.Remove(this);
         }
         public static int FindTileId(int idx, int idy)
@@ -666,8 +633,8 @@ namespace Game1
             {
                 //idx = idx - idx % 16;
                 //idy = idy - idy % 16;
-                if (idx >= Game1.bigTiles[i].tilex && idx < Game1.bigTiles[i].tilex + Game1.bigTiles[i].width*16 &&
-                    idy >= Game1.bigTiles[i].tiley - Game1.bigTiles[i].height * 16 + 16&& idy < Game1.bigTiles[i].tiley + 16)
+                if (idx >= Game1.bigTiles[i].tilex && idx < Game1.bigTiles[i].tilex + Game1.bigTiles[i].width * 16 &&
+                    idy >= Game1.bigTiles[i].tiley - Game1.bigTiles[i].height * 16 + 16 && idy < Game1.bigTiles[i].tiley + 16)
                 {
                     return i;
                 }
@@ -678,7 +645,7 @@ namespace Game1
 
 
         // MORE FUNCTIONS
-        
+
         /// <summary>
         /// finds an item in a given inventory and "pushes" it to another given inventory
         /// MUST ONLY be called from a tileType 32 endpoint
@@ -689,10 +656,10 @@ namespace Game1
             //check if there are items in the starting inventory's output
             for (int i = 0; i < startInv.output[0].Length; i++)
             {
-                if (startInv.output[0][i] != -1 && (endPoint[0] != -1 && BigTile.FindTileId(endPoint[0]*16, endPoint[1]*16) != -1))
+                if (startInv.output[0][i] != -1 && (endPoint[0] != -1 && BigTile.FindTileId(endPoint[0] * 16, endPoint[1] * 16) != -1))
                 {
                     // check if there's a spot in the endpoint's attached inventory, if there is one
-                    switch(Game1.bigTiles[BigTile.FindTileId(endPoint[0]*16, endPoint[1]*16)].state)
+                    switch (Game1.bigTiles[BigTile.FindTileId(endPoint[0] * 16, endPoint[1] * 16)].state)
                     {
                         case 1:
                             if (BigTile.FindTileId(endPoint[0] * 16, endPoint[1] * 16 + 16) != -1)
@@ -705,12 +672,12 @@ namespace Game1
                                         end.inventory[0][a] = startInv.output[0][i];
                                         end.inventory[1][a] = 1;
                                         startInv.output[1][i]--;
-                                        if (startInv.output[1][i]<1) startInv.output[0][i] = -1;
+                                        if (startInv.output[1][i] < 1) startInv.output[0][i] = -1;
                                         goto OuterLoop;
                                     }
                                     else if (end.inventory[0][a] == startInv.output[0][i] && end.inventory[1][a] + 1 <= Game1.ITEM_STACK_SIZE)
                                     {
-                                        end.inventory[1][a] ++;
+                                        end.inventory[1][a]++;
                                         startInv.output[1][i]--;
                                         if (startInv.output[1][i] < 1) startInv.output[0][i] = -1;
                                         goto OuterLoop;
@@ -871,7 +838,7 @@ namespace Game1
                 {
                     Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 9, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
                 }
-                
+
                 if (surround[0, 1] == tileType && surround[1, 2] == tileType && surround[0, 2] != tileType)
                 {
                     Game1.tiles.DrawTile(Game1.spriteBatch, startTileId + 13, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
@@ -897,9 +864,9 @@ namespace Game1
             if (Game1.currentMap.mapTiles[x, y] == 32)
             {
                 //Debug.WriteLine(""+x+","+y);
-                if (BigTile.FindTileId(x*16, y* 16) != -1)
+                if (BigTile.FindTileId(x * 16, y * 16) != -1)
                 {
-                    switch(Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].state)
+                    switch (Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].state)
                     {
                         case 1:
                             if (direction == 2) return new int[] { x, y };
@@ -1001,7 +968,7 @@ namespace Game1
             }
             else return new int[] { -1, -1 };
         }
-        
+
         /// <summary>
         /// updates pipes above, below, left and right of this pipe,
         /// but not the pipe itself
@@ -1013,7 +980,7 @@ namespace Game1
 
             if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 30)
             {
-                Debug.WriteLine(""+tilex+','+tiley);
+                Debug.WriteLine("" + tilex + ',' + tiley);
                 Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].PipeUpdate();
                 Debug.WriteLine("checked upward");
             }
@@ -1048,7 +1015,7 @@ namespace Game1
             int[,] map = (Game1.itemInfo.ITEM_BACKTILE[30] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
 
-            
+
             {
                 if (((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 30)
                 || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3
@@ -1135,6 +1102,39 @@ namespace Game1
                     //none
                     state = 0;
                 }
+            }
+        }
+        ///Updates this tank
+        public void TankUpdate()
+        {
+            //move fluid downward
+            if (Game1.currentMap.mapTiles[tilex / 16, tiley / 16 + 1] == tileType && BigTile.FindTileId(tilex, tiley + 16) != -1)
+            {
+                if (Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidId == fluidId)
+                {
+                    if (Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent + fluidPercent > 100)
+                    {
+                        fluidPercent = fluidPercent - (100 - Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent);
+                        Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent = 100;
+                    }
+                    else
+                    {
+                        Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent += fluidPercent;
+                        fluidPercent = 0;
+                    }
+
+
+
+                }
+            }
+
+            //average fluid horizontally
+            double total = 0;
+            if (BigTile.FindTileId(tilex - 16, tiley) != -1)
+            {
+                total = Game1.bigTiles[BigTile.FindTileId(tilex, tiley)].fluidPercent + Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidPercent;
+                Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidPercent = total / 2;
+                fluidPercent = total / 2;
             }
         }
     }
