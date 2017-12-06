@@ -625,6 +625,7 @@ namespace Game1
                 }
             }
             if (tileType == 30) UpdateNearbyPipes();
+            Debug.WriteLine("destroy: "+ Game1.bigTiles.IndexOf(this));
             Game1.bigTiles.Remove(this);
         }
         public static int FindTileId(int idx, int idy)

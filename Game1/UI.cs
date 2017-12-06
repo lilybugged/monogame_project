@@ -134,7 +134,7 @@ namespace Game1
 
                     if (cursorItemIndex > -1)
                     {
-                        Debug.WriteLine("" + cursorItemIndex);
+                        //Debug.WriteLine("" + cursorItemIndex);
                         inventoryItemIds[cursorItemIndex] = temp;
                         inventoryItemQuantities[cursorItemIndex] = temp2;
                     }
@@ -423,10 +423,9 @@ namespace Game1
                                     UI.AddToInventory(gottenTile, 1);
                                     Game1.bigTiles[BigTile.FindTileId(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))*16)].Destroy();
                                     Debug.WriteLine(2);
-
                                 }
                             }
-                            else
+                            else if (gottenTile != -1 && !Game1.itemInfo.ITEM_BIGTILE[gottenTile])
                             {
                                 if(gottenTile != -1 && Game1.itemInfo.ITEM_YIELD[gottenTile])
                                 {
@@ -701,7 +700,7 @@ namespace Game1
             //pick up an item
             else if (((CountUis() == 1 || uiState != 1 && uiState != 3) || uiState == 2 || uiState>3) && uiState!=3 && cursorItem == -1 && gottenIndex>-1 && (gottenIndex) < invIds.Length && invIds[gottenIndex] > 0 && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
-                Debug.WriteLine("pick up");
+                //Debug.WriteLine("pick up");
                 cursorItem = invIds[gottenIndex];
                 invIds[gottenIndex] = -1;
                 cursorItemIndex = gottenIndex;
@@ -751,7 +750,7 @@ namespace Game1
             //drop off an item
             else if ((WithinUi(uiState)&&(CountUis() == 1 || (uiState != 1 && uiState !=3))) && cursorItem != -1 && (gottenIndex) >-1 && (gottenIndex) < invIds.Length && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
-                Debug.WriteLine("dropoff");
+                //Debug.WriteLine("dropoff");
                 //item in cursor is the same as the one in the slot
                 if (invIds[gottenIndex]==cursorItem && (uiState!=3 || selectedCarry != cursorItemIndex))
                 {
@@ -800,7 +799,7 @@ namespace Game1
                     cursorItemOrigin = -1;
                     cursorQuantity = -1;
                     Game1.globalCursor = 0;
-                    Debug.WriteLine("works");
+                    //Debug.WriteLine("works");
                 }
                 //item in cursor is different from the one in the slot
                 else
@@ -826,7 +825,7 @@ namespace Game1
                     (Game1.uiObjects[2] == null || !WithinUi(3))) {
                     //if item has a previous destination to return to, return it
                     int slot;
-                    Debug.WriteLine("" + uiState);
+                    //Debug.WriteLine("" + uiState);
                     if (cursorItemOrigin != -1 && cursorItemIndex != -1 && ((cursorItemOrigin>3&& Game1.uiObjects[1].inventoryItemIds[cursorItemIndex] == -1) ||(cursorItemOrigin<4 && Game1.uiObjects[cursorItemOrigin - 1].inventoryItemIds[cursorItemIndex]==-1)))
                     {
                         if (cursorItemOrigin >3 && cursorItem == (Game1.uiObjects[1]).inventoryItemIds[cursorItemIndex]
@@ -843,7 +842,7 @@ namespace Game1
                         }
 
                         ((cursorItemOrigin > 3) ? Game1.uiObjects[1] : Game1.uiObjects[cursorItemOrigin - 1]).inventoryItemIds[cursorItemIndex] = cursorItem;
-                        Debug.WriteLine("o");
+                       // Debug.WriteLine("o");
 
                     }
                     else if (cursorItemOrigin != -1 && (Game1.uiObjects[cursorItemOrigin - 1]).FindFreeSlot()!=-1) {
@@ -862,7 +861,7 @@ namespace Game1
 
                         (Game1.uiObjects[cursorItemOrigin - 1]).inventoryItemIds[slot] = cursorItem;
 
-                        Debug.WriteLine("o k");
+                        //Debug.WriteLine("o k");
                     }
                     else{
                         slot = this.FindFreeSlot();
@@ -880,7 +879,7 @@ namespace Game1
 
                             invIds[slot] = cursorItem;
                             
-                            Debug.WriteLine("o k o");
+                            //Debug.WriteLine("o k o");
                         }
                         else if (Game1.uiObjects!=null && Game1.uiObjects[1]!=null && Game1.uiObjects[1].FindFreeSlot() != -1)
                         {
@@ -899,7 +898,7 @@ namespace Game1
 
                             Game1.uiObjects[1].inventoryItemIds[slot] = cursorItem;
                             
-                            Debug.WriteLine("o k o k");
+                            //Debug.WriteLine("o k o k");
                         }
                     }
                     cursorItem = -1;

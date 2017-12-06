@@ -189,13 +189,13 @@ namespace Game1
 
             ui_arrow = new AnimatedSprite(Content.Load<Texture2D>("img/uiArrow"), 3, 2);
             items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 7, 6);
-            equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 7, 6);
+            equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 7, 7);
 
             equip_icons = new AnimatedSprite(Content.Load<Texture2D>("img/equip_slots"), 5, 4);
             tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 13, 12);
             fluids = new AnimatedSprite(Content.Load<Texture2D>("img/bg_fluids"), 2, 1);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
-            portrait_items = new AnimatedSprite(Content.Load<Texture2D>("img/portrait_items"), 2, 3);
+            portrait_items = new AnimatedSprite(Content.Load<Texture2D>("img/portrait_items"), 3, 3);
             cursor[0] = Content.Load<Texture2D>("img/cursor");
             cursor[1] = Content.Load<Texture2D>("img/selectioncursor");
             cursor[2] = Content.Load<Texture2D>("img/breakcursor");

@@ -128,7 +128,7 @@ namespace Game1
             for (int i = Game1.playerEquippedItems.Length-2; i > 0; i--)
             {
                 if (Game1.playerEquippedItems[i]!=-1) {
-                    Game1.equippables.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[i]] * 8 + (currentDirection == 0 ? 0 : 4) + ((currentAction==1)? frame: 0),
+                    Game1.equippables.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[i]] * 8 + (currentDirection == 0 ? 0 : 4) + ((currentAction==1)? frame: 1),
                         new Vector2(screenPosX, screenPosY));
                 }
             }

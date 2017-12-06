@@ -145,6 +145,7 @@ namespace Game1
             ITEM_BIGTILE_HEIGHT[40] = 2;
             ITEM_BIGTILE_HEIGHT[41] = 1;
 
+            ITEM_EQUIPPABLE[19] = true;
             ITEM_EQUIPPABLE[22] = true;
             ITEM_EQUIPPABLE[23] = true;
             ITEM_EQUIPPABLE[24] = true;
@@ -156,7 +157,9 @@ namespace Game1
             ITEM_EQUIPID[24] = 2;
             ITEM_EQUIPID[25] = 3;
             ITEM_EQUIPID[26] = 4;
+            ITEM_EQUIPID[19] = 5;
 
+            ITEM_EQUIP_SLOT[19] = 15;
             ITEM_EQUIP_SLOT[22] = 7;
             ITEM_EQUIP_SLOT[23] = 1;
             ITEM_EQUIP_SLOT[24] = 7;
@@ -247,6 +250,7 @@ namespace Game1
             ITEM_TOOL_TIER[36] = 0;
             ITEM_TOOL_TIER[39] = 0;
             ITEM_TOOL_TIER[40] = 0;
+            ITEM_TOOL_TIER[41] = 1;
 
             //do NOT add a blockID for BigTile items
             ITEM_BLOCKID[0] = -1;
@@ -271,9 +275,10 @@ namespace Game1
             ITEM_BLOCKID[35] = 129;
             ITEM_BLOCKID[36] = 130;
             ITEM_BLOCKID[39] = 131;
-
+            
             ITEM_STACKABLE[14] = false;
             ITEM_STACKABLE[16] = false;
+            ITEM_STACKABLE[19] = false;
             ITEM_STACKABLE[22] = false;
             ITEM_STACKABLE[23] = false;
             ITEM_STACKABLE[24] = false;
