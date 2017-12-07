@@ -13,10 +13,12 @@ namespace Game1
 {
     public class MapInfo
     {
+        public int[,] mapWires;
         public int[,] mapTiles;
         public int[,] mapBackTiles;
         public MapInfo(int length, int height)
         {
+            mapWires = new int[length, height];
             mapTiles = new int[length,height];
             mapBackTiles = new int[length, height];
             //mapTiles stores item ids, which can be used to get the block ids to draw
@@ -25,6 +27,7 @@ namespace Game1
             {
                 for (int a = 0; a < height; a++)
                 {
+                    mapWires[i, a] = -1;
                     mapTiles[i, a] = -1;
                     mapBackTiles[i, a] = -1;
                 }
@@ -40,6 +43,7 @@ namespace Game1
         }
         public void DrawMap()
         {
+            Game1.spriteBatch.Begin();
             for (int i = 0; i < mapTiles.GetLength(0); i++)
             {
                 for (int a = 0; a < mapTiles.GetLength(1); a++)
@@ -61,6 +65,115 @@ namespace Game1
                     }
                 }
             }
+            Game1.spriteBatch.End();
+            for (int i = 0; i < Game1.bigTiles.Count; i++)
+            {
+                Game1.bigTiles[i].Draw();
+            }
+            Game1.spriteBatch.Begin();
+            if (Game1.playerEquippedItems[5] == 43)
+            {
+                Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(0, 0, Game1.WINDOW_WIDTH, Game1.WINDOW_HEIGHT), Color.LightGoldenrodYellow * 0.25f);
+            }
+            
+            for (int i = 0; i < mapTiles.GetLength(0); i++)
+            {
+                for (int a = 0; a < mapTiles.GetLength(1); a++)
+                {
+                    if (mapWires[i, a] != -1 && Game1.playerEquippedItems[5] == 43)
+                    {
+                        
+                        int[,] surround = new int[3, 3];
+
+                        surround[0, 0] = mapWires[i - 1, a - 1];
+                        surround[1, 0] = mapWires[i, a - 1];
+                        surround[2, 0] = mapWires[i + 1, a - 1];
+                        surround[0, 1] = mapWires[i - 1, a];
+                        surround[2, 1] = mapWires[i + 1, a];
+                        surround[0, 2] = mapWires[i - 1, a + 1];
+                        surround[1, 2] = mapWires[i, a + 1];
+                        surround[2, 2] = mapWires[i + 1, a + 1];
+
+                        if (surround[1, 0] != 1 && surround[1, 2] != 1 && surround[0, 1] != 1 && surround[2, 1] != 1)
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 71, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                        }
+                        else if (surround[1, 0] == 1 && surround[1, 2] == 1 && surround[0, 1] == 1 && surround[2, 1] == 1)
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 9, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                        }
+                        else
+                        {
+                            //solos
+                            if (surround[1, 0] != 1 && surround[1, 2] != 1 && surround[0, 1] == 1 && surround[2, 1] != 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 10, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                            else if (surround[1, 0] == 1 && surround[1, 2] != 1 && surround[0, 1] != 1 && surround[2, 1] != 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 13, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                            else if (surround[1, 0] != 1 && surround[1, 2] == 1 && surround[0, 1] != 1 && surround[2, 1] != 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 12, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                            else if (surround[1, 0] != 1 && surround[1, 2] != 1 && surround[0, 1] != 1 && surround[2, 1] == 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 11, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                            //corners
+                            else if (surround[1, 0] == 1 && surround[1, 2] != 1 && surround[0, 1] != 1 && surround[2, 1] == 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 1, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                            else if (surround[1, 0] == 1 && surround[1, 2] != 1 && surround[0, 1] == 1 && surround[2, 1] != 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 2, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                            else if (surround[1, 0] != 1 && surround[1, 2] == 1 && surround[0, 1] == 1 && surround[2, 1] != 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 3, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                            else if (surround[1, 0] != 1 && surround[1, 2] == 1 && surround[0, 1] != 1 && surround[2, 1] == 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 4, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                            //3 ways
+                            else if (surround[1, 0] != 1 && surround[1, 2] == 1 && surround[0, 1] == 1 && surround[2, 1] == 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 5, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                            else if (surround[1, 0] == 1 && surround[1, 2] == 1 && surround[0, 1] != 1 && surround[2, 1] == 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 6, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                            else if (surround[1, 0] == 1 && surround[1, 2] == 1 && surround[0, 1] == 1 && surround[2, 1] != 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 7, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                            else if (surround[1, 0] == 1 && surround[1, 2] != 1 && surround[0, 1] == 1 && surround[2, 1] == 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 8, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                            //sides
+                            else if (surround[1, 0] == 1 && surround[1, 2] == 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 13, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                            else if (surround[0, 1] == 1 && surround[2, 1] == 1)
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 71 + 11, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            }
+                        }
+                        if (mapTiles[i, a] != -1 && Game1.itemInfo.ITEM_ENDPOINT[mapTiles[i, a]])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 154, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                        }
+                    }
+                }
+            }
+            Game1.spriteBatch.End();
         }
+
     }
 }

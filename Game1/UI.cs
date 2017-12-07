@@ -240,6 +240,7 @@ namespace Game1
                     break;
 
                 case 3:
+                    
                     for (int i = 0; i < inventoryRows; i++)
                     {
                         for (int a = 0; a < rowSize; a++)
@@ -354,34 +355,57 @@ namespace Game1
         public void PlaceItem()
         {
             //Game1.uiObjects[1].uix - 1, Game1.uiObjects[1].uiy - 1, 354, 396
-            if (uiState == 3 && MouseKeyboardInfo.mouseState.RightButton == ButtonState.Pressed && cursorItem!=-1 && Game1.itemInfo.ITEM_PLACEABLE[cursorItem] && CanBePlaced(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16) && !(MouseKeyboardInfo.mouseState.X >= this.uix - 1 && MouseKeyboardInfo.mouseState.X <= this.uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= this.uiy - 1 && MouseKeyboardInfo.mouseState.Y <= this.uiy - 1 + 514) &&
+            if (uiState == 3 && MouseKeyboardInfo.mouseState.RightButton == ButtonState.Pressed && cursorItem!=-1 && !(MouseKeyboardInfo.mouseState.X >= this.uix - 1 && MouseKeyboardInfo.mouseState.X <= this.uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= this.uiy - 1 && MouseKeyboardInfo.mouseState.Y <= this.uiy - 1 + 514) &&
                 (Game1.uiObjects[1] == null || !(MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396)))
             {
-                if (Game1.itemInfo.ITEM_BIGTILE[cursorItem])
+                if (cursorItem==42 && Game1.playerEquippedItems[5] == 43 && Game1.currentMap.mapWires[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] != 1)
                 {
-                    BigTile newTile = new BigTile(cursorItem, ((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16, 0, new int[0][]);
-                    Game1.bigTiles.Add(newTile);
-                    //(Game1.itemInfo.ITEM_BACKTILE[cursorItem] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles)[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem;
-                    
-                }
-                else (Game1.itemInfo.ITEM_BACKTILE[cursorItem]? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles)[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem;
-                // Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" placeItem:"+ ((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16))+","+((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))+" "+cursorItem);
-                
-                if (cursorQuantity > 1)
-                {
-                    //if (itemIsCarried) Game1.uiObjects[2].inventoryItemQuantities[UI.selectedCarry]--;
-                    cursorQuantity--;
-                    if (cursorItemOrigin == 3) Game1.uiObjects[2].inventoryItemQuantities[selectedCarry]--;
-                }
-                else
-                {
-                    cursorItem = -1;
-                    cursorQuantity = -1;
-                    Game1.globalCursor = 0;
-                    if (cursorItemOrigin == 3)
+                    Game1.currentMap.mapWires[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = 1;
+                    if (cursorQuantity > 1)
                     {
-                        Game1.uiObjects[2].inventoryItemIds[selectedCarry] = -1;
-                        Game1.uiObjects[2].inventoryItemQuantities[selectedCarry] = -1;
+                        cursorQuantity--;
+                        if (cursorItemOrigin == 3) Game1.uiObjects[2].inventoryItemQuantities[selectedCarry]--;
+                    }
+                    else
+                    {
+                        cursorItem = -1;
+                        cursorQuantity = -1;
+                        Game1.globalCursor = 0;
+                        if (cursorItemOrigin == 3)
+                        {
+                            Game1.uiObjects[2].inventoryItemIds[selectedCarry] = -1;
+                            Game1.uiObjects[2].inventoryItemQuantities[selectedCarry] = -1;
+                        }
+                    }
+                }
+                if (CanBePlaced(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16))
+                {
+                    if (Game1.itemInfo.ITEM_BIGTILE[cursorItem] && Game1.itemInfo.ITEM_PLACEABLE[cursorItem])
+                    {
+                        BigTile newTile = new BigTile(cursorItem, ((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16, 0, new int[0][]);
+                        Game1.bigTiles.Add(newTile);
+                        //(Game1.itemInfo.ITEM_BACKTILE[cursorItem] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles)[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem;
+
+                    }
+                    else if (Game1.itemInfo.ITEM_PLACEABLE[cursorItem]) (Game1.itemInfo.ITEM_BACKTILE[cursorItem] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles)[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem;
+                    // Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" placeItem:"+ ((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16))+","+((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))+" "+cursorItem);
+
+                    if (cursorQuantity > 1 && cursorItem != 42)
+                    {
+                        //if (itemIsCarried) Game1.uiObjects[2].inventoryItemQuantities[UI.selectedCarry]--;
+                        cursorQuantity--;
+                        if (cursorItemOrigin == 3) Game1.uiObjects[2].inventoryItemQuantities[selectedCarry]--;
+                    }
+                    else if (cursorItem != 42)
+                    {
+                        cursorItem = -1;
+                        cursorQuantity = -1;
+                        Game1.globalCursor = 0;
+                        if (cursorItemOrigin == 3)
+                        {
+                            Game1.uiObjects[2].inventoryItemIds[selectedCarry] = -1;
+                            Game1.uiObjects[2].inventoryItemQuantities[selectedCarry] = -1;
+                        }
                     }
                 }
                 //TODO: update this method and CanBePlaced() to account for item width/height
@@ -641,7 +665,8 @@ namespace Game1
 
                 //tooltips
                 if (gottenIndex > -1 && (gottenIndex) < invIds.Length && invIds[gottenIndex] != -1 && cursorItem==-1) {
-                    Game1.spriteBatch.DrawString(Game1.font, Game1.itemInfo.ITEM_NAME[invIds[gottenIndex]], new Vector2(MouseKeyboardInfo.mouseState.X+16,MouseKeyboardInfo.mouseState.Y+16), Color.Black);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(MouseKeyboardInfo.mouseState.X + 14, MouseKeyboardInfo.mouseState.Y + 14, Game1.itemInfo.ITEM_NAME[invIds[gottenIndex]].Length*7 + 4, 15), Color.White);
+                    Game1.spriteBatch.DrawString(Game1.font, Game1.itemInfo.ITEM_NAME[invIds[gottenIndex]], new Vector2(MouseKeyboardInfo.mouseState.X+16,MouseKeyboardInfo.mouseState.Y+16), menu_0);
                 }
             }
         }

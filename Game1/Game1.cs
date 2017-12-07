@@ -188,8 +188,8 @@ namespace Game1
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
 
             ui_arrow = new AnimatedSprite(Content.Load<Texture2D>("img/uiArrow"), 3, 2);
-            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 7, 6);
-            equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 7, 7);
+            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 7, 7);
+            equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 8, 7);
 
             equip_icons = new AnimatedSprite(Content.Load<Texture2D>("img/equip_slots"), 5, 4);
             tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 13, 12);
@@ -300,20 +300,16 @@ namespace Game1
             //spriteBatch.Draw(grass2, new Vector2(400, 240), Color.White);
             //spriteBatch.Draw(grass3, new Vector2(450, 240), Color.White);
 
-            Game1.spriteBatch.Begin();
+            
             
             map0.DrawMap();
-            Game1.spriteBatch.End();
 
             // TODO: Add your drawing code here
             for (int i = 0; i < chestInventories.Count; i++)
             {
                 chestInventories[i].Draw();
             }
-            for (int i = 0; i < bigTiles.Count; i++)
-            {
-                bigTiles[i].Draw();
-            }
+            
 
             base.Draw(gameTime);
             player.Draw();
@@ -326,6 +322,7 @@ namespace Game1
             Game1.spriteBatch.End();
 
             //draw all UIs
+
 
             for (int i = 0; i < uiObjects.Length; i++)
             {

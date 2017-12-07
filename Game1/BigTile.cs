@@ -188,76 +188,73 @@ namespace Game1
 
                     break;
                 case 29:
-                    if (timer == -1)
+                    if (IsPowered())
                     {
-                        //if (Array.IndexOf(inventory[0], Recipes.recipeInputIds[i]) != -1 && (Array.IndexOf(inventory[0], Recipes.recipeOutputIds[i]) != -1 || Array.IndexOf(inventory[0], -1) == -1))
-                        for (int a = 0; a < inventory[0].Length; a++)
+                        if (timer == -1)
                         {
-                            for (int i = 0; i < Recipes.RECIPES; i++)
+                            //if (Array.IndexOf(inventory[0], Recipes.recipeInputIds[i]) != -1 && (Array.IndexOf(inventory[0], Recipes.recipeOutputIds[i]) != -1 || Array.IndexOf(inventory[0], -1) == -1))
+                            for (int a = 0; a < inventory[0].Length; a++)
                             {
-                                if (Array.IndexOf(output[0], Recipes.recipeOutputIds[i]) == -1 && Array.IndexOf(output[0], -1) == -1)
+                                for (int i = 0; i < Recipes.RECIPES; i++)
                                 {
-                                    break;
-                                }
-                                if (Recipes.recipeInputIds[i][0] == inventory[0][a] && Recipes.recipeInputQuants[i][0] <= inventory[1][a])
-                                {
-                                    timer = Recipes.recipeProcessingTime[i];
-                                    recipeInProgressIndex = i;
-                                    inventory[1][a] -= Recipes.recipeInputQuants[i][0];
-                                    state = 1;
-
-                                    if (inventory[1][a] < 1)
+                                    if (Array.IndexOf(output[0], Recipes.recipeOutputIds[i]) == -1 && Array.IndexOf(output[0], -1) == -1)
                                     {
-                                        inventory[0][a] = -1;
-                                        inventory[1][a] = -1;
+                                        break;
                                     }
-                                    goto Outerloop;
+                                    if (Recipes.recipeInputIds[i][0] == inventory[0][a] && Recipes.recipeInputQuants[i][0] <= inventory[1][a])
+                                    {
+                                        timer = Recipes.recipeProcessingTime[i];
+                                        recipeInProgressIndex = i;
+                                        inventory[1][a] -= Recipes.recipeInputQuants[i][0];
+                                        state = 1;
 
-                                    //we'll check for an open output slot when the timer goes off if need be
-                                    //items can move around during processing time is why
+                                        if (inventory[1][a] < 1)
+                                        {
+                                            inventory[0][a] = -1;
+                                            inventory[1][a] = -1;
+                                        }
+                                        goto Outerloop;
+
+                                        //we'll check for an open output slot when the timer goes off if need be
+                                        //items can move around during processing time is why
+                                    }
                                 }
                             }
                         }
-                    }
-                    Outerloop: Debug.Write("");
-                    if (timer == 0)
-                    {
-                        if (recipeOutputIndex == -1)
+                        Outerloop: Debug.Write("");
+                        if (timer == 0)
                         {
-                            for (int b = 0; b < output[0].Length; b++)
-                            {
-                                if (output[0][b] == Recipes.recipeOutputIds[recipeInProgressIndex][0]
-                                    && output[1][b] + Recipes.recipeOutputQuants[recipeInProgressIndex][0] <= Game1.ITEM_STACK_SIZE)
-                                {
-                                    recipeOutputIndex = b;
-                                    break;
-                                }
-                            }
                             if (recipeOutputIndex == -1)
                             {
-                                recipeOutputIndex = Array.IndexOf(output[0], -1);
+                                for (int b = 0; b < output[0].Length; b++)
+                                {
+                                    if (output[0][b] == Recipes.recipeOutputIds[recipeInProgressIndex][0]
+                                        && output[1][b] + Recipes.recipeOutputQuants[recipeInProgressIndex][0] <= Game1.ITEM_STACK_SIZE)
+                                    {
+                                        recipeOutputIndex = b;
+                                        break;
+                                    }
+                                }
+                                if (recipeOutputIndex == -1)
+                                {
+                                    recipeOutputIndex = Array.IndexOf(output[0], -1);
+                                }
                             }
+                            if (recipeOutputIndex != -1)
+                            {
+                                output[0][recipeOutputIndex] = Recipes.recipeOutputIds[recipeInProgressIndex][0];
+                                output[1][recipeOutputIndex] = (output[1][recipeOutputIndex] < 1) ? Recipes.recipeOutputQuants[recipeInProgressIndex][0] :
+                                    output[1][recipeOutputIndex] + Recipes.recipeOutputQuants[recipeInProgressIndex][0];
+
+                                timer = -1;
+                                recipeInProgressIndex = -1;
+                                recipeOutputIndex = -1;
+                                state = 0;
+                            }
+                            
                         }
-                        if (recipeOutputIndex != -1)
-                        {
-                            output[0][recipeOutputIndex] = Recipes.recipeOutputIds[recipeInProgressIndex][0];
-                            output[1][recipeOutputIndex] = (output[1][recipeOutputIndex] < 1) ? Recipes.recipeOutputQuants[recipeInProgressIndex][0] :
-                                output[1][recipeOutputIndex] + Recipes.recipeOutputQuants[recipeInProgressIndex][0];
-
-                            timer = -1;
-                            recipeInProgressIndex = -1;
-                            recipeOutputIndex = -1;
-                            state = 0;
-                        }
-
-                        /*inventory[1][Array.IndexOf(inventory[0], 33)] = (inventory[1][Array.IndexOf(inventory[0], 33)] > 1) ? (inventory[1][Array.IndexOf(inventory[0], 33)] - 1) : -1;
-                        if (inventory[1][Array.IndexOf(inventory[0], 33)] < 1) inventory[0][Array.IndexOf(inventory[0], 33)] = -1;
-                        output[0][0] = 34;
-
-                        output[1][0] = (output[1][0] > 0) ? output[1][0] + 1 : 1;
-                        Debug.WriteLine("" + output[0]);
-                        Debug.WriteLine("" + output[1]);*/
                     }
+                    
                     break;
                 case 13:
                 case 12:
@@ -1137,6 +1134,10 @@ namespace Game1
                 Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidPercent = total / 2;
                 fluidPercent = total / 2;
             }
+        }
+        public bool IsPowered()
+        {
+            return Game1.currentMap.mapWires[tilex/16,tiley/16]!=-1;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 46;
+        public const int ITEM_COUNT = 48;
         public const int SCHEMATICS_COUNT = 2;
         public bool[] ITEM_ENDPOINT = new bool[ITEM_COUNT]; // if true, this item is an endpoint for pipes
         public String[] ITEM_NAME = new String[ITEM_COUNT];
@@ -151,13 +151,16 @@ namespace Game1
             ITEM_EQUIPPABLE[24] = true;
             ITEM_EQUIPPABLE[25] = true;
             ITEM_EQUIPPABLE[26] = true;
+            ITEM_EQUIPPABLE[43] = true;
 
+            ITEM_EQUIPID[19] = 5;
             ITEM_EQUIPID[22] = 0;
             ITEM_EQUIPID[23] = 1;
             ITEM_EQUIPID[24] = 2;
             ITEM_EQUIPID[25] = 3;
             ITEM_EQUIPID[26] = 4;
-            ITEM_EQUIPID[19] = 5;
+            ITEM_EQUIPID[43] = 6;
+
 
             ITEM_EQUIP_SLOT[19] = 15;
             ITEM_EQUIP_SLOT[22] = 7;
@@ -165,7 +168,8 @@ namespace Game1
             ITEM_EQUIP_SLOT[24] = 7;
             ITEM_EQUIP_SLOT[25] = 1;
             ITEM_EQUIP_SLOT[26] = 17;
-            
+            ITEM_EQUIP_SLOT[43] = 5;
+
             ITEM_RANK[14] = 0;
             ITEM_RANK[16] = 1;
             ITEM_RANK[29] = 0;
@@ -336,6 +340,8 @@ namespace Game1
             ITEM_NAME[39] = "Assembler";
             ITEM_NAME[40] = "Large Assembler";
             ITEM_NAME[41] = "Tank";
+            ITEM_NAME[42] = "Red Wire";
+            ITEM_NAME[43] = "Wiring Goggles";
 
             //recipes
             ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + 0] = "Recipe: Furnace";
