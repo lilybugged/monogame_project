@@ -18,7 +18,7 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 48;
+        public const int ITEM_COUNT = 53;
         public const int SCHEMATICS_COUNT = 2;
         public bool[] ITEM_ENDPOINT = new bool[ITEM_COUNT]; // if true, this item is an endpoint for pipes
         public String[] ITEM_NAME = new String[ITEM_COUNT];
@@ -34,6 +34,7 @@ namespace Game1
         public int[] ITEM_UNIT_HEIGHT = new int[ITEM_COUNT]; // e.g. 1,2,3
         public bool[] ITEM_PLACEABLE = new bool[ITEM_COUNT];
         public bool[] ITEM_REQUIRE_SURFACE = new bool[ITEM_COUNT]; // if it's placeable, must it be placed on a surface?
+        public bool[] ITEM_REQUIRE_WALL = new bool[ITEM_COUNT];
         public bool[] ITEM_SOLID = new bool[ITEM_COUNT]; // if it's placeable, does it have a solid collision state?
         public int[] ITEM_ITEMID = new int[ITEM_COUNT];
         public int[] ITEM_BLOCKID = new int[ITEM_COUNT];
@@ -96,6 +97,7 @@ namespace Game1
             ITEM_ENDPOINT[29] = true;
             ITEM_ENDPOINT[31] = true;
             ITEM_ENDPOINT[32] = true;
+            ITEM_ENDPOINT[47] = true;
 
             ITEM_BIGTILE[8] = true;
             ITEM_BIGTILE[9] = true;
@@ -112,6 +114,7 @@ namespace Game1
             ITEM_BIGTILE[39] = true;
             ITEM_BIGTILE[40] = true;
             ITEM_BIGTILE[41] = true;
+            ITEM_BIGTILE[47] = true;
 
             ITEM_BIGTILE_WIDTH[8] = 1;
             ITEM_BIGTILE_WIDTH[9] = 1;
@@ -128,6 +131,7 @@ namespace Game1
             ITEM_BIGTILE_WIDTH[39] = 1;
             ITEM_BIGTILE_WIDTH[40] = 2;
             ITEM_BIGTILE_WIDTH[41] = 1;
+            ITEM_BIGTILE_WIDTH[47] = 1;
 
             ITEM_BIGTILE_HEIGHT[8] = 1;
             ITEM_BIGTILE_HEIGHT[9] = 1;
@@ -144,6 +148,7 @@ namespace Game1
             ITEM_BIGTILE_HEIGHT[39] = 1;
             ITEM_BIGTILE_HEIGHT[40] = 2;
             ITEM_BIGTILE_HEIGHT[41] = 1;
+            ITEM_BIGTILE_HEIGHT[47] = 1;
 
             ITEM_EQUIPPABLE[19] = true;
             ITEM_EQUIPPABLE[22] = true;
@@ -151,7 +156,7 @@ namespace Game1
             ITEM_EQUIPPABLE[24] = true;
             ITEM_EQUIPPABLE[25] = true;
             ITEM_EQUIPPABLE[26] = true;
-            ITEM_EQUIPPABLE[43] = true;
+            ITEM_EQUIPPABLE[42] = true;
 
             ITEM_EQUIPID[19] = 5;
             ITEM_EQUIPID[22] = 0;
@@ -159,7 +164,7 @@ namespace Game1
             ITEM_EQUIPID[24] = 2;
             ITEM_EQUIPID[25] = 3;
             ITEM_EQUIPID[26] = 4;
-            ITEM_EQUIPID[43] = 6;
+            ITEM_EQUIPID[42] = 6;
 
 
             ITEM_EQUIP_SLOT[19] = 15;
@@ -168,7 +173,7 @@ namespace Game1
             ITEM_EQUIP_SLOT[24] = 7;
             ITEM_EQUIP_SLOT[25] = 1;
             ITEM_EQUIP_SLOT[26] = 17;
-            ITEM_EQUIP_SLOT[43] = 5;
+            ITEM_EQUIP_SLOT[42] = 5;
 
             ITEM_RANK[14] = 0;
             ITEM_RANK[16] = 1;
@@ -211,9 +216,11 @@ namespace Game1
             ITEM_PLACEABLE[39] = true;
             ITEM_PLACEABLE[40] = true;
             ITEM_PLACEABLE[41] = true;
+            ITEM_PLACEABLE[47] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
+            ITEM_TOOL[48] = true;
 
             ITEM_REQUIRE_SURFACE[2] = true;
             ITEM_REQUIRE_SURFACE[6] = true;
@@ -228,6 +235,8 @@ namespace Game1
             ITEM_REQUIRE_SURFACE[27] = true;
             ITEM_REQUIRE_SURFACE[28] = true;
             ITEM_REQUIRE_SURFACE[36] = true;
+
+            ITEM_REQUIRE_WALL[47] = true;
 
             ITEM_SOLID[4] = true;
             ITEM_SOLID[5] = true;
@@ -288,6 +297,7 @@ namespace Game1
             ITEM_STACKABLE[24] = false;
             ITEM_STACKABLE[25] = false;
             ITEM_STACKABLE[26] = false;
+            ITEM_STACKABLE[42] = false;
 
             ITEM_AUTOTILE[5] = true;
             ITEM_AUTOTILE[6] = true;
@@ -340,8 +350,13 @@ namespace Game1
             ITEM_NAME[39] = "Assembler";
             ITEM_NAME[40] = "Large Assembler";
             ITEM_NAME[41] = "Tank";
-            ITEM_NAME[42] = "Red Wire";
-            ITEM_NAME[43] = "Wiring Goggles";
+            ITEM_NAME[42] = "Wiring Goggles";
+            ITEM_NAME[43] = "Red Wire";
+            ITEM_NAME[44] = "Blue Wire";
+            ITEM_NAME[45] = "Yellow Wire";
+            ITEM_NAME[46] = "Green Wire";
+            ITEM_NAME[47] = "Lever";
+            ITEM_NAME[48] = "Wire Cutter";
 
             //recipes
             ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + 0] = "Recipe: Furnace";

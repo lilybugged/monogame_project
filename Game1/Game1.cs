@@ -33,7 +33,7 @@ namespace Game1
         public static AnimatedSprite fluids;
         public static AnimatedSprite portrait_items;
         public static Texture2D pixel;
-        public static Texture2D[] cursor = new Texture2D[4];
+        public static Texture2D[] cursor = new Texture2D[5];
         public static int globalCursor = 0;
         public static SpriteFont font;
 
@@ -99,8 +99,8 @@ namespace Game1
             this.IsMouseVisible = false;
             chestInventories = new List<Chest>();
             bigTiles = new List<BigTile>();
-            userInventory = new int[49];
-            userInventoryQuantities = new int[49];
+            userInventory = new int[70];
+            userInventoryQuantities = new int[70];
             for (int i = 0; i < userInventory.Length; i++)
             {
                 if (i < ItemInfo.ITEM_COUNT) {
@@ -113,7 +113,7 @@ namespace Game1
                     userInventoryQuantities[i] = -1;
                 }
             }
-            ui = new UI(0,100,7, userInventory, userInventoryQuantities, null, null, 1, 7);
+            ui = new UI(0,100,10, userInventory, userInventoryQuantities, null, null, 1, 7);
 
             userCarry = new int[] { -1, -1, -1, -1 };
             userCarryQuantities = new int[] { -1, -1, -1, -1 };
@@ -192,7 +192,7 @@ namespace Game1
             equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 8, 7);
 
             equip_icons = new AnimatedSprite(Content.Load<Texture2D>("img/equip_slots"), 5, 4);
-            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 13, 12);
+            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 13, 13);
             fluids = new AnimatedSprite(Content.Load<Texture2D>("img/bg_fluids"), 2, 1);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
             portrait_items = new AnimatedSprite(Content.Load<Texture2D>("img/portrait_items"), 3, 3);
@@ -200,6 +200,7 @@ namespace Game1
             cursor[1] = Content.Load<Texture2D>("img/selectioncursor");
             cursor[2] = Content.Load<Texture2D>("img/breakcursor");
             cursor[3] = Content.Load<Texture2D>("img/breakactivatecursor");
+            cursor[4] = Content.Load<Texture2D>("img/wirecursor");
 
             chestSprites[0] = new AnimatedSprite(Content.Load<Texture2D>("img/chests/chest_open_s"), 2, 2);
             chestSprites[1] = new AnimatedSprite(Content.Load<Texture2D>("img/chests/chest_close_s"), 2, 2);
@@ -312,7 +313,7 @@ namespace Game1
             
 
             base.Draw(gameTime);
-            player.Draw();
+            
 
             //i just moved drawcarry out here instead of sitting in UI
             //it has to run under uiState 3 only, don't remember why
@@ -321,6 +322,7 @@ namespace Game1
             uiObjects[2].DrawCarry();
             Game1.spriteBatch.End();
 
+            player.Draw();
             //draw all UIs
 
 

@@ -24,6 +24,7 @@ namespace Game1
         //private int lastTick = 0;
         private int[] endpoint;
         public bool solid;
+        public bool powered;
         public int state = 0;
         public int[][] inventory; // first index is itemid(0)/quantity(1), second is position in the inventory
         public int[][] output; // first index is itemid(0)/quantity(1), second is position in the inventory
@@ -188,7 +189,8 @@ namespace Game1
 
                     break;
                 case 29:
-                    if (IsPowered())
+
+                    if (powered)
                     {
                         if (timer == -1)
                         {
@@ -222,39 +224,39 @@ namespace Game1
                             }
                         }
                         Outerloop: Debug.Write("");
-                        if (timer == 0)
+
+                    }
+                    if (timer == 0)
+                    {
+                        if (recipeOutputIndex == -1)
                         {
+                            for (int b = 0; b < output[0].Length; b++)
+                            {
+                                if (output[0][b] == Recipes.recipeOutputIds[recipeInProgressIndex][0]
+                                    && output[1][b] + Recipes.recipeOutputQuants[recipeInProgressIndex][0] <= Game1.ITEM_STACK_SIZE)
+                                {
+                                    recipeOutputIndex = b;
+                                    break;
+                                }
+                            }
                             if (recipeOutputIndex == -1)
                             {
-                                for (int b = 0; b < output[0].Length; b++)
-                                {
-                                    if (output[0][b] == Recipes.recipeOutputIds[recipeInProgressIndex][0]
-                                        && output[1][b] + Recipes.recipeOutputQuants[recipeInProgressIndex][0] <= Game1.ITEM_STACK_SIZE)
-                                    {
-                                        recipeOutputIndex = b;
-                                        break;
-                                    }
-                                }
-                                if (recipeOutputIndex == -1)
-                                {
-                                    recipeOutputIndex = Array.IndexOf(output[0], -1);
-                                }
+                                recipeOutputIndex = Array.IndexOf(output[0], -1);
                             }
-                            if (recipeOutputIndex != -1)
-                            {
-                                output[0][recipeOutputIndex] = Recipes.recipeOutputIds[recipeInProgressIndex][0];
-                                output[1][recipeOutputIndex] = (output[1][recipeOutputIndex] < 1) ? Recipes.recipeOutputQuants[recipeInProgressIndex][0] :
-                                    output[1][recipeOutputIndex] + Recipes.recipeOutputQuants[recipeInProgressIndex][0];
-
-                                timer = -1;
-                                recipeInProgressIndex = -1;
-                                recipeOutputIndex = -1;
-                                state = 0;
-                            }
-                            
                         }
+                        if (recipeOutputIndex != -1)
+                        {
+                            output[0][recipeOutputIndex] = Recipes.recipeOutputIds[recipeInProgressIndex][0];
+                            output[1][recipeOutputIndex] = (output[1][recipeOutputIndex] < 1) ? Recipes.recipeOutputQuants[recipeInProgressIndex][0] :
+                                output[1][recipeOutputIndex] + Recipes.recipeOutputQuants[recipeInProgressIndex][0];
+
+                            timer = -1;
+                            recipeInProgressIndex = -1;
+                            recipeOutputIndex = -1;
+                            state = 0;
+                        }
+
                     }
-                    
                     break;
                 case 13:
                 case 12:
@@ -289,6 +291,24 @@ namespace Game1
         {
             switch (tileType)
             {
+                case 47:
+                    if (state == 0)
+                    {
+                        state = 1;
+                        Power(tilex / 16 + 1, tiley / 16, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 0, true, new string[0]);
+                        Power(tilex / 16 - 1, tiley / 16, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 1, true, new string[0]);
+                        Power(tilex / 16, tiley / 16 + 1, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 2, true, new string[0]);
+                        Power(tilex / 16, tiley / 16 - 1, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 3, true, new string[0]);
+                    }
+                    else if (state == 1)
+                    {
+                        state = 0;
+                        Power(tilex / 16 + 1, tiley / 16, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 0, false, new string[0]);
+                        Power(tilex / 16 - 1, tiley / 16, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 1, false, new string[0]);
+                        Power(tilex / 16, tiley / 16 + 1, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 2, false, new string[0]);
+                        Power(tilex / 16, tiley / 16 - 1, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 3, false, new string[0]);
+                    }
+                    break;
                 case 41:
                     fluidPercent = 100;
                     foreach (BigTile tile in Game1.bigTiles)
@@ -418,6 +438,11 @@ namespace Game1
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
             switch (tileType)
             {
+                case 47:
+                    Game1.spriteBatch.Begin();
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 155 + state, position);
+                    Game1.spriteBatch.End();
+                    break;
                 case 41:
                     Game1.spriteBatch.Begin();
                     //draw fluids first
@@ -622,7 +647,7 @@ namespace Game1
                 }
             }
             if (tileType == 30) UpdateNearbyPipes();
-            Debug.WriteLine("destroy: "+ Game1.bigTiles.IndexOf(this));
+            Debug.WriteLine("destroy: " + Game1.bigTiles.IndexOf(this));
             Game1.bigTiles.Remove(this);
         }
         public static int FindTileId(int idx, int idy)
@@ -1135,9 +1160,40 @@ namespace Game1
                 fluidPercent = total / 2;
             }
         }
-        public bool IsPowered()
+        public void Power(int x, int y, int wireType, int count, int dir, bool power, string[] list)
         {
-            return Game1.currentMap.mapWires[tilex/16,tiley/16]!=-1;
+            string[] newlist = new string[list.Length+1];
+            Array.Copy(list,newlist,list.Length);
+            if (list.Contains(x + "," + y)) return;
+            newlist[list.Length] = x + "," + y;
+            list = newlist;
+            if (count > 50) return;
+            if (Game1.currentMap.mapWires[x, y] != wireType || wireType == -1 || (Game1.currentMap.mapTiles[x, y] == 47)) return;
+            else
+            {
+                if (Game1.currentMap.mapTiles[x, y] != -1 && Game1.itemInfo.ITEM_ENDPOINT[Game1.currentMap.mapTiles[x, y]] && BigTile.FindTileId(x * 16, y * 16) != -1)
+                {
+                    Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].powered = power;
+
+                }
+                if (Game1.currentMap.mapWires[x + 1, y] == wireType && dir != 1 && !list.Contains((x + 1) + "," + y))
+                {
+                    Power(x + 1, y, wireType, count + 1, 0, power, list);
+                }
+                if (Game1.currentMap.mapWires[x - 1, y] == wireType && dir != 0 && !list.Contains((x - 1) + "," + y))
+                {
+                    Power(x - 1, y, wireType, count + 1, 1, power, list);
+                }
+                if (Game1.currentMap.mapWires[x, y + 1] == wireType && dir != 3 && !list.Contains(x + "," + (y + 1)))
+                {
+                    Power(x, y + 1, wireType, count + 1, 2, power, list);
+                }
+                if (Game1.currentMap.mapWires[x, y - 1] == wireType && dir != 2 && !list.Contains("," + (y + 1)))
+                {
+                    Power(x, y - 1, wireType, count + 1, 3, power, list);
+                }
+            }
+            return;
         }
     }
 }
