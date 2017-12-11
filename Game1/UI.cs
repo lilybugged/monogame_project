@@ -361,6 +361,13 @@ namespace Game1
                 if (cursorItem>=43 && cursorItem <=46 && Game1.playerEquippedItems[5] == 42 && Game1.currentMap.mapWires[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] == -1)
                 {
                     Game1.currentMap.mapWires[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem-42;
+                    foreach (BigTile tile in Game1.bigTiles)
+                    {
+                        if (Game1.itemInfo.ITEM_TRIGGER[tile.tileType])
+                        {
+                            tile.Power(tile.tilex / 16 + 1, tile.tiley / 16, Game1.currentMap.mapWires[tile.tilex / 16, tile.tiley / 16], 0, 0, tile.state, new string[0]);
+                        }
+                    }
                     if (cursorQuantity > 1)
                     {
                         cursorQuantity--;
@@ -428,7 +435,13 @@ namespace Game1
                         {
                             UI.AddToInventory(43 + gottenTile - 1, 1);
                             Game1.currentMap.mapWires[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = -1;
-
+                            foreach (BigTile tile in Game1.bigTiles)
+                            {
+                                if (Game1.itemInfo.ITEM_TRIGGER[tile.tileType])
+                                {
+                                    tile.Power(tile.tilex / 16 + 1, tile.tiley / 16, Game1.currentMap.mapWires[tile.tilex / 16, tile.tiley / 16], 0, 0, tile.state, new string[0]);
+                                }
+                            }
                         }
                     }
                 }

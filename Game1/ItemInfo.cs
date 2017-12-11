@@ -25,6 +25,7 @@ namespace Game1
         public String[] ITEM_DESC = new String[ITEM_COUNT];
         public int[] ITEM_RANK = new int[ITEM_COUNT]; // for tools mainly
         public bool[] ITEM_BIGTILE = new bool[ITEM_COUNT];
+        public bool[] ITEM_TRIGGER = new bool[ITEM_COUNT];
         public int[] ITEM_BIGTILE_WIDTH = new int[ITEM_COUNT];
         public int[] ITEM_BIGTILE_HEIGHT = new int[ITEM_COUNT];
         public bool[] ITEM_EQUIPPABLE = new bool[ITEM_COUNT];
@@ -78,6 +79,8 @@ namespace Game1
                 ITEM_ITEMID[i] = 38;
                 ITEM_STACKABLE[i] = true;
             }
+
+            ITEM_TRIGGER[47] = true;
 
             ITEM_YIELD[34] = true;
             ITEM_YIELD[40] = true;

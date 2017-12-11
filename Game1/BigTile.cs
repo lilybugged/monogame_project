@@ -24,7 +24,7 @@ namespace Game1
         //private int lastTick = 0;
         private int[] endpoint;
         public bool solid;
-        public bool powered;
+        public int power = -1;
         public int state = 0;
         public int[][] inventory; // first index is itemid(0)/quantity(1), second is position in the inventory
         public int[][] output; // first index is itemid(0)/quantity(1), second is position in the inventory
@@ -190,7 +190,7 @@ namespace Game1
                     break;
                 case 29:
 
-                    if (powered)
+                    if (power>0)
                     {
                         if (timer == -1)
                         {
@@ -295,18 +295,18 @@ namespace Game1
                     if (state == 0)
                     {
                         state = 1;
-                        Power(tilex / 16 + 1, tiley / 16, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 0, true, new string[0]);
-                        Power(tilex / 16 - 1, tiley / 16, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 1, true, new string[0]);
-                        Power(tilex / 16, tiley / 16 + 1, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 2, true, new string[0]);
-                        Power(tilex / 16, tiley / 16 - 1, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 3, true, new string[0]);
+                        Power(tilex / 16 + 1, tiley / 16, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 0, 1, new string[0]);
+                        Power(tilex / 16 - 1, tiley / 16, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 1, 1, new string[0]);
+                        Power(tilex / 16, tiley / 16 + 1, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 2, 1, new string[0]);
+                        Power(tilex / 16, tiley / 16 - 1, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 3, 1, new string[0]);
                     }
                     else if (state == 1)
                     {
                         state = 0;
-                        Power(tilex / 16 + 1, tiley / 16, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 0, false, new string[0]);
-                        Power(tilex / 16 - 1, tiley / 16, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 1, false, new string[0]);
-                        Power(tilex / 16, tiley / 16 + 1, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 2, false, new string[0]);
-                        Power(tilex / 16, tiley / 16 - 1, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 3, false, new string[0]);
+                        Power(tilex / 16 + 1, tiley / 16, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 0, 0, new string[0]);
+                        Power(tilex / 16 - 1, tiley / 16, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 1, 0, new string[0]);
+                        Power(tilex / 16, tiley / 16 + 1, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 2, 0, new string[0]);
+                        Power(tilex / 16, tiley / 16 - 1, Game1.currentMap.mapWires[tilex / 16, tiley / 16], 0, 3, 0, new string[0]);
                     }
                     break;
                 case 41:
@@ -1160,7 +1160,7 @@ namespace Game1
                 fluidPercent = total / 2;
             }
         }
-        public void Power(int x, int y, int wireType, int count, int dir, bool power, string[] list)
+        public void Power(int x, int y, int wireType, int count, int dir, int powerLevel, string[] list)
         {
             string[] newlist = new string[list.Length+1];
             Array.Copy(list,newlist,list.Length);
@@ -1173,24 +1173,24 @@ namespace Game1
             {
                 if (Game1.currentMap.mapTiles[x, y] != -1 && Game1.itemInfo.ITEM_ENDPOINT[Game1.currentMap.mapTiles[x, y]] && BigTile.FindTileId(x * 16, y * 16) != -1)
                 {
-                    Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].powered = power;
+                    Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].power = powerLevel;
 
                 }
                 if (Game1.currentMap.mapWires[x + 1, y] == wireType && dir != 1 && !list.Contains((x + 1) + "," + y))
                 {
-                    Power(x + 1, y, wireType, count + 1, 0, power, list);
+                    Power(x + 1, y, wireType, count + 1, 0, powerLevel, list);
                 }
                 if (Game1.currentMap.mapWires[x - 1, y] == wireType && dir != 0 && !list.Contains((x - 1) + "," + y))
                 {
-                    Power(x - 1, y, wireType, count + 1, 1, power, list);
+                    Power(x - 1, y, wireType, count + 1, 1, powerLevel, list);
                 }
                 if (Game1.currentMap.mapWires[x, y + 1] == wireType && dir != 3 && !list.Contains(x + "," + (y + 1)))
                 {
-                    Power(x, y + 1, wireType, count + 1, 2, power, list);
+                    Power(x, y + 1, wireType, count + 1, 2, powerLevel, list);
                 }
                 if (Game1.currentMap.mapWires[x, y - 1] == wireType && dir != 2 && !list.Contains("," + (y + 1)))
                 {
-                    Power(x, y - 1, wireType, count + 1, 3, power, list);
+                    Power(x, y - 1, wireType, count + 1, 3, powerLevel, list);
                 }
             }
             return;
