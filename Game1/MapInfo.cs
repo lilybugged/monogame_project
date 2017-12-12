@@ -33,11 +33,50 @@ namespace Game1
                     mapBackTiles[i, a] = -1;
                 }
             }
-            for (int i = 0; i < length; i++)
+            int[] mapHeights = new int[length];
+            mapHeights[1] = 120;
+            if (120 - mapHeights[1] < 30) mapHeights[1] = 30;
+            if (120 - mapHeights[1] > height - 20) mapHeights[1] = height - 21;
+            Random rng = new Random();
+            int roll = 0;
+            for (int i = 2; i < length-2; i++)
             {
-                for (int a = 120; a < height; a++)
+                roll = rng.Next(0,6);
+                switch (roll)
                 {
-                    mapTiles[i, a] = 4;
+                    case 0:
+                        mapHeights[i] = mapHeights[i - 1];
+                        break;
+                    case 1:
+                        mapHeights[i] = mapHeights[i - 1] - 1;
+                        break;
+                    case 2:
+                        mapHeights[i] = mapHeights[i - 1];
+                        break;
+                    case 3:
+                        mapHeights[i] = mapHeights[i - 1] + 1;
+                        break;
+                    case 4:
+                        mapHeights[i] = mapHeights[i - 1];
+                        break;
+                    case 5:
+                        mapHeights[i] = mapHeights[i - 1];
+                        break;
+                }
+                if (120 - mapHeights[i - 1] < 30) mapHeights[i] = 30;
+                if (120 - mapHeights[i - 1] > height - 20) mapHeights[i] = height - 21;
+            }
+            for (int i = 1; i < length - 1; i++)
+            {
+                bool first = true;
+                for (int a = 120 - mapHeights[i]; a < height-1; a++)
+                {
+                    if (first)
+                    {
+                        mapTiles[i, a] = 49;
+                        first = false;
+                    }
+                    else mapTiles[i, a] = 50;
                 }
             }
             //mapTiles[0, 90] = 4;

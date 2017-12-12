@@ -18,7 +18,7 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 53;
+        public const int ITEM_COUNT = 55;
         public const int SCHEMATICS_COUNT = 2;
         public bool[] ITEM_ENDPOINT = new bool[ITEM_COUNT]; // if true, this item is an endpoint for pipes
         public String[] ITEM_NAME = new String[ITEM_COUNT];
@@ -67,7 +67,7 @@ namespace Game1
                 ITEM_BIGTILE_HEIGHT[i] = -1;
                 ITEM_ITEMID[i] = i;
             }
-            for (int i = ITEM_COUNT - SCHEMATICS_COUNT*2; i < ITEM_COUNT - SCHEMATICS_COUNT; i++)
+            for (int i = ITEM_COUNT - SCHEMATICS_COUNT * 2; i < ITEM_COUNT - SCHEMATICS_COUNT; i++)
             {
                 //recipes
                 ITEM_ITEMID[i] = 37;
@@ -183,8 +183,8 @@ namespace Game1
             ITEM_RANK[29] = 0;
             ITEM_RANK[30] = 0;
 
-            ITEM_TOOL_RANGE[14] = 5*16;
-            ITEM_TOOL_RANGE[16] = 8*16;
+            ITEM_TOOL_RANGE[14] = 5 * 16;
+            ITEM_TOOL_RANGE[16] = 8 * 16;
 
             ITEM_BACKTILE[17] = true;
             ITEM_BACKTILE[18] = true;
@@ -220,10 +220,11 @@ namespace Game1
             ITEM_PLACEABLE[40] = true;
             ITEM_PLACEABLE[41] = true;
             ITEM_PLACEABLE[47] = true;
+            ITEM_PLACEABLE[49] = true;
+            ITEM_PLACEABLE[50] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
-            ITEM_TOOL[48] = true;
 
             ITEM_REQUIRE_SURFACE[2] = true;
             ITEM_REQUIRE_SURFACE[6] = true;
@@ -249,6 +250,8 @@ namespace Game1
             ITEM_SOLID[33] = true;
             ITEM_SOLID[34] = true;
             ITEM_SOLID[35] = true;
+            ITEM_SOLID[49] = true;
+            ITEM_SOLID[50] = true;
 
             ITEM_TOOL_TIER[4] = 0;
             ITEM_TOOL_TIER[5] = 1;
@@ -267,6 +270,8 @@ namespace Game1
             ITEM_TOOL_TIER[39] = 0;
             ITEM_TOOL_TIER[40] = 0;
             ITEM_TOOL_TIER[41] = 1;
+            ITEM_TOOL_TIER[49] = 0;
+            ITEM_TOOL_TIER[50] = 0;
 
             //do NOT add a blockID for BigTile items
             ITEM_BLOCKID[0] = -1;
@@ -291,7 +296,9 @@ namespace Game1
             ITEM_BLOCKID[35] = 129;
             ITEM_BLOCKID[36] = 130;
             ITEM_BLOCKID[39] = 131;
-            
+            ITEM_BLOCKID[49] = 1;
+            ITEM_BLOCKID[50] = 2;
+
             ITEM_STACKABLE[14] = false;
             ITEM_STACKABLE[16] = false;
             ITEM_STACKABLE[19] = false;
@@ -310,6 +317,8 @@ namespace Game1
             ITEM_AUTOTILE[21] = true;
             ITEM_AUTOTILE[34] = true;
             ITEM_AUTOTILE[35] = true;
+            ITEM_AUTOTILE[49] = true;
+            ITEM_AUTOTILE[50] = true;
 
             ITEM_NAME[0] = "Apple";
             ITEM_NAME[1] = "Banana";
@@ -360,6 +369,8 @@ namespace Game1
             ITEM_NAME[46] = "Green Wire";
             ITEM_NAME[47] = "Lever";
             ITEM_NAME[48] = "Wire Cutter";
+            ITEM_NAME[49] = "Grass";
+            ITEM_NAME[50] = "Dirt";
 
             //recipes
             ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + 0] = "Recipe: Furnace";
@@ -368,7 +379,7 @@ namespace Game1
             for (int i = 0; i < SCHEMATICS_COUNT; i++)
             {
                 //blueprints
-                ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT + i] = "Blueprint: "+ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + i].Substring(8);
+                ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT + i] = "Blueprint: " + ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + i].Substring(8);
             }
 
         }
@@ -378,7 +389,37 @@ namespace Game1
             int[,] map = (Game1.itemInfo.ITEM_BACKTILE[itemId] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
             switch (itemId)
             {
-                
+                case 49:
+                    Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
+                    //Debug.WriteLine(""+ ((int)(position.X + Player.playerx) / 16) +","+ ((int)(position.Y + Player.playery) / 16 + 1));
+                    //draw edges for default block items
+                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])
+                    {
+                        Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X, (int)position.Y + 15, 16, 1), Color.Black); //nounder
+                    }
+                    if ((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != itemId) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]])
+                    {
+                        if (!(map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1)) {
+                            Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X, (int)position.Y, 1, 16), Color.Black); //noleft
+                        }
+                        else
+                        {
+                            Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X, (int)position.Y, 1, 7), Color.Black); //noleft
+                        }
+                    }
+                    if ((map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != itemId) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]])
+                    {
+                        if (!(map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1))
+                        {
+                            Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X + 15, (int)position.Y, 1, 16), Color.Black); //noright
+                        }
+                        else
+                        {
+                            Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X + 15, (int)position.Y, 1, 8), Color.Black); //noright
+                        }
+                        
+                    }
+                    break;
                 case 21:
                 case 20:
                     Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
@@ -422,7 +463,7 @@ namespace Game1
 
                 default:
                     Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
-
+                    //Debug.WriteLine(""+ ((int)(position.X + Player.playerx) / 16) +","+ ((int)(position.Y + Player.playery) / 16 + 1));
                     //draw edges for default block items
                     if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])
                     {
@@ -432,7 +473,7 @@ namespace Game1
                     {
                         Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X, (int)position.Y, 16, 1), Color.Black); //noabove
                     }
-                    if (!(map[(int)(position.X+Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]])
+                    if (!(map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]])
                     {
                         Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X, (int)position.Y, 1, 16), Color.Black); //noleft
                     }
