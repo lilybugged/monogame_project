@@ -78,7 +78,7 @@ namespace Game1
             //handles movement
             MouseKeyboardInfo.keyState = Keyboard.GetState();
             //Debug.WriteLine(WillCollide((playerx + screenPosX), (playery + screenPosY) - 31, 32, 32));
-            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.W) && canJump && !WillCollide((playerx + screenPosX), (playery + screenPosY) - 15, 32, 32))
+            if ((MouseKeyboardInfo.keyState.IsKeyDown(Keys.W) || MouseKeyboardInfo.keyState.IsKeyDown(Keys.Space)) && canJump && !WillCollide((playerx + screenPosX), (playery + screenPosY) - 15, 32, 32))
             {
                 speedy = -13;
                 canJump = false;

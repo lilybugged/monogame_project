@@ -15,11 +15,13 @@ namespace Game1
     {
         public Color[] WIRE_COLORS = new Color[]{ new Color(231, 63, 63), new Color(82, 101, 122), new Color(229, 203, 130), new Color(224, 255, 79) };
         public int[,] mapWires;
+        public int[,] mapFluids;
         public int[,] mapTiles;
         public int[,] mapBackTiles;
         public MapInfo(int length, int height)
         {
             mapWires = new int[length, height];
+            mapBackTiles = new int[length, height];
             mapTiles = new int[length,height];
             mapBackTiles = new int[length, height];
             //mapTiles stores item ids, which can be used to get the block ids to draw

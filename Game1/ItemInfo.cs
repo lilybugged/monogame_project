@@ -309,12 +309,14 @@ namespace Game1
             ITEM_STACKABLE[26] = false;
             ITEM_STACKABLE[42] = false;
 
+            ITEM_AUTOTILE[4] = true;
             ITEM_AUTOTILE[5] = true;
             ITEM_AUTOTILE[6] = true;
-            //ITEM_AUTOTILE[8] = true;
+            ITEM_AUTOTILE[17] = true;
             ITEM_AUTOTILE[18] = true;
             ITEM_AUTOTILE[20] = true;
             ITEM_AUTOTILE[21] = true;
+            ITEM_AUTOTILE[33] = true;
             ITEM_AUTOTILE[34] = true;
             ITEM_AUTOTILE[35] = true;
             ITEM_AUTOTILE[49] = true;
@@ -339,7 +341,7 @@ namespace Game1
             ITEM_NAME[16] = "Everwood Wand";
             ITEM_NAME[17] = "Wood Panel";
             ITEM_NAME[18] = "White Block Panel";
-            ITEM_NAME[19] = "Timberlands";
+            ITEM_NAME[19] = "OB's Fake Timberlands";
             ITEM_NAME[20] = "Glass";
             ITEM_NAME[21] = "Glass Panel";
             ITEM_NAME[22] = "Lavender Top";
@@ -420,6 +422,8 @@ namespace Game1
                         
                     }
                     break;
+                case 4:
+                case 17:
                 case 21:
                 case 20:
                     Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
