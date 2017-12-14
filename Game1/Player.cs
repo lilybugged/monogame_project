@@ -84,7 +84,7 @@ namespace Game1
                 canJump = false;
                 // Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" playerMove:"+playerx+","+playery);
             }
-            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A) && !WillCollide((playerx + screenPosX) - 2, (playery + screenPosY), 32, 32))
+            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A) && !WillCollide((playerx + screenPosX) - 2, (playery + screenPosY), 32, 32) && playerx > 0)
             {
                 //if (Game1.currentMap.mapTiles[(Player.playerx + screenPosX - 16) / 16, (Player.playery + screenPosY + 16) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + screenPosX - 16) / 16, (Player.playery + screenPosY + 16) / 16]])
                 {
@@ -95,7 +95,7 @@ namespace Game1
                 }
                 // Game1.client.messageQueue.Add("" + Game1.CLIENT_ID + " playerMove:" + playerx + "," + playery);
             }
-            else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D) && !WillCollide((playerx + screenPosX) + 2, (playery + screenPosY), 32, 32))
+            else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D) && !WillCollide((playerx + screenPosX) + 2, (playery + screenPosY), 32, 32) && playerx < Game1.currentMap.mapTiles.GetLength(0)*16 - 500)
             {
                 speedx = 2;
                 //currentSprite = Game1.charaRight[1];

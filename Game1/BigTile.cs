@@ -54,9 +54,21 @@ namespace Game1
                     Game1.currentMap.mapTiles[i / 16, a / 16] = tileType;
                 }
             }
-
+            int[,] map;
+            Vector2 position;
             switch (tileType)
             {
+                case 52:
+                    map = (Game1.itemInfo.ITEM_BACKTILE[tileType] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
+                    position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
+                    endpoint = new int[] { -1, -1 };
+                    endpoint = FindEndPoint(tilex / 16, tiley / 16, 3, 51);
+                    Debug.WriteLine("" + endpoint[0] + "," + endpoint[1]);
+                    break;
+                case 51:
+                    PipeUpdate(51);
+                    UpdateNearbyPipes(51); //can change this to UpdateAllPipes, but worried about performance
+                    break;
                 case 41:
                     foreach (BigTile tile in Game1.bigTiles)
                     {
@@ -65,10 +77,10 @@ namespace Game1
                     timer = 200;
                     break;
                 case 31:
-                    int[,] map = (Game1.itemInfo.ITEM_BACKTILE[tileType] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
-                    Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
+                    map = (Game1.itemInfo.ITEM_BACKTILE[tileType] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
+                    position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
                     endpoint = new int[] { -1, -1 };
-                    endpoint = FindEndPoint(tilex / 16, tiley / 16, 3);
+                    endpoint = FindEndPoint(tilex / 16, tiley / 16, 3, 30);
                     Debug.WriteLine("" + endpoint[0] + "," + endpoint[1]);
                     break;
                 case 29:
@@ -95,8 +107,8 @@ namespace Game1
                     }
                     break;
                 case 30:
-                    PipeUpdate();
-                    UpdateNearbyPipes(); //can change this to UpdateAllPipes, but worried about performance
+                    PipeUpdate(30);
+                    UpdateNearbyPipes(30); //can change this to UpdateAllPipes, but worried about performance
                     break;
                 case 13:
                 case 12:
@@ -121,67 +133,131 @@ namespace Game1
         }
         public void Update()
         {
+            int[,] map2;
+            Vector2 position2;
             if (timer > 0) timer--;
             switch (tileType)
             {
+
                 case 41:
                     if (timer > 0) TankUpdate();
                     break;
-                case 31:
-                    int[,] map = Game1.currentMap.mapTiles;
-                    Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
+                case 52:
+                    map2 = Game1.currentMap.mapTiles;
+                    position2 = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
                     switch (state)
                     {
                         case 1:
-                            if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1
-                                && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]]
-                                && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != 32
-                                && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != 31)
+                            if (map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 + 1] != -1
+                                && Game1.itemInfo.ITEM_ENDPOINT[map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 + 1]]
+                                && map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 + 1] != tileType + 1
+                                && map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 + 1] != tileType)
                             {
-                                endpoint = FindEndPoint(tilex / 16, tiley / 16 - 1, 1);
-                                if (Game1.globalTick > 14 && BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16) != -1)
+                                endpoint = FindEndPoint(tilex / 16, tiley / 16 - 1, 1, tileType - 1);
+                                if (BigTile.FindTileId((int)(position2.X + Player.playerx), (int)(position2.Y + Player.playery) + 16) != -1)
                                 {
-                                    PushAnItem(Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)], endpoint);
+                                    PushAFluid(Game1.bigTiles[BigTile.FindTileId((int)(position2.X + Player.playerx), (int)(position2.Y + Player.playery) + 16)], endpoint);
                                 }
                             }
                             break;
                         case 2:
-                            if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1
-                                && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]]
-                                && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != 32
-                                && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != 31)
+                            if (map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 - 1] != -1
+                                && Game1.itemInfo.ITEM_ENDPOINT[map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 - 1]]
+                                && map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 - 1] != tileType + 1
+                                && map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 - 1] != tileType)
                             {
-                                endpoint = FindEndPoint(tilex / 16, tiley / 16 + 1, 2);
-                                if (Game1.globalTick > 14 && BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16) != -1)
+                                endpoint = FindEndPoint(tilex / 16, tiley / 16 + 1, 2, tileType - 1);
+                                if (BigTile.FindTileId((int)(position2.X + Player.playerx), (int)(position2.Y + Player.playery) - 16) != -1)
                                 {
-                                    PushAnItem(Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)], endpoint);
+                                    PushAFluid(Game1.bigTiles[BigTile.FindTileId((int)(position2.X + Player.playerx), (int)(position2.Y + Player.playery) - 16)], endpoint);
                                 }
 
                             }
                             break;
                         case 3:
-                            if (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1
-                                && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]]
-                                && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != 32
-                                && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != 31)
+                            if (map2[(int)(position2.X + Player.playerx) / 16 - 1, (int)(position2.Y + Player.playery) / 16] != -1
+                                && Game1.itemInfo.ITEM_ENDPOINT[map2[(int)(position2.X + Player.playerx) / 16 - 1, (int)(position2.Y + Player.playery) / 16]]
+                                && map2[(int)(position2.X + Player.playerx) / 16 - 1, (int)(position2.Y + Player.playery) / 16] != tileType + 1
+                                && map2[(int)(position2.X + Player.playerx) / 16 - 1, (int)(position2.Y + Player.playery) / 16] != tileType)
                             {
-                                endpoint = FindEndPoint(tilex / 16 + 1, tiley / 16, 3);
-                                if (Game1.globalTick > 14 && BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery)) != -1)
+                                endpoint = FindEndPoint(tilex / 16 + 1, tiley / 16, 3, tileType - 1);
+                                if (BigTile.FindTileId((int)(position2.X + Player.playerx) - 16, (int)(position2.Y + Player.playery)) != -1)
                                 {
-                                    PushAnItem(Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))], endpoint);
+                                    PushAFluid(Game1.bigTiles[BigTile.FindTileId((int)(position2.X + Player.playerx) - 16, (int)(position2.Y + Player.playery))], endpoint);
                                 }
                             }
                             break;
                         case 4:
-                            if (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1
-                                && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]]
-                                && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != 32
-                                && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != 31)
+                            if (map2[(int)(position2.X + Player.playerx) / 16 + 1, (int)(position2.Y + Player.playery) / 16] != -1
+                                && Game1.itemInfo.ITEM_ENDPOINT[map2[(int)(position2.X + Player.playerx) / 16 + 1, (int)(position2.Y + Player.playery) / 16]]
+                                && map2[(int)(position2.X + Player.playerx) / 16 + 1, (int)(position2.Y + Player.playery) / 16] != tileType + 1
+                                && map2[(int)(position2.X + Player.playerx) / 16 + 1, (int)(position2.Y + Player.playery) / 16] != tileType)
                             {
-                                endpoint = FindEndPoint(tilex / 16 - 1, tiley / 16, 4);
-                                if (Game1.globalTick > 14 && BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery)) != -1)
+                                endpoint = FindEndPoint(tilex / 16 - 1, tiley / 16, 4, tileType - 1);
+                                if (BigTile.FindTileId((int)(position2.X + Player.playerx) + 16, (int)(position2.Y + Player.playery)) != -1)
                                 {
-                                    PushAnItem(Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))], endpoint);
+                                    PushAFluid(Game1.bigTiles[BigTile.FindTileId((int)(position2.X + Player.playerx) + 16, (int)(position2.Y + Player.playery))], endpoint);
+                                }
+                            }
+                            break;
+                    }
+
+                    break;
+                case 31:
+                    map2 = Game1.currentMap.mapTiles;
+                    position2 = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
+                    switch (state)
+                    {
+                        case 1:
+                            if (map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 + 1] != -1
+                                && Game1.itemInfo.ITEM_ENDPOINT[map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 + 1]]
+                                && map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 + 1] != tileType + 1
+                                && map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 + 1] != tileType)
+                            {
+                                endpoint = FindEndPoint(tilex / 16, tiley / 16 - 1, 1, tileType - 1);
+                                if (Game1.globalTick > 14 && BigTile.FindTileId((int)(position2.X + Player.playerx), (int)(position2.Y + Player.playery) + 16) != -1 && Game1.bigTiles[BigTile.FindTileId((int)(position2.X + Player.playerx), (int)(position2.Y + Player.playery) + 16)].output!=null)
+                                {
+                                    PushAnItem(Game1.bigTiles[BigTile.FindTileId((int)(position2.X + Player.playerx), (int)(position2.Y + Player.playery) + 16)], endpoint);
+                                }
+                            }
+                            break;
+                        case 2:
+                            if (map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 - 1] != -1
+                                && Game1.itemInfo.ITEM_ENDPOINT[map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 - 1]]
+                                && map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 - 1] != tileType + 1
+                                && map2[(int)(position2.X + Player.playerx) / 16, (int)(position2.Y + Player.playery) / 16 - 1] != tileType)
+                            {
+                                endpoint = FindEndPoint(tilex / 16, tiley / 16 + 1, 2, tileType - 1);
+                                if (Game1.globalTick > 14 && BigTile.FindTileId((int)(position2.X + Player.playerx), (int)(position2.Y + Player.playery) - 16) != -1 && Game1.bigTiles[BigTile.FindTileId((int)(position2.X + Player.playerx), (int)(position2.Y + Player.playery) - 16)].output != null)
+                                {
+                                    PushAnItem(Game1.bigTiles[BigTile.FindTileId((int)(position2.X + Player.playerx), (int)(position2.Y + Player.playery) - 16)], endpoint);
+                                }
+
+                            }
+                            break;
+                        case 3:
+                            if (map2[(int)(position2.X + Player.playerx) / 16 - 1, (int)(position2.Y + Player.playery) / 16] != -1
+                                && Game1.itemInfo.ITEM_ENDPOINT[map2[(int)(position2.X + Player.playerx) / 16 - 1, (int)(position2.Y + Player.playery) / 16]]
+                                && map2[(int)(position2.X + Player.playerx) / 16 - 1, (int)(position2.Y + Player.playery) / 16] != tileType + 1
+                                && map2[(int)(position2.X + Player.playerx) / 16 - 1, (int)(position2.Y + Player.playery) / 16] != tileType)
+                            {
+                                endpoint = FindEndPoint(tilex / 16 + 1, tiley / 16, 3, tileType - 1);
+                                if (Game1.globalTick > 14 && BigTile.FindTileId((int)(position2.X + Player.playerx) - 16, (int)(position2.Y + Player.playery)) != -1 && Game1.bigTiles[BigTile.FindTileId((int)(position2.X + Player.playerx) - 16, (int)(position2.Y + Player.playery))].output != null)
+                                {
+                                    PushAnItem(Game1.bigTiles[BigTile.FindTileId((int)(position2.X + Player.playerx) - 16, (int)(position2.Y + Player.playery))], endpoint);
+                                }
+                            }
+                            break;
+                        case 4:
+                            if (map2[(int)(position2.X + Player.playerx) / 16 + 1, (int)(position2.Y + Player.playery) / 16] != -1
+                                && Game1.itemInfo.ITEM_ENDPOINT[map2[(int)(position2.X + Player.playerx) / 16 + 1, (int)(position2.Y + Player.playery) / 16]]
+                                && map2[(int)(position2.X + Player.playerx) / 16 + 1, (int)(position2.Y + Player.playery) / 16] != tileType + 1
+                                && map2[(int)(position2.X + Player.playerx) / 16 + 1, (int)(position2.Y + Player.playery) / 16] != tileType)
+                            {
+                                endpoint = FindEndPoint(tilex / 16 - 1, tiley / 16, 4, tileType - 1);
+                                if (Game1.globalTick > 14 && BigTile.FindTileId((int)(position2.X + Player.playerx) + 16, (int)(position2.Y + Player.playery)) != -1 && Game1.bigTiles[BigTile.FindTileId((int)(position2.X + Player.playerx) + 16, (int)(position2.Y + Player.playery))].output != null)
+                                {
+                                    PushAnItem(Game1.bigTiles[BigTile.FindTileId((int)(position2.X + Player.playerx) + 16, (int)(position2.Y + Player.playery))], endpoint);
                                 }
                             }
                             break;
@@ -190,7 +266,7 @@ namespace Game1
                     break;
                 case 29:
 
-                    if (power>0)
+                    if (power > 0)
                     {
                         if (timer == -1)
                         {
@@ -291,6 +367,7 @@ namespace Game1
         {
             switch (tileType)
             {
+
                 case 47:
                     if (state == 0)
                     {
@@ -329,34 +406,37 @@ namespace Game1
                         Game1.bigTiles.Remove(this);
                     }
                     break;
+                case 53:
                 case 32:
                     state++;
                     if (state > 4) state = 1;
-                    UpdateNearbyPipes();
+                    UpdateNearbyPipes(30);
                     break;
+                case 52:
                 case 31:
                     state++;
                     if (state > 4) state = 1;
                     switch (state)
                     {
                         case 1:
-                            endpoint = FindEndPoint(tilex / 16, tiley / 16 - 1, state);
+                            endpoint = FindEndPoint(tilex / 16, tiley / 16 - 1, state, 30);
                             break;
                         case 2:
-                            endpoint = FindEndPoint(tilex / 16, tiley / 16 + 1, state);
+                            endpoint = FindEndPoint(tilex / 16, tiley / 16 + 1, state, 30);
                             break;
                         case 3:
-                            endpoint = FindEndPoint(tilex / 16 + 1, tiley / 16, state);
+                            endpoint = FindEndPoint(tilex / 16 + 1, tiley / 16, state, 30);
                             break;
                         case 4:
-                            endpoint = FindEndPoint(tilex / 16 - 1, tiley / 16, state);
+                            endpoint = FindEndPoint(tilex / 16 - 1, tiley / 16, state, 30);
                             break;
                     }
 
                     Debug.WriteLine("" + endpoint[0] + ", " + endpoint[1]);
                     if (endpoint[0] != -1) Debug.WriteLine("" + Game1.currentMap.mapTiles[endpoint[0], endpoint[1]]);
-                    UpdateNearbyPipes();
+                    UpdateNearbyPipes(30);
                     break;
+                case 51:
                 case 30:
                     state++;
                     if (state == 1 || state > 8) state = 3;
@@ -438,6 +518,11 @@ namespace Game1
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
             switch (tileType)
             {
+                case 51:
+                    Game1.spriteBatch.Begin();
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 157 + state, position);
+                    Game1.spriteBatch.End();
+                    break;
                 case 47:
                     Game1.spriteBatch.Begin();
                     Game1.tiles.DrawTile(Game1.spriteBatch, 155 + state, position);
@@ -448,7 +533,7 @@ namespace Game1
                     //draw fluids first
                     for (int i = 0; i < 16; i++)
                     {
-                        if (i < (int)(Math.Round(fluidPercent) / 100.0 * 16)) Game1.fluids.DrawTile(Game1.spriteBatch, fluidId, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery + 15 - i));
+                        if (i < (int)(Math.Round(fluidPercent) / 100.0 * 16)) Game1.fluids.DrawTile(Game1.spriteBatch, fluidId, Color.White*0.9f, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery + 15 - i));
                     }
 
                     Game1.tiles.DrawTile(Game1.spriteBatch, 153, new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery));
@@ -466,6 +551,40 @@ namespace Game1
                 case 39:
                     Game1.spriteBatch.Begin();
                     Game1.tiles.DrawTile(Game1.spriteBatch, 131, position);
+                    Game1.spriteBatch.End();
+                    break;
+                case 53:
+                    Game1.spriteBatch.Begin();
+                    //Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
+                    if (state == 0)
+                    {
+                        if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]]
+                            && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != 52 && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != 53)
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 166, position); //under
+                            state = 1;
+                        }
+                        else if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]]
+                            && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != 52 && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != 53)
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 167, position); //above
+                            state = 2;
+                        }
+                        else if (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]]
+                            && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != 52 && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != 53)
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 168, position); //left
+                            state = 3;
+                        }
+                        else if (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]]
+                            && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != 52 && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != 53)
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 169, position); //right
+                            state = 4;
+                        }
+                        else Game1.tiles.DrawTile(Game1.spriteBatch, 166, position); //default to under
+                    }
+                    else Game1.tiles.DrawTile(Game1.spriteBatch, 166 + state - 1, position);
                     Game1.spriteBatch.End();
                     break;
                 case 32:
@@ -500,6 +619,39 @@ namespace Game1
                         else Game1.tiles.DrawTile(Game1.spriteBatch, 119, position); //default to under
                     }
                     else Game1.tiles.DrawTile(Game1.spriteBatch, 119 + state - 1, position);
+                    Game1.spriteBatch.End();
+                    break;
+                case 52:
+                    Game1.spriteBatch.Begin();
+                    if (state == 0)
+                    {
+                        if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]]
+                            && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != 52 && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != 53)
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 170, position); //under
+                            state = 1;
+                        }
+                        else if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]]
+                            && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != 52 && map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != 53)
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 171, position); //above
+                            state = 2;
+                        }
+                        else if (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]]
+                            && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != 52 && map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != 53)
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 172, position); //left
+                            state = 3;
+                        }
+                        else if (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]]
+                            && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != 52 && map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != 53)
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 173, position); //right
+                            state = 4;
+                        }
+                        else Game1.tiles.DrawTile(Game1.spriteBatch, 170, position); //default to under
+                    }
+                    else Game1.tiles.DrawTile(Game1.spriteBatch, 170 + state - 1, position);
                     Game1.spriteBatch.End();
                     break;
                 case 31:
@@ -646,7 +798,8 @@ namespace Game1
                     }
                 }
             }
-            if (tileType == 30) UpdateNearbyPipes();
+            if (tileType == 30) UpdateNearbyPipes(30);
+            else if (tileType == 51) UpdateNearbyPipes(51);
             Debug.WriteLine("destroy: " + Game1.bigTiles.IndexOf(this));
             Game1.bigTiles.Remove(this);
         }
@@ -785,6 +938,104 @@ namespace Game1
             }
             OuterLoop:;
         }
+        /// <summary>
+        /// finds an pushes a fluid from one liquid inventory to another
+        /// MUST ONLY be called from a tileType 53 endpoint
+        /// </summary>
+        public static void PushAFluid(BigTile startInv, int[] endPoint)
+        {
+            BigTile end;
+            //check if there are items in the starting inventory's output
+            if ((int)startInv.fluidPercent > 0 && (endPoint[0] != -1 && BigTile.FindTileId(endPoint[0] * 16, endPoint[1] * 16) != -1))
+            {
+                // check if there's a spot in the endpoint's attached inventory, if there is one
+                switch (Game1.bigTiles[BigTile.FindTileId(endPoint[0] * 16, endPoint[1] * 16)].state)
+                {
+                    case 1:
+                        if (BigTile.FindTileId(endPoint[0] * 16, endPoint[1] * 16 + 16) !=-1 && Game1.bigTiles[BigTile.FindTileId(endPoint[0] * 16, endPoint[1] * 16 + 16)].fluidPercent<100)
+                        {
+                            end = Game1.bigTiles[BigTile.FindTileId(endPoint[0] * 16, endPoint[1] * 16 + 16)];
+                            end.fluidId = startInv.fluidId;
+                            end.fluidPercent ++;
+                            startInv.fluidPercent --;
+                        }
+                        else if (Game1.currentMap.mapFluids[endPoint[0], endPoint[1] + 1]<100 && (Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] + 1]==-1 || Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] + 1] == startInv.fluidId))
+                        {
+                            startInv.fluidPercent--;
+                            Game1.currentMap.mapFluids[endPoint[0], endPoint[1] + 1]++;
+                            Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] + 1] = startInv.fluidId;
+                            Game1.currentMap.updatingFluids = 200;
+                        }
+                        foreach (BigTile tile in Game1.bigTiles)
+                        {
+                            if (tile.tileType == 41) tile.timer = 200;
+                        }
+                        break;
+                    case 2:
+                        if (BigTile.FindTileId(endPoint[0] * 16, endPoint[1] * 16 - 16) != -1 && Game1.bigTiles[BigTile.FindTileId(endPoint[0] * 16, endPoint[1] * 16 - 16)].fluidPercent < 100)
+                        {
+                            end = Game1.bigTiles[BigTile.FindTileId(endPoint[0] * 16, endPoint[1] * 16 - 16)];
+                            end.fluidId = startInv.fluidId;
+                            end.fluidPercent ++;
+                            startInv.fluidPercent --;
+                            
+                        }
+                        else if (Game1.currentMap.mapFluids[endPoint[0], endPoint[1] - 1] < 100 && (Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] - 1] == -1 || Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] - 1] == startInv.fluidId))
+                        {
+                            startInv.fluidPercent--;
+                            Game1.currentMap.mapFluids[endPoint[0], endPoint[1] - 1]++;
+                            Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] - 1] = startInv.fluidId;
+                            Game1.currentMap.updatingFluids = 200;
+                        }
+                        foreach (BigTile tile in Game1.bigTiles)
+                        {
+                            if (tile.tileType == 41) tile.timer = 200;
+                        }
+                        break;
+                    case 3:
+                        if (BigTile.FindTileId(endPoint[0] * 16 - 16, endPoint[1] * 16) != -1 && Game1.bigTiles[BigTile.FindTileId(endPoint[0] * 16 - 16, endPoint[1] * 16)].fluidPercent < 100)
+                        {
+                            end = Game1.bigTiles[BigTile.FindTileId(endPoint[0] * 16 - 16, endPoint[1] * 16)];
+                            end.fluidId = startInv.fluidId;
+                            end.fluidPercent ++;
+                            startInv.fluidPercent --;
+                            
+                        }
+                        else if (Game1.currentMap.mapFluids[endPoint[0] - 1, endPoint[1]] < 100 && (Game1.currentMap.mapFluidIds[endPoint[0] - 1, endPoint[1]] == -1 || Game1.currentMap.mapFluidIds[endPoint[0] - 1, endPoint[1]] == startInv.fluidId))
+                        {
+                            startInv.fluidPercent--;
+                            Game1.currentMap.mapFluids[endPoint[0] - 1, endPoint[1]]++;
+                            Game1.currentMap.mapFluidIds[endPoint[0] - 1, endPoint[1]] = startInv.fluidId;
+                            Game1.currentMap.updatingFluids = 200;
+                        }
+                        foreach (BigTile tile in Game1.bigTiles)
+                        {
+                            if (tile.tileType == 41) tile.timer = 200;
+                        }
+                        break;
+                    case 4:
+                        if (BigTile.FindTileId(endPoint[0] * 16 + 16, endPoint[1] * 16) != -1 && Game1.bigTiles[BigTile.FindTileId(endPoint[0] * 16 + 16, endPoint[1] * 16)].fluidPercent < 100)
+                        {
+                            end = Game1.bigTiles[BigTile.FindTileId(endPoint[0] * 16 + 16, endPoint[1] * 16)];
+                            end.fluidId = startInv.fluidId;
+                            end.fluidPercent ++;
+                            startInv.fluidPercent --;
+                        }
+                        else if (Game1.currentMap.mapFluids[endPoint[0] + 1, endPoint[1]] < 100 && (Game1.currentMap.mapFluidIds[endPoint[0] + 1, endPoint[1]] == -1 || Game1.currentMap.mapFluidIds[endPoint[0] + 1, endPoint[1]] == startInv.fluidId))
+                        {
+                            startInv.fluidPercent--;
+                            Game1.currentMap.mapFluids[endPoint[0] + 1, endPoint[1]]++;
+                            Game1.currentMap.mapFluidIds[endPoint[0] + 1, endPoint[1]] = startInv.fluidId;
+                            Game1.currentMap.updatingFluids = 200;
+                        }
+                        foreach (BigTile tile in Game1.bigTiles)
+                        {
+                            if (tile.tileType == 41) tile.timer = 200;
+                        }
+                        break;
+                }
+            }
+        }
         ///fully draws an autotile of this item - keep tileorder in the spritesheet in mind
         private void DrawFullAutoTile(int startTileId)
         {
@@ -882,11 +1133,10 @@ namespace Game1
             Game1.spriteBatch.End();
         }
         ///finds an endpoint pipe (a puller) from the given starting pipe (a pusher) and returns an array [x,y]
-        public static int[] FindEndPoint(int x, int y, int direction)
+        public static int[] FindEndPoint(int x, int y, int direction, int pipeTile)
         {
-            if (Game1.currentMap.mapTiles[x, y] == 32)
+            if (Game1.currentMap.mapTiles[x, y] == pipeTile + 2)
             {
-                //Debug.WriteLine(""+x+","+y);
                 if (BigTile.FindTileId(x * 16, y * 16) != -1)
                 {
                     switch (Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].state)
@@ -913,11 +1163,11 @@ namespace Game1
                 }
                 else return new int[] { -1, -1 };
             }
-            else if (Game1.currentMap.mapTiles[x, y] == 31)
+            else if (Game1.currentMap.mapTiles[x, y] == pipeTile + 1)
             {
                 return new int[] { -1, -1 };
             }
-            else if (Game1.currentMap.mapTiles[x, y] == 30)
+            else if (Game1.currentMap.mapTiles[x, y] == pipeTile)
             {
                 switch (direction)
                 {
@@ -925,13 +1175,13 @@ namespace Game1
                         switch (Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].state)
                         {
                             case 4:
-                                return FindEndPoint(x, y - 1, 1);
+                                return FindEndPoint(x, y - 1, 1, pipeTile);
                                 break;
                             case 5:
-                                return FindEndPoint(x + 1, y, 3);
+                                return FindEndPoint(x + 1, y, 3, pipeTile);
                                 break;
                             case 7:
-                                return FindEndPoint(x - 1, y, 4);
+                                return FindEndPoint(x - 1, y, 4, pipeTile);
                                 break;
                             default:
                                 return new int[] { -1, -1 };
@@ -941,13 +1191,13 @@ namespace Game1
                         switch (Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].state)
                         {
                             case 4:
-                                return FindEndPoint(x, y + 1, 2);
+                                return FindEndPoint(x, y + 1, 2, pipeTile);
                                 break;
                             case 6:
-                                return FindEndPoint(x + 1, y, 3);
+                                return FindEndPoint(x + 1, y, 3, pipeTile);
                                 break;
                             case 8:
-                                return FindEndPoint(x - 1, y, 4);
+                                return FindEndPoint(x - 1, y, 4, pipeTile);
                                 break;
                             default:
                                 return new int[] { -1, -1 };
@@ -957,13 +1207,13 @@ namespace Game1
                         switch (Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].state)
                         {
                             case 3:
-                                return FindEndPoint(x + 1, y, 3);
+                                return FindEndPoint(x + 1, y, 3, pipeTile);
                                 break;
                             case 7:
-                                return FindEndPoint(x, y + 1, 2);
+                                return FindEndPoint(x, y + 1, 2, pipeTile);
                                 break;
                             case 8:
-                                return FindEndPoint(x, y - 1, 1);
+                                return FindEndPoint(x, y - 1, 1, pipeTile);
                                 break;
                             default:
                                 return new int[] { -1, -1 };
@@ -973,13 +1223,13 @@ namespace Game1
                         switch (Game1.bigTiles[BigTile.FindTileId(x * 16, y * 16)].state)
                         {
                             case 3:
-                                return FindEndPoint(x - 1, y, 4);
+                                return FindEndPoint(x - 1, y, 4, pipeTile);
                                 break;
                             case 5:
-                                return FindEndPoint(x, y + 1, 2);
+                                return FindEndPoint(x, y + 1, 2, pipeTile);
                                 break;
                             case 6:
-                                return FindEndPoint(x, y - 1, 1);
+                                return FindEndPoint(x, y - 1, 1, pipeTile);
                                 break;
                             default:
                                 return new int[] { -1, -1 };
@@ -996,126 +1246,126 @@ namespace Game1
         /// updates pipes above, below, left and right of this pipe,
         /// but not the pipe itself
         /// </summary>
-        public void UpdateNearbyPipes()
+        public void UpdateNearbyPipes(int pipeTile)
         {
             int[,] map = (Game1.itemInfo.ITEM_BACKTILE[tileType] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
 
-            if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 30)
+            if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == pipeTile)
             {
                 Debug.WriteLine("" + tilex + ',' + tiley);
-                Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].PipeUpdate();
+                Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].PipeUpdate(pipeTile);
                 Debug.WriteLine("checked upward");
             }
-            if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == 30)
+            if (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == pipeTile)
             {
-                Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].PipeUpdate();
+                Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].PipeUpdate(pipeTile);
             }
-            if (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 30)
+            if (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile)
             {
-                Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].PipeUpdate();
+                Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].PipeUpdate(pipeTile);
             }
-            if (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == 30)
+            if (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == pipeTile)
             {
-                Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].PipeUpdate();
+                Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].PipeUpdate(pipeTile);
             }
         }
-        public static void UpdateAllPipes()
+        public static void UpdateAllPipes(int pipeTile)
         {
             foreach (BigTile tile in Game1.bigTiles)
             {
                 if (tile.tileType == 30)
                 {
-                    tile.PipeUpdate();
+                    tile.PipeUpdate(pipeTile);
                 }
             }
         }
         /// <summary>
         /// updates this pipe
         /// </summary>
-        private void PipeUpdate()
+        private void PipeUpdate(int pipeTile)
         {
-            int[,] map = (Game1.itemInfo.ITEM_BACKTILE[30] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
+            int[,] map = Game1.currentMap.mapTiles;
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
 
 
             {
-                if (((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 30)
-                || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3
-                || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3))
-                && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == 30
-                    || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4
-                    || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4)))
+                if (((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile)
+                || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3
+                || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3))
+                && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == pipeTile
+                    || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4
+                    || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4)))
                 {
                     //left AND right
                     state = 3;
                 }
-                else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 30)
-                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2
-                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2))
-                    && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == 30
-                        || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1
-                        || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1)))
+                else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == pipeTile)
+                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2
+                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2))
+                    && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == pipeTile
+                        || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1
+                        || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1)))
                 {
                     //under AND above
                     state = 4;
                 }
-                else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == 30)
-                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1
-                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1))
-                    && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == 30
-                        || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4
-                        || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4)))
+                else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == pipeTile)
+                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1
+                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1))
+                    && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == pipeTile
+                        || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4
+                        || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4)))
                 {
                     //downright
                     state = 5;
                 }
-                else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == 30)
-                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1
-                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1))
-                    && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 30
-                        || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3
-                        || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3)))
+                else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == pipeTile)
+                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1
+                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1))
+                    && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile
+                        || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3
+                        || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3)))
                 {
                     //downleft
                     state = 7;
                 }
-                else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 30)
-                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2
-                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2))
-                    && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == 30
-                        || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4
-                        || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4)))
+                else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == pipeTile)
+                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2
+                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2))
+                    && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == pipeTile
+                        || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4
+                        || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4)))
                 {
                     //upright
                     state = 6;
                 }
-                else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 30)
-                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2
-                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2))
-                    && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 30
-                        || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3
-                        || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3)))
+                else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == pipeTile)
+                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2
+                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2))
+                    && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile
+                        || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3
+                        || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3)))
                 {
                     //upleft
                     state = 8;
                 }
-                else if (((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 30)
-                    || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3
-                    || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3))
-                    || (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == 30
-                        || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4
-                        || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4)))
+                else if (((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile)
+                    || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3
+                    || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3))
+                    || (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == pipeTile
+                        || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4
+                        || map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) + 16, (int)(position.Y + Player.playery))].state == 4)))
                 {
                     //left OR right
                     state = 3;
                 }
-                else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 30)
-                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2
-                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2))
-                    || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == 30
-                        || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == 31 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1
-                        || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == 32 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1)))
+                else if (((map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == pipeTile)
+                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2
+                    || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) - 16)].state == 2))
+                    || (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == pipeTile
+                        || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1 && (map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1
+                        || map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] == pipeTile + 2 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx), (int)(position.Y + Player.playery) + 16)].state == 1)))
                 {
                     //under OR above
                     state = 4;
@@ -1162,8 +1412,8 @@ namespace Game1
         }
         public void Power(int x, int y, int wireType, int count, int dir, int powerLevel, string[] list)
         {
-            string[] newlist = new string[list.Length+1];
-            Array.Copy(list,newlist,list.Length);
+            string[] newlist = new string[list.Length + 1];
+            Array.Copy(list, newlist, list.Length);
             if (list.Contains(x + "," + y)) return;
             newlist[list.Length] = x + "," + y;
             list = newlist;

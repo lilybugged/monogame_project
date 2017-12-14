@@ -192,7 +192,7 @@ namespace Game1
             equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 8, 7);
 
             equip_icons = new AnimatedSprite(Content.Load<Texture2D>("img/equip_slots"), 5, 4);
-            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 13, 13);
+            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 14, 13);
             fluids = new AnimatedSprite(Content.Load<Texture2D>("img/bg_fluids"), 2, 1);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
             portrait_items = new AnimatedSprite(Content.Load<Texture2D>("img/portrait_items"), 3, 3);
@@ -231,6 +231,8 @@ namespace Game1
 
             //SYNC INFORMATION
             //client.Update();
+
+            //fluids
 
             //update all the things, only if the window is active and mouse is inside
             if (this.IsActive)
@@ -301,11 +303,12 @@ namespace Game1
             //spriteBatch.Draw(grass2, new Vector2(400, 240), Color.White);
             //spriteBatch.Draw(grass3, new Vector2(450, 240), Color.White);
 
-            
-            
-            map0.DrawMap();
 
-            // TODO: Add your drawing code here
+            map0.DrawBackTileMap();
+            
+            player.Draw();
+            
+            
             for (int i = 0; i < chestInventories.Count; i++)
             {
                 chestInventories[i].Draw();
@@ -322,10 +325,13 @@ namespace Game1
             uiObjects[2].DrawCarry();
             Game1.spriteBatch.End();
 
-            player.Draw();
+            //draw overworld fluids
+            map0.DrawFluids();
+
+            //draw tilemap
+            map0.DrawMap();
+
             //draw all UIs
-
-
             for (int i = 0; i < uiObjects.Length; i++)
             {
                 if (uiObjects[i] != null && (i==2 || !uiToggle)) uiObjects[i].Draw();
