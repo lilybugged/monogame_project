@@ -75,6 +75,7 @@ namespace Game1
         public static int WINDOW_WIDTH = 1280;
         public static int WINDOW_HEIGHT = 960;
         public static bool WINDOW_FULLSCREEN = false;
+        public static bool FUN_MODE = true;
 
         public const int ITEM_STACK_SIZE = 99;
         public const int PLAYER_RANGE_REQUIREMENT = 64;
@@ -90,20 +91,24 @@ namespace Game1
         public Game1()
         {
             //client = new NetworkClient();
+            itemInfo = new ItemInfo();
             map0 = new MapInfo(300, 150);
             currentMap = map0;
-            itemInfo = new ItemInfo();
+            
+            bigTiles = new List<BigTile>();
+            map0.InitializeMap(map0.mapLength, map0.mapHeight);
+
             graphics = new GraphicsDeviceManager(this);
             player = new Player(16, 16);
             Content.RootDirectory = "Content";
             this.IsMouseVisible = false;
             chestInventories = new List<Chest>();
-            bigTiles = new List<BigTile>();
+            
             userInventory = new int[70];
             userInventoryQuantities = new int[70];
             for (int i = 0; i < userInventory.Length; i++)
             {
-                if (i < ItemInfo.ITEM_COUNT) {
+                if (i < ItemInfo.ITEM_COUNT && !FUN_MODE) {
                     userInventory[i] = i;
                     userInventoryQuantities[i] = 999;
                 }

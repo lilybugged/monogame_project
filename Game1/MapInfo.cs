@@ -14,6 +14,8 @@ namespace Game1
     public class MapInfo
     {
         public Color[] WIRE_COLORS = new Color[] { new Color(231, 63, 63), new Color(82, 101, 122), new Color(229, 203, 130), new Color(224, 255, 79) };
+        public int mapLength;
+        public int mapHeight;
         public int[,] mapWires;
         public double[,] mapFluids;
         public int[,] mapFluidIds;
@@ -29,6 +31,9 @@ namespace Game1
             mapBackTiles = new int[length, height];
             //mapTiles stores item ids, which can be used to get the block ids to draw
 
+            mapLength = length;
+            mapHeight = height;
+
             for (int i = 0; i < length; i++)
             {
                 for (int a = 0; a < height; a++)
@@ -40,10 +45,14 @@ namespace Game1
                     mapBackTiles[i, a] = -1;
                 }
             }
+        }
+        public void InitializeMap(int length, int height)
+        {
             int[] mapHeights = new int[length];
             mapHeights[1] = 120;
             if (120 - mapHeights[1] < 30) mapHeights[1] = 30;
             if (120 - mapHeights[1] > height - 20) mapHeights[1] = height - 21;
+
             Random rng = new Random();
             int roll = 0;
             for (int i = 2; i < length - 2; i++)
@@ -80,13 +89,23 @@ namespace Game1
                 {
                     if (first)
                     {
+                        if (rng.Next(0, 5) == 0)
+                        {
+                            BigTile tile2 = new BigTile(8, i * 16, a * 16 - 16, 0, null);
+                            for (int b = 0; b < rng.Next(0, 7); b++)
+                            {
+                                tile2.inventory[0][b] = rng.Next(0, Game1.itemInfo.ITEM_NAME.Length);
+                                tile2.inventory[1][b] = rng.Next(0, 99);
+                            }
+                            Game1.bigTiles.Add(tile2);
+                        }
+
                         mapTiles[i, a] = 49;
                         first = false;
                     }
                     else mapTiles[i, a] = 50;
                 }
             }
-            //mapTiles[0, 90] = 4;
         }
         public void DrawFluids()
         {
