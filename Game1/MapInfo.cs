@@ -89,7 +89,7 @@ namespace Game1
                 {
                     if (first)
                     {
-                        if (rng.Next(0, 5) == 0)
+                        if (rng.Next(0, 5) == 0 && Game1.FUN_MODE)
                         {
                             BigTile tile2 = new BigTile(8, i * 16, a * 16 - 16, 0, null);
                             for (int b = 0; b < rng.Next(0, 7); b++)

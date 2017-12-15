@@ -18,14 +18,14 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 58;
+        public const int ITEM_COUNT = 59;
         public const int SCHEMATICS_COUNT = 2;
         public bool[] ITEM_ENDPOINT = new bool[ITEM_COUNT]; // if true, this item is an endpoint for pipes
         public String[] ITEM_NAME = new String[ITEM_COUNT];
         public String[] ITEM_DESC = new String[ITEM_COUNT];
         public int[] ITEM_RANK = new int[ITEM_COUNT]; // for tools mainly
         public bool[] ITEM_BIGTILE = new bool[ITEM_COUNT];
-        public bool[] ITEM_TRIGGER = new bool[ITEM_COUNT];
+        public bool[] ITEM_TRIGGER = new bool[ITEM_COUNT]; // for switches etc
         public int[] ITEM_BIGTILE_WIDTH = new int[ITEM_COUNT];
         public int[] ITEM_BIGTILE_HEIGHT = new int[ITEM_COUNT];
         public bool[] ITEM_EQUIPPABLE = new bool[ITEM_COUNT];
@@ -102,6 +102,7 @@ namespace Game1
             ITEM_ENDPOINT[32] = true;
             ITEM_ENDPOINT[41] = true;
             ITEM_ENDPOINT[47] = true;
+            ITEM_ENDPOINT[54] = true;
 
             ITEM_BIGTILE[8] = true;
             ITEM_BIGTILE[9] = true;
@@ -122,6 +123,7 @@ namespace Game1
             ITEM_BIGTILE[51] = true;
             ITEM_BIGTILE[52] = true;
             ITEM_BIGTILE[53] = true;
+            ITEM_BIGTILE[54] = true;
 
             ITEM_BIGTILE_WIDTH[8] = 1;
             ITEM_BIGTILE_WIDTH[9] = 1;
@@ -142,6 +144,7 @@ namespace Game1
             ITEM_BIGTILE_WIDTH[51] = 1;
             ITEM_BIGTILE_WIDTH[52] = 1;
             ITEM_BIGTILE_WIDTH[53] = 1;
+            ITEM_BIGTILE_WIDTH[54] = 2;
 
             ITEM_BIGTILE_HEIGHT[8] = 1;
             ITEM_BIGTILE_HEIGHT[9] = 1;
@@ -162,6 +165,7 @@ namespace Game1
             ITEM_BIGTILE_HEIGHT[51] = 1;
             ITEM_BIGTILE_HEIGHT[52] = 1;
             ITEM_BIGTILE_HEIGHT[53] = 1;
+            ITEM_BIGTILE_HEIGHT[54] = 2;
 
             ITEM_EQUIPPABLE[19] = true;
             ITEM_EQUIPPABLE[22] = true;
@@ -236,6 +240,7 @@ namespace Game1
             ITEM_PLACEABLE[51] = true;
             ITEM_PLACEABLE[52] = true;
             ITEM_PLACEABLE[53] = true;
+            ITEM_PLACEABLE[54] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
@@ -253,6 +258,7 @@ namespace Game1
             ITEM_REQUIRE_SURFACE[27] = true;
             ITEM_REQUIRE_SURFACE[28] = true;
             ITEM_REQUIRE_SURFACE[36] = true;
+            ITEM_REQUIRE_SURFACE[54] = true;
 
             ITEM_REQUIRE_WALL[47] = true;
 
@@ -289,6 +295,7 @@ namespace Game1
             ITEM_TOOL_TIER[51] = 0;
             ITEM_TOOL_TIER[52] = 0;
             ITEM_TOOL_TIER[53] = 0;
+            ITEM_TOOL_TIER[54] = 1;
 
             //do NOT add a blockID for BigTile items
             ITEM_BLOCKID[0] = -1;
@@ -393,6 +400,7 @@ namespace Game1
             ITEM_NAME[51] = "Fluid Pipe";
             ITEM_NAME[52] = "Fluid Push Pipe";
             ITEM_NAME[53] = "Fluid Pull Pipe";
+            ITEM_NAME[54] = "Christmas Tree";
 
 
             //recipes

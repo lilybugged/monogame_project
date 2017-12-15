@@ -518,6 +518,14 @@ namespace Game1
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
             switch (tileType)
             {
+                case 54:
+                    Game1.spriteBatch.Begin();
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 174 + ((power > 0) ? 1 + Game1.globalTick / 8 : 0), new Vector2(x, y - 16));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 177 + ((power > 0) ? 1 + Game1.globalTick / 8 : 0), new Vector2(x + 16, y - 16));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 183 + ((power > 0) ? 1 + Game1.globalTick / 8 : 0), new Vector2(x + 16, y));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 180 + ((power > 0) ? 1 + Game1.globalTick / 8 : 0), new Vector2(x, y));
+                    Game1.spriteBatch.End();
+                    break;
                 case 51:
                     Game1.spriteBatch.Begin();
                     Game1.tiles.DrawTile(Game1.spriteBatch, 157 + state, position);

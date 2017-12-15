@@ -74,8 +74,8 @@ namespace Game1
         //STARTING_WINDOW_HEIGHT = 960;
         public static int WINDOW_WIDTH = 1280;
         public static int WINDOW_HEIGHT = 960;
-        public static bool WINDOW_FULLSCREEN = false;
-        public static bool FUN_MODE = true;
+        public static bool WINDOW_FULLSCREEN = true;
+        public static bool FUN_MODE = false;
 
         public const int ITEM_STACK_SIZE = 99;
         public const int PLAYER_RANGE_REQUIREMENT = 64;
@@ -197,7 +197,7 @@ namespace Game1
             equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 8, 7);
 
             equip_icons = new AnimatedSprite(Content.Load<Texture2D>("img/equip_slots"), 5, 4);
-            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 14, 13);
+            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 14, 14);
             fluids = new AnimatedSprite(Content.Load<Texture2D>("img/bg_fluids"), 2, 1);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
             portrait_items = new AnimatedSprite(Content.Load<Texture2D>("img/portrait_items"), 3, 3);
