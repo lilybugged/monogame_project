@@ -74,7 +74,7 @@ namespace Game1
         //STARTING_WINDOW_HEIGHT = 960;
         public static int WINDOW_WIDTH = 1280;
         public static int WINDOW_HEIGHT = 960;
-        public static bool WINDOW_FULLSCREEN = true;
+        public static bool WINDOW_FULLSCREEN = false;
         public static bool FUN_MODE = false;
 
         public const int ITEM_STACK_SIZE = 99;
@@ -151,18 +151,30 @@ namespace Game1
             // TODO: Add your initialization logic here
             if (WINDOW_FULLSCREEN)
             {
-                WINDOW_WIDTH = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2;
-                WINDOW_HEIGHT = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2;
-                this.graphics.IsFullScreen = true;
+                this.Window.Position = new Point(20, 20);
+                WINDOW_WIDTH = (int)((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2 - ((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2) % 16))) *2;
+                WINDOW_HEIGHT = (int)((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2 - ((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2) % 16)))*2;
+                //WINDOW_WIDTH = 300;
+                //WINDOW_HEIGHT = 300;
+                this.graphics.IsFullScreen = false;
+                Window.IsBorderless = true;
+                target = new RenderTarget2D(GraphicsDevice, WINDOW_WIDTH, WINDOW_HEIGHT);
+                this.Window.Position = new Point(0,0);
             }
             else
             {
-                WINDOW_WIDTH = 1280;
-                WINDOW_HEIGHT = 960;
+                this.Window.Position = new Point(20, 20);
+                WINDOW_WIDTH = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width/2;
+                WINDOW_HEIGHT = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height/2;
                 this.graphics.IsFullScreen = false;
+                Window.IsBorderless = false;
+                Window.AllowUserResizing = true;
+                target = new RenderTarget2D(GraphicsDevice, WINDOW_WIDTH, WINDOW_HEIGHT);
             }
-            
-            target = new RenderTarget2D(GraphicsDevice, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+            //WINDOW_WIDTH = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2;
+            //WINDOW_HEIGHT = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height/2;
+
             this.graphics.PreferredBackBufferWidth = WINDOW_WIDTH * 2;
             this.graphics.PreferredBackBufferHeight = WINDOW_HEIGHT * 2;
             
@@ -234,6 +246,8 @@ namespace Game1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || MouseKeyboardInfo.keyState.IsKeyDown(Keys.Escape))
                 Exit();
 
+
+            
             //SYNC INFORMATION
             //client.Update();
 

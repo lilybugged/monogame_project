@@ -170,9 +170,23 @@ namespace Game1
                             Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[mapBackTiles[i, a]], new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
                         else ItemInfo.DrawAutoTile(mapBackTiles[i, a], new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
                     }
+                    if (mapTiles[i, a] != -1 && !Game1.itemInfo.ITEM_SOLID[mapTiles[i, a]])
+                    {
+                        if (!Game1.itemInfo.ITEM_BIGTILE[mapTiles[i, a]])
+                        {
+                            if (!Game1.itemInfo.ITEM_AUTOTILE[mapTiles[i, a]])
+                                Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[mapTiles[i, a]], new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                            else ItemInfo.DrawAutoTile(mapTiles[i, a], new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery));
+                        }
+                    }
+                    
                 }
             }
             Game1.spriteBatch.End();
+            for (int b = 0; b < Game1.bigTiles.Count; b++)
+            {
+                if (!Game1.itemInfo.ITEM_SOLID[Game1.bigTiles[b].tileType]) Game1.bigTiles[b].Draw();
+            }
         }
         public void DrawMap()
         {
@@ -181,7 +195,7 @@ namespace Game1
             {
                 for (int a = 0; a < mapTiles.GetLength(1); a++)
                 {
-                    if (mapTiles[i, a] != -1)
+                    if (mapTiles[i, a] != -1 && Game1.itemInfo.ITEM_SOLID[mapTiles[i, a]])
                     {
                         if (!Game1.itemInfo.ITEM_BIGTILE[mapTiles[i, a]])
                         {
@@ -195,7 +209,7 @@ namespace Game1
             Game1.spriteBatch.End();
             for (int i = 0; i < Game1.bigTiles.Count; i++)
             {
-                Game1.bigTiles[i].Draw();
+                if (Game1.itemInfo.ITEM_SOLID[Game1.bigTiles[i].tileType]) Game1.bigTiles[i].Draw();
             }
             Game1.spriteBatch.Begin();
             if (Game1.playerEquippedItems[5] == 43)

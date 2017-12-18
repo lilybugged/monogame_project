@@ -39,14 +39,34 @@ namespace Game1
             speedy = 0;
             speedx = 0;
             accelerationy = 1;
-            screenPosX = ((Game1.WINDOW_WIDTH / 2) - (Game1.WINDOW_WIDTH / 2) % 16);
-            screenPosY = ((Game1.WINDOW_HEIGHT / 2) - (Game1.WINDOW_HEIGHT / 2) % 16);
+            if (Game1.WINDOW_FULLSCREEN)
+            {
+                screenPosX = ((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2) - (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2) % 16);
+                screenPosY = ((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2) - (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2) % 16);
+            }
+            else
+            {
+                screenPosX = ((Game1.WINDOW_WIDTH / 2) - (Game1.WINDOW_WIDTH / 2) % 16);
+                screenPosY = ((Game1.WINDOW_HEIGHT / 2) - (Game1.WINDOW_HEIGHT / 2) % 16);
+            }
+            
             //currentSprite = Game1.charaLeft[0];
             currentAction = 0;
             currentDirection = 0; //left
         }
         public void Update()
         {
+            if (Game1.WINDOW_FULLSCREEN)
+            {
+                screenPosX = ((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2) - (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2) % 16);
+                screenPosY = ((GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2) - (GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2) % 16);
+            }
+            else
+            {
+                screenPosX = ((Game1.WINDOW_WIDTH / 2) - (Game1.WINDOW_WIDTH / 2) % 16);
+                screenPosY = ((Game1.WINDOW_HEIGHT / 2) - (Game1.WINDOW_HEIGHT / 2) % 16);
+            }
+
             //handles *most* collisions
             if (speedy > 0) playery += speedy;
             if (speedy < 15) speedy += accelerationy;
