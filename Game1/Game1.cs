@@ -326,13 +326,6 @@ namespace Game1
             map0.DrawBackTileMap();
             
             player.Draw();
-            
-            
-            for (int i = 0; i < chestInventories.Count; i++)
-            {
-                chestInventories[i].Draw();
-            }
-            
 
             base.Draw(gameTime);
             

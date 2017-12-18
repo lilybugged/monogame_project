@@ -315,11 +315,11 @@ namespace Game1
                     case 1:
                         if (Player.currentDirection == 0)
                         {
-                            Game1.items_32.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_ITEMID[inventoryItemIds[selectedCarry]], new Vector2(Player.screenPosX - 15, Player.screenPosY - 1));
+                            Game1.items_32.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_ITEMID[inventoryItemIds[selectedCarry]], new Vector2(Player.screenPosX - 15 - 7, Player.screenPosY - 1));
                         }
                         else
                         {
-                            Game1.items_32.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_ITEMID[inventoryItemIds[selectedCarry]], new Vector2(Player.screenPosX + 15, Player.screenPosY - 1),true);
+                            Game1.items_32.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_ITEMID[inventoryItemIds[selectedCarry]], new Vector2(Player.screenPosX + 7, Player.screenPosY - 1),true);
                         }
                         break;
                 }

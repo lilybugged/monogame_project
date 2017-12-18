@@ -18,6 +18,8 @@ namespace Game1
     {
         public static int playerx;
         public static int playery;
+        public static int playerWidth = 16;
+        public static int playerHeight = 32;
         private static int accelerationy;
         public static int currentAction;
         public static int currentDirection;
@@ -70,7 +72,7 @@ namespace Game1
             //handles *most* collisions
             if (speedy > 0) playery += speedy;
             if (speedy < 15) speedy += accelerationy;
-            if (speedx != 0 && WillCollide(playerx + screenPosX, (playery + screenPosY), 32, 28))
+            if (speedx != 0 && WillCollide(playerx + screenPosX, (playery + screenPosY), playerWidth, playerHeight-2))
             {
                 if (speedx > 0)
                 {
@@ -80,48 +82,48 @@ namespace Game1
                 if (speedy < 5) playerx = playerx / 16 * 16;
                 speedx = 0;
             }
-            if (WillCollide((playerx + screenPosX), (playery + screenPosY), 32, 32))
+            if (WillCollide((playerx + screenPosX), (playery + screenPosY), playerWidth, playerHeight))
             {
                 //playerx = playerx / 16 * 16;
                 
                 if (speedy < 0) playery += 10;
-                if (speedy < 0 && !WillCollide((playerx + screenPosX), (playery + screenPosY), 32, 32)) playery += 5;
+                if (speedy < 0 && !WillCollide((playerx + screenPosX), (playery + screenPosY), playerWidth, playerHeight)) playery += 5;
                 if (speedy > 0) canJump = true;
                 playery = playery / 16 * 16;
                 speedy = 0;
                 
             }
 
-            if (speedx != 0 && WillCollide(playerx + screenPosX, (playery + screenPosY), 32, 28)) canJump = false;
+            if (speedx != 0 && WillCollide(playerx + screenPosX, (playery + screenPosY), playerWidth, playerHeight - 2)) canJump = false;
             if (speedy < 0) playery += speedy;
 
             //handles movement
             MouseKeyboardInfo.keyState = Keyboard.GetState();
             //Debug.WriteLine(WillCollide((playerx + screenPosX), (playery + screenPosY) - 31, 32, 32));
-            if ((MouseKeyboardInfo.keyState.IsKeyDown(Keys.W) || MouseKeyboardInfo.keyState.IsKeyDown(Keys.Space)) && canJump && !WillCollide((playerx + screenPosX), (playery + screenPosY) - 15, 32, 32))
+            if ((MouseKeyboardInfo.keyState.IsKeyDown(Keys.W) || MouseKeyboardInfo.keyState.IsKeyDown(Keys.Space)) && canJump && !WillCollide((playerx + screenPosX), (playery + screenPosY) - 15, playerWidth, playerHeight))
             {
                 speedy = -13;
                 canJump = false;
                 // Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" playerMove:"+playerx+","+playery);
             }
-            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A) && !WillCollide((playerx + screenPosX) - 2, (playery + screenPosY), 32, 32) && playerx > 0)
+            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A) && playerx > 0)
             {
                 //if (Game1.currentMap.mapTiles[(Player.playerx + screenPosX - 16) / 16, (Player.playery + screenPosY + 16) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + screenPosX - 16) / 16, (Player.playery + screenPosY + 16) / 16]])
-                {
+                if (!WillCollide((playerx + screenPosX) - 2, (playery + screenPosY), playerWidth, playerHeight)){
                     speedx = -2;
                     currentAction = 1;
-                    currentDirection = 0;
-                    
                 }
+                currentDirection = 0;
                 // Game1.client.messageQueue.Add("" + Game1.CLIENT_ID + " playerMove:" + playerx + "," + playery);
             }
-            else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D) && !WillCollide((playerx + screenPosX) + 2, (playery + screenPosY), 32, 32) && playerx < Game1.currentMap.mapTiles.GetLength(0)*16 - 500)
+            else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D))
             {
-                speedx = 2;
-                //currentSprite = Game1.charaRight[1];
-                currentAction = 1;
+                if (!WillCollide((playerx + screenPosX) + 2, (playery + screenPosY), playerWidth, playerHeight) && playerx < Game1.currentMap.mapTiles.GetLength(0) * 16 - 500)
+                {
+                    speedx = 2;
+                    currentAction = 1;
+                }
                 currentDirection = 1;
-                // Game1.client.messageQueue.Add("" + Game1.CLIENT_ID + " playerMove: " + playerx + "," + playery);
             }
             else
             {
@@ -143,17 +145,17 @@ namespace Game1
         }
         public void Draw()
         {
-            (currentDirection==0? Game1.charaLeft[currentAction] :Game1.charaRight[currentAction]).Draw(Game1.spriteBatch, new Vector2(screenPosX, screenPosY));
+            (currentDirection==0? Game1.charaLeft[currentAction] :Game1.charaRight[currentAction]).Draw(Game1.spriteBatch, new Vector2(screenPosX - 8, screenPosY));
             Game1.spriteBatch.Begin();
             for (int i = Game1.playerEquippedItems.Length-2; i > 0; i--)
             {
                 if (Game1.playerEquippedItems[i]!=-1) {
                     Game1.equippables.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[i]] * 8 + (currentDirection == 0 ? 0 : 4) + ((currentAction==1)? frame: 1),
-                        new Vector2(screenPosX, screenPosY));
+                        new Vector2(screenPosX - 8, screenPosY));
                 }
             }
             if (Game1.playerEquippedItems[17] != -1) Game1.equippables.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[17]] * 8 + (currentDirection == 0 ? 0 : 4) + ((currentAction == 1) ? frame : 0),
-                        new Vector2(screenPosX, screenPosY));
+                        new Vector2(screenPosX - 8, screenPosY));
             Game1.spriteBatch.End();
         }
         public bool WillCollide(int x, int y, int width, int height) //checks if, in a given rectangle, any solid collision will occur
