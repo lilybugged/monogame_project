@@ -99,7 +99,12 @@ namespace Game1
                             }
                             Game1.bigTiles.Add(tile2);
                         }
-
+                        if (rng.Next(0, 5) > 0)
+                        {
+                            int diff = rng.Next(0, 3);
+                            mapFluidIds[i,a - diff] = 0;
+                            mapFluids[i, a - diff] = 100;
+                        }
                         mapTiles[i, a] = 49;
                         first = false;
                     }
@@ -115,14 +120,14 @@ namespace Game1
                 for (int a = 0; a < mapTiles.GetLength(1); a++)
                 {
                     //down
-                    if (i < mapTiles.GetLength(0) - 1 && a < mapTiles.GetLength(1) - 1 && mapTiles[i, a] == -1 && mapTiles[i, a + 1] == -1 && mapFluids[i, a + 1] + mapFluids[i, a] > 100)
+                    if (i < mapTiles.GetLength(0) - 1 && a < mapTiles.GetLength(1) - 1 && (mapTiles[i, a] == -1 || !Game1.itemInfo.ITEM_SOLID[mapTiles[i, a]]) && (mapTiles[i, a+1] == -1||!Game1.itemInfo.ITEM_SOLID[mapTiles[i, a+1]]) && mapFluids[i, a + 1] + mapFluids[i, a] > 100)
                     {
                         mapFluids[i, a] = mapFluids[i, a] - (100 - mapFluids[i, a + 1]);
                         mapFluids[i, a + 1] = 100;
                         mapFluidIds[i, a + 1] = mapFluidIds[i, a];
                         //Debug.WriteLine("aaa1");
                     }
-                    else if (i < mapTiles.GetLength(0) - 1 && a < mapTiles.GetLength(1) - 1 && mapTiles[i, a] == -1 && mapTiles[i, a + 1] == -1 && mapFluids[i, a] > -1)
+                    else if (i < mapTiles.GetLength(0) - 1 && a < mapTiles.GetLength(1) - 1 && (mapTiles[i, a] == -1 || !Game1.itemInfo.ITEM_SOLID[mapTiles[i, a]]) && (mapTiles[i, a + 1] == -1||!Game1.itemInfo.ITEM_SOLID[mapTiles[i, a + 1]]) && mapFluids[i, a] > -1)
                     {
                         mapFluids[i, a + 1] += mapFluids[i, a];
                         mapFluids[i, a] = 0;
@@ -130,7 +135,7 @@ namespace Game1
                         //Debug.WriteLine("aaa2");
                     }
                     //horz
-                    if (i > 1 && mapTiles[i, a] == -1 && mapTiles[i - 1, a] == -1 && (mapFluids[i - 1, a] > 1 || mapFluids[i, a] > 1))
+                    if (i > 1 && (mapTiles[i, a] == -1||!Game1.itemInfo.ITEM_SOLID[mapTiles[i, a]]) && (mapTiles[i - 1, a] == -1 || !Game1.itemInfo.ITEM_SOLID[mapTiles[i - 1, a]]) && (mapFluids[i - 1, a] > 1 || mapFluids[i, a] > 1))
                     {
                         double total = 0;
                         //Debug.WriteLine("aaa3");
@@ -144,13 +149,16 @@ namespace Game1
                         }
                         else mapFluidIds[i, a] = mapFluidIds[i - 1, a];
                     }
-
-                    if (mapTiles[i, a] == -1 && mapFluids[i, a] > 0)
+                    if ((mapTiles[i, a] == -1 || !Game1.itemInfo.ITEM_SOLID[mapTiles[i, a]]) && mapFluids[i, a] > 0)
                     {
                         for (int b = 0; b < 16; b++)
                         {
-                            if (b < (int)(Math.Round(mapFluids[i, a]) / 100.0 * 16)) Game1.fluids.DrawTile(Game1.spriteBatch, mapFluidIds[i, a], Color.White * 0.9f, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery + 15 - b));
-                            if (b == (int)(Math.Round(mapFluids[i, a]) / 100.0 * 16) && mapFluids[i, a - 1] < 1) Game1.fluids.DrawTile(Game1.spriteBatch, mapFluidIds[i, a], Color.Blue * 0.9f, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery + 15 - b));
+                            if (b < (int)(Math.Round(mapFluids[i, a]) / 100.0 * 16)-2 || (b < (int)(Math.Round(mapFluids[i, a]) / 100.0 * 16)&& Math.Round(mapFluids[i, a]) / 100.0 * 16==16)) Game1.fluids.DrawTile(Game1.spriteBatch, mapFluidIds[i, a], Color.White * 0.9f, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery + 15 - b));
+                            if (b == (int)(Math.Round(mapFluids[i, a]) / 100.0 * 16)-1 && mapFluids[i, a] >= 6.25 && mapFluids[i, a - 1] < 6.25 && (mapFluids[i, a + 1] == 100 || (mapTiles[i, a + 1] != -1 && Game1.itemInfo.ITEM_SOLID[mapTiles[i, a + 1]])))
+                            {
+                                Game1.fluids.DrawTile(Game1.spriteBatch, mapFluidIds[i, a], Color.Blue * 0.9f, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery + 15 - b));
+                                Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(i * 16 - Player.playerx, a * 16 - Player.playery + 16 - b, 16, 1), Color.White * 0.9f);
+                            }
                         }
                     }
                 }

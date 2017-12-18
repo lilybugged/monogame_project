@@ -72,7 +72,7 @@ namespace Game1
             //handles *most* collisions
             if (speedy > 0) playery += speedy;
             if (speedy < 15) speedy += accelerationy;
-            if (speedx != 0 && WillCollide(playerx + screenPosX, (playery + screenPosY), playerWidth, playerHeight-2))
+            if (speedx != 0 && WillCollide(playerx + screenPosX, (playery + screenPosY), playerWidth, playerHeight- 2))
             {
                 if (speedx > 0)
                 {
@@ -106,38 +106,24 @@ namespace Game1
                 canJump = false;
                 // Game1.client.messageQueue.Add(""+Game1.CLIENT_ID+" playerMove:"+playerx+","+playery);
             }
-            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A) && playerx > 0)
+            if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A) && playerx > 0 && !WillCollide((playerx + screenPosX) - 2, (playery + screenPosY), playerWidth, playerHeight))
             {
-                //if (Game1.currentMap.mapTiles[(Player.playerx + screenPosX - 16) / 16, (Player.playery + screenPosY + 16) / 16] == -1 || !Game1.itemInfo.ITEM_SOLID[Game1.currentMap.mapTiles[(Player.playerx + screenPosX - 16) / 16, (Player.playery + screenPosY + 16) / 16]])
-                if (!WillCollide((playerx + screenPosX) - 2, (playery + screenPosY), playerWidth, playerHeight)){
-                    speedx = -2;
-                    currentAction = 1;
-                }
+                speedx = -2;
+                currentAction = 1;
                 currentDirection = 0;
-                // Game1.client.messageQueue.Add("" + Game1.CLIENT_ID + " playerMove:" + playerx + "," + playery);
             }
-            else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D))
+            else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D) && !WillCollide((playerx + screenPosX) + 2, (playery + screenPosY), playerWidth, playerHeight) && playerx < Game1.currentMap.mapTiles.GetLength(0) * 16 - 500)
             {
-                if (!WillCollide((playerx + screenPosX) + 2, (playery + screenPosY), playerWidth, playerHeight) && playerx < Game1.currentMap.mapTiles.GetLength(0) * 16 - 500)
-                {
-                    speedx = 2;
-                    currentAction = 1;
-                }
+                speedx = 2;
+                currentAction = 1;
                 currentDirection = 1;
             }
             else
             {
                 speedx = 0;
-                if (currentDirection == 0)
-                {
-                    //currentSprite = Game1.charaLeft[0];
-                    currentAction = 0;
-                }
-                else if (currentDirection == 1)
-                {
-                    //currentSprite = Game1.charaRight[0];
-                    currentAction = 0;
-                }
+                currentAction = 0;
+                if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.A)) currentDirection = 0;
+                if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D)) currentDirection = 1;
             }
             playerx += speedx;
             frame = (currentDirection==0?Game1.charaLeft:Game1.charaRight)[currentAction].currentFrame;

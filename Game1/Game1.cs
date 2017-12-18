@@ -205,7 +205,7 @@ namespace Game1
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
 
             ui_arrow = new AnimatedSprite(Content.Load<Texture2D>("img/uiArrow"), 3, 2);
-            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 8, 7);
+            items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 8, 8);
             equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 8, 7);
 
             equip_icons = new AnimatedSprite(Content.Load<Texture2D>("img/equip_slots"), 5, 4);
@@ -337,11 +337,11 @@ namespace Game1
             uiObjects[2].DrawCarry();
             Game1.spriteBatch.End();
 
-            //draw overworld fluids
-            map0.DrawFluids();
-
             //draw tilemap
             map0.DrawMap();
+
+            //draw overworld fluids
+            map0.DrawFluids();
 
             //draw all UIs
             for (int i = 0; i < uiObjects.Length; i++)

@@ -18,7 +18,7 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 59;
+        public const int ITEM_COUNT = 61;
         public const int SCHEMATICS_COUNT = 2;
         public bool[] ITEM_ENDPOINT = new bool[ITEM_COUNT]; // if true, this item is an endpoint for pipes
         public String[] ITEM_NAME = new String[ITEM_COUNT];
@@ -124,6 +124,7 @@ namespace Game1
             ITEM_BIGTILE[52] = true;
             ITEM_BIGTILE[53] = true;
             ITEM_BIGTILE[54] = true;
+            ITEM_BIGTILE[55] = true;
 
             ITEM_BIGTILE_WIDTH[8] = 1;
             ITEM_BIGTILE_WIDTH[9] = 1;
@@ -145,6 +146,7 @@ namespace Game1
             ITEM_BIGTILE_WIDTH[52] = 1;
             ITEM_BIGTILE_WIDTH[53] = 1;
             ITEM_BIGTILE_WIDTH[54] = 2;
+            ITEM_BIGTILE_WIDTH[55] = 2;
 
             ITEM_BIGTILE_HEIGHT[8] = 1;
             ITEM_BIGTILE_HEIGHT[9] = 1;
@@ -166,6 +168,7 @@ namespace Game1
             ITEM_BIGTILE_HEIGHT[52] = 1;
             ITEM_BIGTILE_HEIGHT[53] = 1;
             ITEM_BIGTILE_HEIGHT[54] = 2;
+            ITEM_BIGTILE_HEIGHT[55] = 2;
 
             ITEM_EQUIPPABLE[19] = true;
             ITEM_EQUIPPABLE[22] = true;
@@ -241,6 +244,8 @@ namespace Game1
             ITEM_PLACEABLE[52] = true;
             ITEM_PLACEABLE[53] = true;
             ITEM_PLACEABLE[54] = true;
+            ITEM_PLACEABLE[55] = true;
+            ITEM_PLACEABLE[56] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
@@ -261,6 +266,8 @@ namespace Game1
             ITEM_REQUIRE_SURFACE[54] = true;
 
             ITEM_REQUIRE_WALL[47] = true;
+            ITEM_REQUIRE_WALL[55] = true;
+            ITEM_REQUIRE_WALL[56] = true;
 
             ITEM_SOLID[4] = true;
             ITEM_SOLID[5] = true;
@@ -322,6 +329,7 @@ namespace Game1
             ITEM_BLOCKID[39] = 131;
             ITEM_BLOCKID[49] = 1;
             ITEM_BLOCKID[50] = 2;
+            ITEM_BLOCKID[56] = 190;
 
             ITEM_STACKABLE[14] = false;
             ITEM_STACKABLE[16] = false;
@@ -401,6 +409,8 @@ namespace Game1
             ITEM_NAME[52] = "Fluid Push Pipe";
             ITEM_NAME[53] = "Fluid Pull Pipe";
             ITEM_NAME[54] = "Christmas Tree";
+            ITEM_NAME[55] = "Large Wreath";
+            ITEM_NAME[56] = "Small Wreath";
 
 
             //recipes
@@ -498,19 +508,19 @@ namespace Game1
                     Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[itemId], position);
                     //Debug.WriteLine(""+ ((int)(position.X + Player.playerx) / 16) +","+ ((int)(position.Y + Player.playery) / 16 + 1));
                     //draw edges for default block items
-                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])
+                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1] != -1) || !(Game1.itemInfo.ITEM_SOLID[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]]== Game1.itemInfo.ITEM_SOLID[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16]]) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 + 1]])
                     {
                         Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X, (int)position.Y + 15, 16, 1), Color.Black); //nounder
                     }
-                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])
+                    if (!(map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1] != -1) || !(Game1.itemInfo.ITEM_SOLID[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]] == Game1.itemInfo.ITEM_SOLID[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16]]) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16 - 1]])
                     {
                         Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X, (int)position.Y, 16, 1), Color.Black); //noabove
                     }
-                    if (!(map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]])
+                    if (!(map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1) || !(Game1.itemInfo.ITEM_SOLID[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]] == Game1.itemInfo.ITEM_SOLID[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16]]) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16]])
                     {
                         Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X, (int)position.Y, 1, 16), Color.Black); //noleft
                     }
-                    if (!(map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]])
+                    if (!(map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16] != -1) || !(Game1.itemInfo.ITEM_SOLID[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16 ]] == Game1.itemInfo.ITEM_SOLID[map[(int)(position.X + Player.playerx) / 16, (int)(position.Y + Player.playery) / 16]]) || Game1.itemInfo.ITEM_REQUIRE_SURFACE[map[(int)(position.X + Player.playerx) / 16 + 1, (int)(position.Y + Player.playery) / 16]])
                     {
                         Game1.spriteBatch.Draw(Game1.pixel, new Rectangle((int)position.X + 15, (int)position.Y, 1, 16), Color.Black); //noright
                     }

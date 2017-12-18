@@ -70,6 +70,7 @@ namespace Game1
                     UpdateNearbyPipes(51); //can change this to UpdateAllPipes, but worried about performance
                     break;
                 case 41:
+                    fluidId = -1;
                     foreach (BigTile tile in Game1.bigTiles)
                     {
                         if (tile.tileType == 41) tile.timer = 200;
@@ -387,7 +388,10 @@ namespace Game1
                     }
                     break;
                 case 41:
+                    if (fluidPercent == 100) fluidId = 0;
+                    else fluidId = 1;
                     fluidPercent = 100;
+                    
                     foreach (BigTile tile in Game1.bigTiles)
                     {
                         if (tile.tileType == 41) tile.timer = 100;
@@ -518,6 +522,14 @@ namespace Game1
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
             switch (tileType)
             {
+                case 55:
+                    Game1.spriteBatch.Begin();
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 186, new Vector2(x, y - 16));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 187, new Vector2(x + 16, y - 16));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 189, new Vector2(x + 16, y));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 188, new Vector2(x, y));
+                    Game1.spriteBatch.End();
+                    break;
                 case 54:
                     Game1.spriteBatch.Begin();
                     Game1.tiles.DrawTile(Game1.spriteBatch, 174 + ((power > 0) ? 1 + Game1.globalTick / 8 : 0), new Vector2(x, y - 16));
@@ -966,6 +978,7 @@ namespace Game1
                             end.fluidId = startInv.fluidId;
                             end.fluidPercent ++;
                             startInv.fluidPercent --;
+                            Debug.WriteLine("fluidId " + end.fluidId);
                         }
                         else if (Game1.currentMap.mapFluids[endPoint[0], endPoint[1] + 1]<100 && (Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] + 1]==-1 || Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] + 1] == startInv.fluidId))
                         {
@@ -973,6 +986,7 @@ namespace Game1
                             Game1.currentMap.mapFluids[endPoint[0], endPoint[1] + 1]++;
                             Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] + 1] = startInv.fluidId;
                             Game1.currentMap.updatingFluids = 200;
+                            Debug.WriteLine("fluidId " + Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] + 1]);
                         }
                         foreach (BigTile tile in Game1.bigTiles)
                         {
@@ -986,7 +1000,8 @@ namespace Game1
                             end.fluidId = startInv.fluidId;
                             end.fluidPercent ++;
                             startInv.fluidPercent --;
-                            
+                            Debug.WriteLine("fluidId " + end.fluidId);
+
                         }
                         else if (Game1.currentMap.mapFluids[endPoint[0], endPoint[1] - 1] < 100 && (Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] - 1] == -1 || Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] - 1] == startInv.fluidId))
                         {
@@ -994,6 +1009,7 @@ namespace Game1
                             Game1.currentMap.mapFluids[endPoint[0], endPoint[1] - 1]++;
                             Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] - 1] = startInv.fluidId;
                             Game1.currentMap.updatingFluids = 200;
+                            Debug.WriteLine("fluidId " + Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] + 1]);
                         }
                         foreach (BigTile tile in Game1.bigTiles)
                         {
@@ -1007,7 +1023,7 @@ namespace Game1
                             end.fluidId = startInv.fluidId;
                             end.fluidPercent ++;
                             startInv.fluidPercent --;
-                            
+                            Debug.WriteLine("fluidId " + end.fluidId);
                         }
                         else if (Game1.currentMap.mapFluids[endPoint[0] - 1, endPoint[1]] < 100 && (Game1.currentMap.mapFluidIds[endPoint[0] - 1, endPoint[1]] == -1 || Game1.currentMap.mapFluidIds[endPoint[0] - 1, endPoint[1]] == startInv.fluidId))
                         {
@@ -1015,6 +1031,7 @@ namespace Game1
                             Game1.currentMap.mapFluids[endPoint[0] - 1, endPoint[1]]++;
                             Game1.currentMap.mapFluidIds[endPoint[0] - 1, endPoint[1]] = startInv.fluidId;
                             Game1.currentMap.updatingFluids = 200;
+                            Debug.WriteLine("fluidId " + Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] + 1]);
                         }
                         foreach (BigTile tile in Game1.bigTiles)
                         {
@@ -1028,6 +1045,7 @@ namespace Game1
                             end.fluidId = startInv.fluidId;
                             end.fluidPercent ++;
                             startInv.fluidPercent --;
+                            Debug.WriteLine("fluidId " + end.fluidId);
                         }
                         else if (Game1.currentMap.mapFluids[endPoint[0] + 1, endPoint[1]] < 100 && (Game1.currentMap.mapFluidIds[endPoint[0] + 1, endPoint[1]] == -1 || Game1.currentMap.mapFluidIds[endPoint[0] + 1, endPoint[1]] == startInv.fluidId))
                         {
@@ -1035,13 +1053,16 @@ namespace Game1
                             Game1.currentMap.mapFluids[endPoint[0] + 1, endPoint[1]]++;
                             Game1.currentMap.mapFluidIds[endPoint[0] + 1, endPoint[1]] = startInv.fluidId;
                             Game1.currentMap.updatingFluids = 200;
+                            Debug.WriteLine("fluidId " + Game1.currentMap.mapFluidIds[endPoint[0], endPoint[1] + 1]);
                         }
                         foreach (BigTile tile in Game1.bigTiles)
                         {
                             if (tile.tileType == 41) tile.timer = 200;
                         }
+
                         break;
                 }
+                
             }
         }
         ///fully draws an autotile of this item - keep tileorder in the spritesheet in mind
@@ -1388,33 +1409,36 @@ namespace Game1
         ///Updates this tank
         public void TankUpdate()
         {
+            if (fluidPercent == 0) fluidId = -1;
             //move fluid downward
             if (Game1.currentMap.mapTiles[tilex / 16, tiley / 16 + 1] == tileType && BigTile.FindTileId(tilex, tiley + 16) != -1)
             {
-                if (Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidId == fluidId)
+                if (Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidId == fluidId || Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidId==-1)
                 {
                     if (Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent + fluidPercent > 100)
                     {
                         fluidPercent = fluidPercent - (100 - Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent);
                         Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent = 100;
+                        Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidId = fluidId;
                     }
                     else
                     {
                         Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidPercent += fluidPercent;
+                        Game1.bigTiles[BigTile.FindTileId(tilex, tiley + 16)].fluidId = fluidId;
                         fluidPercent = 0;
-                    }
-
-
-
+                        fluidId = -1;
+                    } 
                 }
             }
 
             //average fluid horizontally
             double total = 0;
-            if (BigTile.FindTileId(tilex - 16, tiley) != -1)
+            if (BigTile.FindTileId(tilex - 16, tiley) != -1 && (Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidId==fluidId || fluidId==-1 || Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidId==-1))
             {
                 total = Game1.bigTiles[BigTile.FindTileId(tilex, tiley)].fluidPercent + Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidPercent;
                 Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidPercent = total / 2;
+                if (fluidId!=-1) Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidId = fluidId;
+                else if (Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidId != -1) fluidId = Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidId;
                 fluidPercent = total / 2;
             }
         }
