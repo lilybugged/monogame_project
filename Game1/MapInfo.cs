@@ -22,6 +22,8 @@ namespace Game1
         public int[,] mapTiles;
         public int[,] mapBackTiles;
         public int updatingFluids = 200;
+        public static Color[] FLUID_COLORS = new Color[] { (new Color(191, 215, 234))*0.9f, (new Color(175, 206, 144)) * 0.9f, (new Color(255, 251, 251)) * 0.75f};
+        public static Color[] FLUID_TOP_COLORS = new Color[] { (new Color(86, 134, 172)) * 0.9f, (new Color(125, 163, 88)) * 0.9f, (new Color(229, 215, 215)) * 0.9f };
         public MapInfo(int length, int height)
         {
             mapWires = new int[length, height];
@@ -101,8 +103,8 @@ namespace Game1
                         }
                         if (rng.Next(0, 5) > 0)
                         {
-                            int diff = rng.Next(0, 3);
-                            mapFluidIds[i,a - diff] = 0;
+                            int diff = rng.Next(1, 3);
+                            mapFluidIds[i,a - diff] = 2;
                             mapFluids[i, a - diff] = 100;
                         }
                         mapTiles[i, a] = 49;
@@ -115,27 +117,40 @@ namespace Game1
         public void DrawFluids()
         {
             Game1.spriteBatch.Begin();
-            for (int i = 0; i < mapTiles.GetLength(0); i++)
+            if (updatingFluids>0) updatingFluids--;
+            
+            for (int i = 1; i < mapTiles.GetLength(0) - 1; i++)
             {
-                for (int a = 0; a < mapTiles.GetLength(1); a++)
+                for (int a = 0; a < mapTiles.GetLength(1) - 1; a++)
                 {
+                    //if (mapFluidIds[i, a] > 0) Debug.WriteLine("found one");
                     //down
                     if (i < mapTiles.GetLength(0) - 1 && a < mapTiles.GetLength(1) - 1 && (mapTiles[i, a] == -1 || !Game1.itemInfo.ITEM_SOLID[mapTiles[i, a]]) && (mapTiles[i, a+1] == -1||!Game1.itemInfo.ITEM_SOLID[mapTiles[i, a+1]]) && mapFluids[i, a + 1] + mapFluids[i, a] > 100)
                     {
-                        mapFluids[i, a] = mapFluids[i, a] - (100 - mapFluids[i, a + 1]);
-                        mapFluids[i, a + 1] = 100;
-                        mapFluidIds[i, a + 1] = mapFluidIds[i, a];
+                        
+                        if (mapFluidIds[i, a] != -1 && (mapFluidIds[i, a + 1] == -1 || mapFluidIds[i, a + 1] == mapFluidIds[i, a]))
+                        {
+                            mapFluids[i, a] = mapFluids[i, a] - (100 - mapFluids[i, a + 1]);
+                            mapFluids[i, a + 1] = 100;
+                            mapFluidIds[i, a + 1] = mapFluidIds[i, a];
+                        }
                         //Debug.WriteLine("aaa1");
                     }
-                    else if (i < mapTiles.GetLength(0) - 1 && a < mapTiles.GetLength(1) - 1 && (mapTiles[i, a] == -1 || !Game1.itemInfo.ITEM_SOLID[mapTiles[i, a]]) && (mapTiles[i, a + 1] == -1||!Game1.itemInfo.ITEM_SOLID[mapTiles[i, a + 1]]) && mapFluids[i, a] > -1)
+                    else if (i < mapTiles.GetLength(0) - 1 && a < mapTiles.GetLength(1) - 1 && (mapTiles[i, a] == -1 || !Game1.itemInfo.ITEM_SOLID[mapTiles[i, a]]) && (mapTiles[i, a + 1] == -1||!Game1.itemInfo.ITEM_SOLID[mapTiles[i, a + 1]]) && mapFluids[i, a] > 0)
                     {
-                        mapFluids[i, a + 1] += mapFluids[i, a];
-                        mapFluids[i, a] = 0;
-                        mapFluidIds[i, a + 1] = mapFluidIds[i, a];
+                        
+                        if (mapFluidIds[i, a] != -1 && (mapFluidIds[i, a + 1] == -1 || mapFluidIds[i, a + 1] == mapFluidIds[i, a]))
+                        {
+                            mapFluids[i, a + 1] += mapFluids[i, a];
+                            mapFluids[i, a] = 0;
+                            mapFluidIds[i, a + 1] = mapFluidIds[i, a];
+                            mapFluidIds[i, a] = -1;
+                        }
+                        
                         //Debug.WriteLine("aaa2");
                     }
                     //horz
-                    if (i > 1 && (mapTiles[i, a] == -1||!Game1.itemInfo.ITEM_SOLID[mapTiles[i, a]]) && (mapTiles[i - 1, a] == -1 || !Game1.itemInfo.ITEM_SOLID[mapTiles[i - 1, a]]) && (mapFluids[i - 1, a] > 1 || mapFluids[i, a] > 1))
+                    if (i > 1 && (mapTiles[i, a] == -1||!Game1.itemInfo.ITEM_SOLID[mapTiles[i, a]]) && (mapTiles[i - 1, a] == -1 || !Game1.itemInfo.ITEM_SOLID[mapTiles[i - 1, a]]) && (mapFluids[i - 1, a] > 1 || mapFluids[i, a] > 1) && (mapFluidIds[i, a] == mapFluidIds[i - 1, a] || mapFluidIds[i, a] == -1 || mapFluidIds[i - 1, a] == -1))
                     {
                         double total = 0;
                         //Debug.WriteLine("aaa3");
@@ -143,23 +158,40 @@ namespace Game1
                         total = mapFluids[i, a] + mapFluids[i - 1, a];
                         mapFluids[i - 1, a] = total / 2;
                         mapFluids[i, a] = total / 2;
-                        if (mapFluidIds[i - 1, a] == -1)
+                        if (mapFluidIds[i, a] != -1 || mapFluidIds[i - 1, a] == mapFluidIds[i, a])
                         {
                             mapFluidIds[i - 1, a] = mapFluidIds[i, a];
                         }
-                        else mapFluidIds[i, a] = mapFluidIds[i - 1, a];
+                        else if (mapFluidIds[i - 1, a] != -1 || mapFluidIds[i - 1, a] == mapFluidIds[i, a]) mapFluidIds[i, a] = mapFluidIds[i - 1, a];
                     }
-                    if ((mapTiles[i, a] == -1 || !Game1.itemInfo.ITEM_SOLID[mapTiles[i, a]]) && mapFluids[i, a] > 0)
+                    if ((mapTiles[i, a] == -1 || !Game1.itemInfo.ITEM_SOLID[mapTiles[i, a]]) && mapFluids[i, a] > 0 && mapFluidIds[i, a] != -1)
                     {
                         for (int b = 0; b < 16; b++)
                         {
-                            if (b < (int)(Math.Round(mapFluids[i, a]) / 100.0 * 16)-2 || (b < (int)(Math.Round(mapFluids[i, a]) / 100.0 * 16)&& Math.Round(mapFluids[i, a]) / 100.0 * 16==16)) Game1.fluids.DrawTile(Game1.spriteBatch, mapFluidIds[i, a], Color.White * 0.9f, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery + 15 - b));
-                            if (b == (int)(Math.Round(mapFluids[i, a]) / 100.0 * 16)-1 && mapFluids[i, a] >= 6.25 && mapFluids[i, a - 1] < 6.25 && (mapFluids[i, a + 1] == 100 || (mapTiles[i, a + 1] != -1 && Game1.itemInfo.ITEM_SOLID[mapTiles[i, a + 1]])))
+                            if ((b < (int)(Math.Round(mapFluids[i, a]) / 100.0 * 16)-2 || (b < (int)(Math.Round(mapFluids[i, a]) / 100.0 * 16)&& Math.Round(mapFluids[i, a]) / 100.0 * 16==16)) && mapFluids[i, a] >= 6.25) Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(i * 16 - Player.playerx, a * 16 - Player.playery + 15 - b, 16, 1), FLUID_COLORS[mapFluidIds[i,a]]);
+                            if (b == (int)(Math.Round(mapFluids[i, a]) / 100.0 * 16)-1 && mapFluids[i, a] >= 6.25 && (mapFluids[i, a - 1] < 6.25 || mapFluidIds[i, a - 1]!= mapFluidIds[i, a]) && (mapFluids[i, a + 1] == 100 || (mapFluidIds[i, a + 1]!= mapFluidIds[i, a]) || (mapTiles[i, a + 1] != -1 && Game1.itemInfo.ITEM_SOLID[mapTiles[i, a + 1]])))
                             {
-                                Game1.fluids.DrawTile(Game1.spriteBatch, mapFluidIds[i, a], Color.Blue * 0.9f, new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery + 15 - b));
+                                Game1.fluids.DrawTile(Game1.spriteBatch, mapFluidIds[i, a], FLUID_TOP_COLORS[mapFluidIds[i, a]], new Vector2(i * 16 - Player.playerx, a * 16 - Player.playery + 15 - b));
                                 Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(i * 16 - Player.playerx, a * 16 - Player.playery + 16 - b, 16, 1), Color.White * 0.9f);
                             }
                         }
+                    }
+
+                    /*if ((int)(Math.Round(mapFluids[i, a]) / 100.0 * 16) < 1 && mapTiles[i, a + 1] != -1)
+                    {
+                        mapFluidIds[i, a] = -1;
+                        mapFluids[i, a] = 0;
+                    }*/
+                }
+            }
+            for (int i = 1; i < mapTiles.GetLength(0) - 1; i++)
+            {
+                for (int a = 0; a < mapTiles.GetLength(1) - 1; a++)
+                {
+                    if (updatingFluids == 1 && mapFluidIds[i, a] >= 0 && mapFluids[i, a] < 6.25)
+                    {
+                        mapFluids[i, a] = 0;
+                        mapFluidIds[i, a] = -1;
                     }
                 }
             }

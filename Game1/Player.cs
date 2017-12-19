@@ -112,7 +112,7 @@ namespace Game1
                 currentAction = 1;
                 currentDirection = 0;
             }
-            else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D) && !WillCollide((playerx + screenPosX) + 2, (playery + screenPosY), playerWidth, playerHeight) && playerx < Game1.currentMap.mapTiles.GetLength(0) * 16 - 500)
+            else if (MouseKeyboardInfo.keyState.IsKeyDown(Keys.D) && !WillCollide((playerx + screenPosX) + 2, (playery + screenPosY), playerWidth, playerHeight) && playerx < Game1.currentMap.mapTiles.GetLength(0) * 16 - 750)
             {
                 speedx = 2;
                 currentAction = 1;
