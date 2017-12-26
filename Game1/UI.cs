@@ -99,6 +99,12 @@ namespace Game1
 
                     DragAndDrop((this.uix + 7 + 24) * Game1.zoom, (this.uiy + 7 + 24 + 144) * Game1.zoom, inventoryOutputIds, inventoryOutputQuants);
                     break;
+                case 5:
+                    DragAndDrop((this.uix + 7 + 24) * Game1.zoom, (this.uiy + 7 + 24 + 96) * Game1.zoom, inventoryItemIds, inventoryItemQuantities);
+
+                    DragAndDrop((this.uix + 7 + 24) * Game1.zoom, (this.uiy + 7 + 24 + 144) * Game1.zoom, inventoryOutputIds, inventoryOutputQuants);
+                    break;
+
             }
             if (uiState == 3)
             {
@@ -240,7 +246,6 @@ namespace Game1
                     break;
 
                 case 3:
-                    
                     for (int i = 0; i < inventoryRows; i++)
                     {
                         for (int a = 0; a < rowSize; a++)
@@ -297,6 +302,49 @@ namespace Game1
 
                     DrawItems(this.uix + 7 + 5 + 24, this.uiy + 7 + 5 + 24, inventoryItemIds, inventoryItemQuantities);
                     Hover(this.uix + 7 + 24, this.uiy + 7 + 24, inventoryItemIds);
+
+                    DrawItems(this.uix + 7 + 5 + 24, this.uiy + 7 + 5 + 24 + 144, inventoryOutputIds, inventoryOutputQuants);
+                    Hover(this.uix + 7 + 24, this.uiy + 7 + 24 + 144, inventoryOutputIds);
+                    break;
+                case 5:
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix - 1, this.uiy - 1, 298, 302), Color.Black);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix, this.uiy, 296, 300), menu_0);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 2, this.uiy + 2, 292, 296), menu_3);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 4, this.uiy + 4, 288, 292), menu_0);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 6, this.uiy + 6, 284, 288), menu_1);
+
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 7 + (44 + 5) * 2 + 24, this.uiy + 7 + (48) * 0 + 24, 44, 44), menu_0);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 8 + (44 + 5) * 2 + 24, this.uiy + 8 + (48) * 0 + 24, 42, 42), menu_2);
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (i > 1)
+                        {
+                            for (int a = 0; a < 5; a++)
+                            {
+                                if (a != 2)
+                                {
+                                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 7 + (44 + 5) * a + 24, this.uiy + 7 + (48) * i + 24, 44, 44), menu_0);
+                                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 8 + (44 + 5) * a + 24, this.uiy + 8 + (48) * i + 24, 42, 42), menu_2);
+                                }
+                            }
+                        }
+                    }
+
+                    if (attachment == null || attachment.recipeInProgressIndex == -1 || attachment.timer < 0)
+                    {
+                        Game1.ui_arrow.DrawTile(Game1.spriteBatch, 0, new Vector2(this.uix + 7 + 96, this.uiy + 5 + 96 + 24));
+                        //Debug.WriteLine("timer is "+ attachment.timer);
+                    }
+                    else
+                    {
+                        Game1.ui_arrow.DrawTile(Game1.spriteBatch, (int)((Recipes.recipeProcessingTime[attachment.recipeInProgressIndex] - attachment.timer) / (Recipes.recipeProcessingTime[attachment.recipeInProgressIndex] * 1.0) * 6), new Vector2(this.uix + 7 + 96, this.uiy + 5 + 96 + 24));
+                        //Debug.WriteLine("drawing timer: "+ (int)(attachment.timer));
+                        //Debug.WriteLine("drawing frame: " + Recipes.recipeProcessingTime[attachment.recipeInProgressIndex]);
+                    }
+
+                    DrawItems(this.uix + 7 + 5 + 24, this.uiy + 7 + 5 + 24 + 96, inventoryItemIds, inventoryItemQuantities);
+                    Hover(this.uix + 7 + 24, this.uiy + 7 + 24 + 96, inventoryItemIds);
 
                     DrawItems(this.uix + 7 + 5 + 24, this.uiy + 7 + 5 + 24 + 144, inventoryOutputIds, inventoryOutputQuants);
                     Hover(this.uix + 7 + 24, this.uiy + 7 + 24 + 144, inventoryOutputIds);
@@ -649,6 +697,7 @@ namespace Game1
                     return (!Game1.uiToggle&&Game1.uiObjects[1] != null && (MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396));
                 case 3:
                     return ((MouseKeyboardInfo.mouseState.X >= Game1.carryUi.uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.carryUi.uix + (Game1.carryUi.rowSize * (49)) && MouseKeyboardInfo.mouseState.Y >= Game1.carryUi.uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.carryUi.uiy - 1 + 42));
+                case 5:
                 case 4:
                     //254, 302
                     return ((MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 254 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 302));

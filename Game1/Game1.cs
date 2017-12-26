@@ -66,8 +66,8 @@ namespace Game1
 
         public static bool uiToggle = true;
         public static UI[] uiObjects = new UI[4];
-        public static int[] uiPosX = new int[4];
-        public static int[] uiPosY = new int[4];
+        public static int[] uiPosX = new int[5];
+        public static int[] uiPosY = new int[5];
         public static List<BigTile> bigTiles; //access using the tile id
 
         //STARTING_WINDOW_WIDTH = 1280;
@@ -307,7 +307,6 @@ namespace Game1
 
                 
             }
-
         }
 
         /// <summary>

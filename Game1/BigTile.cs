@@ -28,6 +28,7 @@ namespace Game1
         public int state = 0;
         public int[][] inventory; // first index is itemid(0)/quantity(1), second is position in the inventory
         public int[][] output; // first index is itemid(0)/quantity(1), second is position in the inventory
+        public int[][] schematic; // first index is itemid(0)/quantity(1), second is position in the inventory
         public int tileState = 0; // dependent on what the tile is
         public int fluidId = 0; // for tanks and stuff containing fluids
         public double fluidPercent = 0; // the percentage of this item's capacity that is filled by liquid
@@ -84,6 +85,7 @@ namespace Game1
                     endpoint = FindEndPoint(tilex / 16, tiley / 16, 3, 30);
                     Debug.WriteLine("" + endpoint[0] + "," + endpoint[1]);
                     break;
+                case 39:
                 case 29:
                     inventory = new int[2][];
                     inventory[0] = new int[8];
@@ -104,6 +106,34 @@ namespace Game1
                         for (int a = 0; a < 8; a++)
                         {
                             output[i][a] = -1;
+                        }
+                    }
+                    if (tileType == 39)
+                    {
+                        schematic = new int[2][];
+                        schematic[0] = new int[] { -1 };
+                        schematic[1] = new int[] { -1 };
+
+                        inventory = new int[2][];
+                        inventory[0] = new int[8];
+                        inventory[1] = new int[8];
+                        for (int i = 0; i < 2; i++)
+                        {
+                            for (int a = 0; a < 8; a++)
+                            {
+                                inventory[i][a] = -1;
+                            }
+                        }
+
+                        output = new int[2][];
+                        output[0] = new int[8];
+                        output[1] = new int[8];
+                        for (int i = 0; i < 2; i++)
+                        {
+                            for (int a = 0; a < 8; a++)
+                            {
+                                output[i][a] = -1;
+                            }
                         }
                     }
                     break;
@@ -408,6 +438,21 @@ namespace Game1
                         BigTile newTile = new BigTile(40, tilex, tiley, 0, new int[0][]);
                         Game1.bigTiles.Add(newTile);
                         Game1.bigTiles.Remove(this);
+                    }
+                    else
+                    {
+                        if (Game1.uiObjects[1] != null)
+                        {
+                            Game1.uiObjects[1] = null;
+                            Game1.openChest = -1;
+                        }
+                        else
+                        {
+                            UI ui = new UI(Game1.uiPosX[1], Game1.uiPosY[1], 4, inventory[0], inventory[1], output[0], output[1], 5, 2);
+                            ui.attachment = this;
+                            Game1.uiObjects[1] = ui;
+                            Game1.openChest = -1;
+                        }
                     }
                     break;
                 case 53:
