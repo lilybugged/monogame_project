@@ -108,34 +108,6 @@ namespace Game1
                             output[i][a] = -1;
                         }
                     }
-                    if (tileType == 39)
-                    {
-                        schematic = new int[2][];
-                        schematic[0] = new int[] { -1 };
-                        schematic[1] = new int[] { -1 };
-
-                        inventory = new int[2][];
-                        inventory[0] = new int[8];
-                        inventory[1] = new int[8];
-                        for (int i = 0; i < 2; i++)
-                        {
-                            for (int a = 0; a < 8; a++)
-                            {
-                                inventory[i][a] = -1;
-                            }
-                        }
-
-                        output = new int[2][];
-                        output[0] = new int[8];
-                        output[1] = new int[8];
-                        for (int i = 0; i < 2; i++)
-                        {
-                            for (int a = 0; a < 8; a++)
-                            {
-                                output[i][a] = -1;
-                            }
-                        }
-                    }
                     break;
                 case 30:
                     PipeUpdate(30);
