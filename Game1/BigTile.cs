@@ -420,7 +420,7 @@ namespace Game1
                         }
                         else
                         {
-                            UI ui = new UI(Game1.uiPosX[1], Game1.uiPosY[1], 4, inventory[0], inventory[1], output[0], output[1], 5, 2);
+                            UI ui = new UI(Game1.uiPosX[1], Game1.uiPosY[1], 2, inventory[0], inventory[1], output[0], output[1], 5, 4);
                             ui.attachment = this;
                             Game1.uiObjects[1] = ui;
                             Game1.openChest = -1;
