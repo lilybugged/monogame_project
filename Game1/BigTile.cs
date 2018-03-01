@@ -25,6 +25,8 @@ namespace Game1
         private int[] endpoint;
         public bool solid;
         public int power = -1;
+        public int energy = 0;
+        public int energyCapacity = 0;
         public int state = 0;
         public int[][] inventory; // first index is itemid(0)/quantity(1), second is position in the inventory
         public int[][] output; // first index is itemid(0)/quantity(1), second is position in the inventory
@@ -59,6 +61,14 @@ namespace Game1
             Vector2 position;
             switch (tileType)
             {
+                case 59:
+                    energyCapacity = 1000;
+                    timer = 0;
+                    break;
+                case 58:
+                    energyCapacity = 1000;
+                    timer = 0;
+                    break;
                 case 52:
                     map = (Game1.itemInfo.ITEM_BACKTILE[tileType] ? Game1.currentMap.mapBackTiles : Game1.currentMap.mapTiles);
                     position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
@@ -86,7 +96,35 @@ namespace Game1
                     Debug.WriteLine("" + endpoint[0] + "," + endpoint[1]);
                     break;
                 case 39:
+                    energyCapacity = 500;
+                    schematic = new int[2][];
+                    schematic[0] = new int[] { -1 };
+                    schematic[1] = new int[] { -1 };
+
+                    inventory = new int[2][];
+                    inventory[0] = new int[6];
+                    inventory[1] = new int[6];
+                    for (int i = 0; i < 2; i++)
+                    {
+                        for (int a = 0; a < 6; a++)
+                        {
+                            inventory[i][a] = -1;
+                        }
+                    }
+
+                    output = new int[2][];
+                    output[0] = new int[6];
+                    output[1] = new int[6];
+                    for (int i = 0; i < 2; i++)
+                    {
+                        for (int a = 0; a < 6; a++)
+                        {
+                            output[i][a] = -1;
+                        }
+                    }
+                    break;
                 case 29:
+                    energyCapacity = 1000;
                     inventory = new int[2][];
                     inventory[0] = new int[8];
                     inventory[1] = new int[8];
@@ -141,7 +179,73 @@ namespace Game1
             if (timer > 0) timer--;
             switch (tileType)
             {
+                case 59:
+                    if (timer == 0)
+                    {
+                        energy += 100;
+                        if (energy >= 100)
+                        {
+                            string[] outputs1 = new string[] { (tilex / 16) + "," + (tiley / 16) };
+                            outputs1 = PushEnergy(tilex / 16 + 1, tiley / 16, 57, 0, 0, new string[0], outputs1);
+                            outputs1 = PushEnergy(tilex / 16 - 1, tiley / 16, 57, 0, 1, new string[0], outputs1);
+                            outputs1 = PushEnergy(tilex / 16, tiley / 16 + 1, 57, 0, 2, new string[0], outputs1);
+                            outputs1 = PushEnergy(tilex / 16, tiley / 16 - 1, 57, 0, 3, new string[0], outputs1);
 
+                            int emptySources = outputs1.Length - 1;
+
+                            for (int i = 1; i < outputs1.Length; i++)
+                            {
+                                if (Game1.bigTiles[BigTile.FindTileId(Int32.Parse(outputs1[i].Split(',')[0]) * 16, Int32.Parse(outputs1[i].Split(',')[1]) * 16)].energy > Game1.bigTiles[BigTile.FindTileId(Int32.Parse(outputs1[i].Split(',')[0]) * 16, Int32.Parse(outputs1[i].Split(',')[1]) * 16)].energyCapacity - 100) emptySources--;
+                            }
+
+                            if (emptySources > 0)
+                            {
+                                energy -= 100;
+
+                                for (int i = 1; i < outputs1.Length; i++)
+                                {
+                                    if (Game1.bigTiles[BigTile.FindTileId(Int32.Parse(outputs1[i].Split(',')[0]) * 16, Int32.Parse(outputs1[i].Split(',')[1]) * 16)].energy <= Game1.bigTiles[BigTile.FindTileId(Int32.Parse(outputs1[i].Split(',')[0]) * 16, Int32.Parse(outputs1[i].Split(',')[1]) * 16)].energyCapacity - (100 / (emptySources)))
+                                    {
+                                        Game1.bigTiles[BigTile.FindTileId(Int32.Parse(outputs1[i].Split(',')[0]) * 16, Int32.Parse(outputs1[i].Split(',')[1]) * 16)].energy += (100 / (emptySources));
+                                    }
+                                }
+                            }
+                            timer = 10;
+                        }
+                    }
+                    break;
+                case 58:
+                    if (timer == 0){
+                        if (energy >= 100) {
+                            string[] outputs1 = new string[] { (tilex / 16) + "," + (tiley / 16) };
+                            outputs1 = PushEnergy(tilex / 16 + 1, tiley / 16, 57, 0, 0, new string[0], outputs1);
+                            outputs1 = PushEnergy(tilex / 16 - 1, tiley / 16, 57, 0, 1, new string[0], outputs1);
+                            outputs1 = PushEnergy(tilex / 16, tiley / 16 + 1, 57, 0, 2, new string[0], outputs1);
+                            outputs1 = PushEnergy(tilex / 16, tiley / 16 - 1, 57, 0, 3, new string[0], outputs1);
+
+                            int emptySources = outputs1.Length - 1;
+
+                            for (int i = 1; i < outputs1.Length; i++)
+                            {
+                                if (Game1.bigTiles[BigTile.FindTileId(Int32.Parse(outputs1[i].Split(',')[0]) * 16, Int32.Parse(outputs1[i].Split(',')[1]) * 16)].energy > Game1.bigTiles[BigTile.FindTileId(Int32.Parse(outputs1[i].Split(',')[0]) * 16, Int32.Parse(outputs1[i].Split(',')[1]) * 16)].energyCapacity - 100) emptySources--;
+                            }
+
+                            if (emptySources > 0)
+                            {
+                                energy -= 100;
+
+                                for (int i = 1; i < outputs1.Length; i++)
+                                {
+                                    if (Game1.bigTiles[BigTile.FindTileId(Int32.Parse(outputs1[i].Split(',')[0]) * 16, Int32.Parse(outputs1[i].Split(',')[1]) * 16)].energy <= Game1.bigTiles[BigTile.FindTileId(Int32.Parse(outputs1[i].Split(',')[0]) * 16, Int32.Parse(outputs1[i].Split(',')[1]) * 16)].energyCapacity - (100 / (emptySources)))
+                                    {
+                                        Game1.bigTiles[BigTile.FindTileId(Int32.Parse(outputs1[i].Split(',')[0]) * 16, Int32.Parse(outputs1[i].Split(',')[1]) * 16)].energy += (100 / (emptySources));
+                                    }
+                                }
+                            }
+                            timer = 10;
+                        }
+                    }
+                    break;
                 case 41:
                     if (timer > 0) TankUpdate();
                     break;
@@ -267,9 +371,76 @@ namespace Game1
                     }
 
                     break;
+                case 39:
+                    if (energy>=100 && power > 0 && schematic[0][0] >= ItemInfo.ITEM_COUNT - ItemInfo.SCHEMATICS_COUNT && timer == -1)
+                    {
+                        //if (Array.IndexOf(inventory[0], Recipes.recipeInputIds[i]) != -1 && (Array.IndexOf(inventory[0], Recipes.recipeOutputIds[i]) != -1 || Array.IndexOf(inventory[0], -1) == -1))
+                        for (int a = 0; a < Recipes.recipeInputIds[(schematic[0][0] - (ItemInfo.ITEM_COUNT - ItemInfo.SCHEMATICS_COUNT))].Length; a++)
+                        {
+                            if (!(CountItem(Recipes.recipeInputIds[(schematic[0][0] - (ItemInfo.ITEM_COUNT - ItemInfo.SCHEMATICS_COUNT))][a]) >= Recipes.recipeInputQuants[(schematic[0][0] - (ItemInfo.ITEM_COUNT - ItemInfo.SCHEMATICS_COUNT))][a])) break;
+                            if (a == Recipes.recipeInputIds[(schematic[0][0] - (ItemInfo.ITEM_COUNT - ItemInfo.SCHEMATICS_COUNT))].Length - 1)
+                            {
+                                timer = Recipes.recipeProcessingTime[(schematic[0][0] - (ItemInfo.ITEM_COUNT - ItemInfo.SCHEMATICS_COUNT))];
+                                recipeInProgressIndex = (schematic[0][0] - (ItemInfo.ITEM_COUNT - ItemInfo.SCHEMATICS_COUNT));
+                                //inventory[1][a] -= Recipes.recipeInputQuants[(schematic[0][0] - (ItemInfo.ITEM_COUNT - ItemInfo.SCHEMATICS_COUNT))][0];
+                                state = 1;
+
+                                if (inventory[1][a] < 1)
+                                {
+                                    inventory[0][a] = -1;
+                                    inventory[1][a] = -1;
+                                }
+                                //we'll check for open output slots when the timer goes off if need be
+                                //items can move around during processing time is why
+                                
+                            }
+                        }
+                    }
+                    if (timer == 0 && recipeInProgressIndex != -1)
+                    {
+                        for (int i = 0; i < Recipes.recipeOutputIds[recipeInProgressIndex].Length; i++)
+                        {
+                            if (recipeOutputIndex == -1)
+                            {
+                                for (int b = 0; b < output[0].Length; b++)
+                                {
+                                    if (output[0][b] == Recipes.recipeOutputIds[recipeInProgressIndex][i]
+                                        && output[1][b] + Recipes.recipeOutputQuants[recipeInProgressIndex][i] <= Game1.ITEM_STACK_SIZE && Game1.itemInfo.ITEM_STACKABLE[output[0][b]])
+                                    {
+                                        recipeOutputIndex = b;
+                                        break;
+                                    }
+                                }
+                                if (recipeOutputIndex == -1)
+                                {
+                                    recipeOutputIndex = Array.IndexOf(output[0], -1);
+                                }
+                            }
+                            if (recipeOutputIndex != -1)
+                            {
+                                output[0][recipeOutputIndex] = Recipes.recipeOutputIds[recipeInProgressIndex][i];
+                                output[1][recipeOutputIndex] = (output[1][recipeOutputIndex] < 1) ? Recipes.recipeOutputQuants[recipeInProgressIndex][i] :
+                                    output[1][recipeOutputIndex] + Recipes.recipeOutputQuants[recipeInProgressIndex][i];
+                                energy -= 100;
+                                if (i == Recipes.recipeOutputIds[recipeInProgressIndex].Length - 1)
+                                {
+                                    for (int a = 0; a < Recipes.recipeInputIds[recipeInProgressIndex].Length; a++)
+                                    {
+                                        RemoveItemAmount(Recipes.recipeInputIds[recipeInProgressIndex][a], Recipes.recipeInputQuants[recipeInProgressIndex][a]);
+                                    }
+                                    timer = -1;
+                                    recipeInProgressIndex = -1;
+                                    recipeOutputIndex = -1;
+                                    state = 0;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
                 case 29:
 
-                    if (power > 0)
+                    if (power > 0 && energy >= 500)
                     {
                         if (timer == -1)
                         {
@@ -288,7 +459,7 @@ namespace Game1
                                         recipeInProgressIndex = i;
                                         inventory[1][a] -= Recipes.recipeInputQuants[i][0];
                                         state = 1;
-
+                                        energy -= 500;
                                         if (inventory[1][a] < 1)
                                         {
                                             inventory[0][a] = -1;
@@ -370,7 +541,9 @@ namespace Game1
         {
             switch (tileType)
             {
-
+                case 57:
+                    
+                    break;
                 case 47:
                     if (state == 0)
                     {
@@ -420,7 +593,7 @@ namespace Game1
                         }
                         else
                         {
-                            UI ui = new UI(Game1.uiPosX[1], Game1.uiPosY[1], 2, inventory[0], inventory[1], output[0], output[1], 5, 4);
+                            UI ui = new UI(Game1.uiPosX[1], Game1.uiPosY[1], 3, inventory[0], inventory[1], output[0], output[1], 5, 2);
                             ui.attachment = this;
                             Game1.uiObjects[1] = ui;
                             Game1.openChest = -1;
@@ -529,6 +702,43 @@ namespace Game1
 
             }
         }
+        /// <summary>
+        /// Returns the amount of this item in this inventory.
+        /// </summary>
+        /// <returns></returns>
+        public int CountItem(int itemId)
+        {
+            int count = 0;
+
+            for (int i = 0; i < inventory[0].Length; i++)
+            {
+                if (inventory[0][i] == itemId) count += inventory[1][i];
+            }
+
+            return count;
+        }
+        public void RemoveItemAmount(int itemId, int quantity)
+        {
+            int leftover = quantity;
+            for (int i = 0; i < inventory[0].Length; i++)
+            {
+                if (inventory[0][i] == itemId)
+                {
+                    if (inventory[1][i] > leftover)
+                    {
+                        inventory[1][i] -= leftover;
+                        leftover = 0;
+                    }
+                    else
+                    {
+                        leftover -= inventory[1][i];
+                        inventory[1][i] = -1;
+                        inventory[0][i] = -1;
+                    }
+                }
+                if (leftover == 0) break;
+            }
+        }
         public void Draw()
         {
             Draw(tilex - Player.playerx, tiley - Player.playery);
@@ -539,6 +749,236 @@ namespace Game1
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
             switch (tileType)
             {
+                case 60:
+                    Game1.spriteBatch.Begin();
+                    if (map[this.tilex / 16, this.tiley / 16] == 60)
+                    {
+
+                        int[,] surround = new int[3, 3];
+
+                        surround[0, 0] = map[this.tilex / 16 - 1, this.tiley / 16 - 1];
+                        surround[1, 0] = map[this.tilex / 16, this.tiley / 16 - 1];
+                        surround[2, 0] = map[this.tilex / 16 + 1, this.tiley / 16 - 1];
+                        surround[0, 1] = map[this.tilex / 16 - 1, this.tiley / 16];
+                        surround[2, 1] = map[this.tilex / 16 + 1, this.tiley / 16];
+                        surround[0, 2] = map[this.tilex / 16 - 1, this.tiley / 16 + 1];
+                        surround[1, 2] = map[this.tilex / 16, this.tiley / 16 + 1];
+                        surround[2, 2] = map[this.tilex / 16 + 1, this.tiley / 16 + 1];
+
+                        if (surround[1, 0] != map[this.tilex / 16, this.tiley / 16] && surround[1, 2] != map[this.tilex / 16, this.tiley / 16] && surround[0, 1] != map[this.tilex / 16, this.tiley / 16] && surround[2, 1] != map[this.tilex / 16, this.tiley / 16])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 216, Color.White, new Vector2(x, y));
+                        }
+                        else if (surround[1, 0] == map[this.tilex / 16, this.tiley / 16] && surround[1, 2] == map[this.tilex / 16, this.tiley / 16] && surround[0, 1] == map[this.tilex / 16, this.tiley / 16] && surround[2, 1] == map[this.tilex / 16, this.tiley / 16])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 9, Color.White, new Vector2(x, y));
+                        }
+                        else
+                        {
+                            //solos
+                            if (surround[1, 0] != map[this.tilex / 16, this.tiley / 16] && surround[1, 2] != map[this.tilex / 16, this.tiley / 16] && surround[0, 1] == map[this.tilex / 16, this.tiley / 16] && surround[2, 1] != map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 10, Color.White, new Vector2(x, y));
+                            }
+                            else if (surround[1, 0] == map[this.tilex / 16, this.tiley / 16] && surround[1, 2] != map[this.tilex / 16, this.tiley / 16] && surround[0, 1] != map[this.tilex / 16, this.tiley / 16] && surround[2, 1] != map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 11, Color.White, new Vector2(x, y));
+                            }
+                            else if (surround[1, 0] != map[this.tilex / 16, this.tiley / 16] && surround[1, 2] == map[this.tilex / 16, this.tiley / 16] && surround[0, 1] != map[this.tilex / 16, this.tiley / 16] && surround[2, 1] != map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 11, Color.White, new Vector2(x, y));
+                            }
+                            else if (surround[1, 0] != map[this.tilex / 16, this.tiley / 16] && surround[1, 2] != map[this.tilex / 16, this.tiley / 16] && surround[0, 1] != map[this.tilex / 16, this.tiley / 16] && surround[2, 1] == map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 10, Color.White, new Vector2(x, y));
+                            }
+                            //corners
+                            else if (surround[1, 0] == map[this.tilex / 16, this.tiley / 16] && surround[1, 2] != map[this.tilex / 16, this.tiley / 16] && surround[0, 1] != map[this.tilex / 16, this.tiley / 16] && surround[2, 1] == map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 1, Color.White, new Vector2(x, y));
+                            }
+                            else if (surround[1, 0] == map[this.tilex / 16, this.tiley / 16] && surround[1, 2] != map[this.tilex / 16, this.tiley / 16] && surround[0, 1] == map[this.tilex / 16, this.tiley / 16] && surround[2, 1] != map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 2, Color.White, new Vector2(x, y));
+                            }
+                            else if (surround[1, 0] != map[this.tilex / 16, this.tiley / 16] && surround[1, 2] == map[this.tilex / 16, this.tiley / 16] && surround[0, 1] == map[this.tilex / 16, this.tiley / 16] && surround[2, 1] != map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 3, Color.White, new Vector2(x, y));
+                            }
+                            else if (surround[1, 0] != map[this.tilex / 16, this.tiley / 16] && surround[1, 2] == map[this.tilex / 16, this.tiley / 16] && surround[0, 1] != map[this.tilex / 16, this.tiley / 16] && surround[2, 1] == map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 4, Color.White, new Vector2(x, y));
+                            }
+                            //3 ways
+                            else if (surround[1, 0] != map[this.tilex / 16, this.tiley / 16] && surround[1, 2] == map[this.tilex / 16, this.tiley / 16] && surround[0, 1] == map[this.tilex / 16, this.tiley / 16] && surround[2, 1] == map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 5, Color.White, new Vector2(x, y));
+                            }
+                            else if (surround[1, 0] == map[this.tilex / 16, this.tiley / 16] && surround[1, 2] == map[this.tilex / 16, this.tiley / 16] && surround[0, 1] != map[this.tilex / 16, this.tiley / 16] && surround[2, 1] == map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 6, Color.White, new Vector2(x, y));
+                            }
+                            else if (surround[1, 0] == map[this.tilex / 16, this.tiley / 16] && surround[1, 2] == map[this.tilex / 16, this.tiley / 16] && surround[0, 1] == map[this.tilex / 16, this.tiley / 16] && surround[2, 1] != map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 7, Color.White, new Vector2(x, y));
+                            }
+                            else if (surround[1, 0] == map[this.tilex / 16, this.tiley / 16] && surround[1, 2] != map[this.tilex / 16, this.tiley / 16] && surround[0, 1] == map[this.tilex / 16, this.tiley / 16] && surround[2, 1] == map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 8, Color.White, new Vector2(x, y));
+                            }
+                            //sides
+                            else if (surround[1, 0] == map[this.tilex / 16, this.tiley / 16] && surround[1, 2] == map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 11, Color.White, new Vector2(x, y));
+                            }
+                            else if (surround[0, 1] == map[this.tilex / 16, this.tiley / 16] && surround[2, 1] == map[this.tilex / 16, this.tiley / 16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 216 + 10, Color.White, new Vector2(x, y));
+                            }
+                        }
+                        if (map[this.tilex / 16, this.tiley / 16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[this.tilex / 16, this.tiley / 16]])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 225, new Vector2(x, y));
+                        }
+                        if (surround[0, 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[surround[0, 1]]) Game1.tiles.DrawTile(Game1.spriteBatch, 228, new Vector2(x, y));
+                        if (surround[2, 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[surround[2, 1]]) Game1.tiles.DrawTile(Game1.spriteBatch, 230, new Vector2(x, y));
+                        if (surround[1, 2] != -1 && Game1.itemInfo.ITEM_ENDPOINT[surround[1, 2]]) Game1.tiles.DrawTile(Game1.spriteBatch, 229, new Vector2(x, y));
+                        if (surround[1, 0] != -1 && Game1.itemInfo.ITEM_ENDPOINT[surround[1, 0]]) Game1.tiles.DrawTile(Game1.spriteBatch, 231, new Vector2(x, y));
+                    }
+                    Game1.spriteBatch.End();
+                    break;
+                case 59:
+                    Game1.spriteBatch.Begin();
+                    if (map[this.tilex / 16, this.tiley / 16 - 2] == 59)
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 215, new Vector2(x, y - 16));
+                    }
+                    else Game1.tiles.DrawTile(Game1.spriteBatch, 213, new Vector2(x, y - 16));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 214, new Vector2(x, y));
+                    
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 209 + Game1.globalTick/4, new Vector2(x, y - 16));
+                    Game1.spriteBatch.End();
+                    break;
+                case 58:
+                    Game1.spriteBatch.Begin();
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 207, new Vector2(x, y));
+                    Game1.spriteBatch.End();
+                    DrawFullAutoTile(136);
+                    Game1.spriteBatch.Begin();
+                    //Game1.spriteBatch.DrawString(Game1.font, ""+energy, new Vector2(x + 8, y), Color.White);
+                    if (energy > 666)
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 208, Color.LightGreen, new Vector2(x, y));
+                    }
+                    else if (energy > 333)
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 208, Color.Yellow, new Vector2(x, y));
+                    }
+                    else
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 208, Color.Red, new Vector2(x, y));
+                    }
+
+                    Game1.spriteBatch.End();
+                    break;
+                case 57:
+                    Game1.spriteBatch.Begin();
+                    if (map[this.tilex/16, this.tiley/16] == 57)
+                    {
+
+                        int[,] surround = new int[3, 3];
+
+                        surround[0, 0] = map[this.tilex/16 - 1, this.tiley/16 - 1];
+                        surround[1, 0] = map[this.tilex/16, this.tiley/16 - 1];
+                        surround[2, 0] = map[this.tilex/16 + 1, this.tiley/16 - 1];
+                        surround[0, 1] = map[this.tilex/16 - 1, this.tiley/16];
+                        surround[2, 1] = map[this.tilex/16 + 1, this.tiley/16];
+                        surround[0, 2] = map[this.tilex/16 - 1, this.tiley/16 + 1];
+                        surround[1, 2] = map[this.tilex/16, this.tiley/16 + 1];
+                        surround[2, 2] = map[this.tilex/16 + 1, this.tiley/16 + 1];
+
+                        if (surround[1, 0] != map[this.tilex/16, this.tiley/16] && surround[1, 2] != map[this.tilex/16, this.tiley/16] && surround[0, 1] != map[this.tilex/16, this.tiley/16] && surround[2, 1] != map[this.tilex/16, this.tiley/16])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 191, Color.White, new Vector2(x , y ));
+                        }
+                        else if (surround[1, 0] == map[this.tilex/16, this.tiley/16] && surround[1, 2] == map[this.tilex/16, this.tiley/16] && surround[0, 1] == map[this.tilex/16, this.tiley/16] && surround[2, 1] == map[this.tilex/16, this.tiley/16])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 9, Color.White, new Vector2(x , y ));
+                        }
+                        else
+                        {
+                            //solos
+                            if (surround[1, 0] != map[this.tilex/16, this.tiley/16] && surround[1, 2] != map[this.tilex/16, this.tiley/16] && surround[0, 1] == map[this.tilex/16, this.tiley/16] && surround[2, 1] != map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 10, Color.White, new Vector2(x , y ));
+                            }
+                            else if (surround[1, 0] == map[this.tilex/16, this.tiley/16] && surround[1, 2] != map[this.tilex/16, this.tiley/16] && surround[0, 1] != map[this.tilex/16, this.tiley/16] && surround[2, 1] != map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 11, Color.White, new Vector2(x , y ));
+                            }
+                            else if (surround[1, 0] != map[this.tilex/16, this.tiley/16] && surround[1, 2] == map[this.tilex/16, this.tiley/16] && surround[0, 1] != map[this.tilex/16, this.tiley/16] && surround[2, 1] != map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 11, Color.White, new Vector2(x , y ));
+                            }
+                            else if (surround[1, 0] != map[this.tilex/16, this.tiley/16] && surround[1, 2] != map[this.tilex/16, this.tiley/16] && surround[0, 1] != map[this.tilex/16, this.tiley/16] && surround[2, 1] == map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 10, Color.White, new Vector2(x , y ));
+                            }
+                            //corners
+                            else if (surround[1, 0] == map[this.tilex/16, this.tiley/16] && surround[1, 2] != map[this.tilex/16, this.tiley/16] && surround[0, 1] != map[this.tilex/16, this.tiley/16] && surround[2, 1] == map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 1, Color.White, new Vector2(x , y ));
+                            }
+                            else if (surround[1, 0] == map[this.tilex/16, this.tiley/16] && surround[1, 2] != map[this.tilex/16, this.tiley/16] && surround[0, 1] == map[this.tilex/16, this.tiley/16] && surround[2, 1] != map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 2, Color.White, new Vector2(x , y ));
+                            }
+                            else if (surround[1, 0] != map[this.tilex/16, this.tiley/16] && surround[1, 2] == map[this.tilex/16, this.tiley/16] && surround[0, 1] == map[this.tilex/16, this.tiley/16] && surround[2, 1] != map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 3, Color.White, new Vector2(x , y ));
+                            }
+                            else if (surround[1, 0] != map[this.tilex/16, this.tiley/16] && surround[1, 2] == map[this.tilex/16, this.tiley/16] && surround[0, 1] != map[this.tilex/16, this.tiley/16] && surround[2, 1] == map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 4, Color.White, new Vector2(x , y ));
+                            }
+                            //3 ways
+                            else if (surround[1, 0] != map[this.tilex/16, this.tiley/16] && surround[1, 2] == map[this.tilex/16, this.tiley/16] && surround[0, 1] == map[this.tilex/16, this.tiley/16] && surround[2, 1] == map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 5, Color.White, new Vector2(x , y ));
+                            }
+                            else if (surround[1, 0] == map[this.tilex/16, this.tiley/16] && surround[1, 2] == map[this.tilex/16, this.tiley/16] && surround[0, 1] != map[this.tilex/16, this.tiley/16] && surround[2, 1] == map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 6, Color.White, new Vector2(x , y ));
+                            }
+                            else if (surround[1, 0] == map[this.tilex/16, this.tiley/16] && surround[1, 2] == map[this.tilex/16, this.tiley/16] && surround[0, 1] == map[this.tilex/16, this.tiley/16] && surround[2, 1] != map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 7, Color.White, new Vector2(x , y ));
+                            }
+                            else if (surround[1, 0] == map[this.tilex/16, this.tiley/16] && surround[1, 2] != map[this.tilex/16, this.tiley/16] && surround[0, 1] == map[this.tilex/16, this.tiley/16] && surround[2, 1] == map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 8, Color.White, new Vector2(x , y ));
+                            }
+                            //sides
+                            else if (surround[1, 0] == map[this.tilex/16, this.tiley/16] && surround[1, 2] == map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 11, Color.White, new Vector2(x , y ));
+                            }
+                            else if (surround[0, 1] == map[this.tilex/16, this.tiley/16] && surround[2, 1] == map[this.tilex/16, this.tiley/16])
+                            {
+                                Game1.tiles.DrawTile(Game1.spriteBatch, 191 + 10, Color.White, new Vector2(x , y ));
+                            }
+                        }
+                        if (map[this.tilex/16, this.tiley/16] != -1 && Game1.itemInfo.ITEM_ENDPOINT[map[this.tilex/16, this.tiley/16]])
+                        {
+                            Game1.tiles.DrawTile(Game1.spriteBatch, 200, new Vector2(x , y ));
+                        }
+                        if (surround[0, 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[surround[0, 1]]) Game1.tiles.DrawTile(Game1.spriteBatch, 203, new Vector2(x, y));
+                        if (surround[2, 1] != -1 && Game1.itemInfo.ITEM_ENDPOINT[surround[2, 1]]) Game1.tiles.DrawTile(Game1.spriteBatch, 205, new Vector2(x, y));
+                        if (surround[1, 2] != -1 && Game1.itemInfo.ITEM_ENDPOINT[surround[1, 2]]) Game1.tiles.DrawTile(Game1.spriteBatch, 204, new Vector2(x, y));
+                        if (surround[1, 0] != -1 && Game1.itemInfo.ITEM_ENDPOINT[surround[1, 0]]) Game1.tiles.DrawTile(Game1.spriteBatch, 206, new Vector2(x, y));
+                    }
+                    Game1.spriteBatch.End();
+                    break;
                 case 55:
                     Game1.spriteBatch.Begin();
                     Game1.tiles.DrawTile(Game1.spriteBatch, 186, new Vector2(x, y - 16));
@@ -588,6 +1028,7 @@ namespace Game1
                 case 39:
                     Game1.spriteBatch.Begin();
                     Game1.tiles.DrawTile(Game1.spriteBatch, 131, position);
+                    Game1.spriteBatch.DrawString(Game1.font, "" + energy, new Vector2(x + 8, y), Color.White);
                     Game1.spriteBatch.End();
                     break;
                 case 53:
@@ -1452,6 +1893,58 @@ namespace Game1
                 else if (Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidId != -1) fluidId = Game1.bigTiles[BigTile.FindTileId(tilex - 16, tiley)].fluidId;
                 fluidPercent = total / 2;
             }
+        }
+        /// <summary>
+        /// returns a list of coordinates for outputs so that they can be powered with a distributed amount of energy.
+        /// </summary>
+        /// <returns></returns>
+        public string[] PushEnergy(int x, int y, int cableType, int count, int dir, string[] list, string[] outputs)
+        {
+            //Debug.WriteLine("made it");
+            string[] newlist = new string[list.Length + 1];
+            Array.Copy(list, newlist, list.Length);
+            if (list.Contains(x + "," + y)) return outputs;
+            newlist[list.Length] = x + "," + y;
+            list = newlist;
+            if (count > 50) return outputs;
+            if ((Game1.currentMap.mapTiles[x, y] != cableType && (Game1.currentMap.mapTiles[x, y]==-1 || !Game1.itemInfo.ITEM_ENDPOINT[Game1.currentMap.mapTiles[x, y]])) || cableType == -1 || (Game1.currentMap.mapTiles[x, y] == 47))
+            {
+                //Debug.WriteLine("terminated");
+                return outputs;
+            }
+            else
+            {
+                if (Game1.currentMap.mapTiles[x, y] != -1 && Game1.itemInfo.ITEM_ENDPOINT[Game1.currentMap.mapTiles[x, y]] && BigTile.FindTileId(x * 16, y * 16) != -1)
+                {
+                    //Debug.WriteLine("power!");
+                    if (!outputs.Contains(x + "," + y))
+                    {
+                        string[] newlist2 = new string[outputs.Length + 1];
+                        Array.Copy(outputs, newlist2, outputs.Length);
+                        newlist2[outputs.Length] = x + "," + y;
+                        outputs = newlist2;
+                        //Debug.WriteLine(outputs[outputs.Length - 1]);
+                    }
+                    return outputs;
+                }
+                if (!list.Contains((x + 1) + "," + y))
+                {
+                    outputs = PushEnergy(x + 1, y, cableType, count + 1, 0, list, outputs);
+                }
+                if (!list.Contains((x - 1) + "," + y))
+                {
+                    outputs = PushEnergy(x - 1, y, cableType, count + 1, 1, list, outputs);
+                }
+                if (!list.Contains(x + "," + (y + 1)))
+                {
+                    outputs = PushEnergy(x, y + 1, cableType, count + 1, 2, list, outputs);
+                }
+                if (!list.Contains("," + (y + 1)))
+                {
+                    outputs = PushEnergy(x, y - 1, cableType, count + 1, 3, list, outputs);
+                }
+            }
+            return outputs;
         }
         public void Power(int x, int y, int wireType, int count, int dir, int powerLevel, string[] list)
         {

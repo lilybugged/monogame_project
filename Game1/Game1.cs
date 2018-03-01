@@ -26,6 +26,7 @@ namespace Game1
         public static AnimatedSprite[] charaRight = new AnimatedSprite[12];
         public static AnimatedSprite[] chestSprites = new AnimatedSprite[4];
         public static AnimatedSprite ui_arrow;
+        public static AnimatedSprite ui_arrow_right;
         public static AnimatedSprite equippables;
         public static AnimatedSprite equip_icons;
         public static AnimatedSprite items_32;
@@ -205,11 +206,12 @@ namespace Game1
             charaRight[1] = new AnimatedSprite(Content.Load<Texture2D>("img/spr_chara_Right_1"), 2, 2);
 
             ui_arrow = new AnimatedSprite(Content.Load<Texture2D>("img/uiArrow"), 3, 2);
+            ui_arrow_right = new AnimatedSprite(Content.Load<Texture2D>("img/uiArrow_right"), 3, 2);
             items_32 = new AnimatedSprite(Content.Load<Texture2D>("img/icons_32"), 8, 8);
             equippables = new AnimatedSprite(Content.Load<Texture2D>("img/equippable_items"), 8, 7);
 
             equip_icons = new AnimatedSprite(Content.Load<Texture2D>("img/equip_slots"), 5, 4);
-            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 14, 14);
+            tiles = new AnimatedSprite(Content.Load<Texture2D>("img/bg_tiles"), 16, 15);
             fluids = new AnimatedSprite(Content.Load<Texture2D>("img/bg_fluids"), 2, 1);
             pixel = Content.Load<Texture2D>("img/white_pixel2");
             portrait_items = new AnimatedSprite(Content.Load<Texture2D>("img/portrait_items"), 3, 3);
@@ -267,6 +269,7 @@ namespace Game1
                 player.Update();
                 tiles.Update();
                 ui_arrow.Update();
+                ui_arrow_right.Update();
                 chestSprites[0].Update();
                 chestSprites[1].Update();
 

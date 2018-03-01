@@ -18,8 +18,8 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 61;
-        public const int SCHEMATICS_COUNT = 2;
+        public const int ITEM_COUNT = 69;
+        public const int SCHEMATICS_COUNT = 4;
         public bool[] ITEM_ENDPOINT = new bool[ITEM_COUNT]; // if true, this item is an endpoint for pipes
         public String[] ITEM_NAME = new String[ITEM_COUNT];
         public String[] ITEM_DESC = new String[ITEM_COUNT];
@@ -102,7 +102,10 @@ namespace Game1
             ITEM_ENDPOINT[32] = true;
             ITEM_ENDPOINT[41] = true;
             ITEM_ENDPOINT[47] = true;
+            ITEM_ENDPOINT[39] = true;
             ITEM_ENDPOINT[54] = true;
+            ITEM_ENDPOINT[58] = true;
+            ITEM_ENDPOINT[59] = true;
 
             ITEM_BIGTILE[8] = true;
             ITEM_BIGTILE[9] = true;
@@ -125,6 +128,10 @@ namespace Game1
             ITEM_BIGTILE[53] = true;
             ITEM_BIGTILE[54] = true;
             ITEM_BIGTILE[55] = true;
+            ITEM_BIGTILE[57] = true;
+            ITEM_BIGTILE[58] = true;
+            ITEM_BIGTILE[59] = true;
+            ITEM_BIGTILE[60] = true;
 
             ITEM_BIGTILE_WIDTH[8] = 1;
             ITEM_BIGTILE_WIDTH[9] = 1;
@@ -147,6 +154,10 @@ namespace Game1
             ITEM_BIGTILE_WIDTH[53] = 1;
             ITEM_BIGTILE_WIDTH[54] = 2;
             ITEM_BIGTILE_WIDTH[55] = 2;
+            ITEM_BIGTILE_WIDTH[57] = 1;
+            ITEM_BIGTILE_WIDTH[58] = 1;
+            ITEM_BIGTILE_WIDTH[59] = 1;
+            ITEM_BIGTILE_WIDTH[60] = 1;
 
             ITEM_BIGTILE_HEIGHT[8] = 1;
             ITEM_BIGTILE_HEIGHT[9] = 1;
@@ -169,6 +180,10 @@ namespace Game1
             ITEM_BIGTILE_HEIGHT[53] = 1;
             ITEM_BIGTILE_HEIGHT[54] = 2;
             ITEM_BIGTILE_HEIGHT[55] = 2;
+            ITEM_BIGTILE_HEIGHT[57] = 1;
+            ITEM_BIGTILE_HEIGHT[58] = 1;
+            ITEM_BIGTILE_HEIGHT[59] = 2;
+            ITEM_BIGTILE_HEIGHT[60] = 1;
 
             ITEM_EQUIPPABLE[19] = true;
             ITEM_EQUIPPABLE[22] = true;
@@ -200,6 +215,7 @@ namespace Game1
             ITEM_RANK[29] = 0;
             ITEM_RANK[30] = 0;
             ITEM_RANK[51] = 0;
+            ITEM_RANK[57] = 0;
 
             ITEM_TOOL_RANGE[14] = 5 * 16;
             ITEM_TOOL_RANGE[16] = 8 * 16;
@@ -246,6 +262,10 @@ namespace Game1
             ITEM_PLACEABLE[54] = true;
             ITEM_PLACEABLE[55] = true;
             ITEM_PLACEABLE[56] = true;
+            ITEM_PLACEABLE[57] = true;
+            ITEM_PLACEABLE[58] = true;
+            ITEM_PLACEABLE[59] = true;
+            ITEM_PLACEABLE[60] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
@@ -303,6 +323,7 @@ namespace Game1
             ITEM_TOOL_TIER[52] = 0;
             ITEM_TOOL_TIER[53] = 0;
             ITEM_TOOL_TIER[54] = 1;
+            ITEM_TOOL_TIER[57] = 1;
 
             //do NOT add a blockID for BigTile items
             ITEM_BLOCKID[0] = -1;
@@ -411,11 +432,17 @@ namespace Game1
             ITEM_NAME[54] = "Christmas Tree";
             ITEM_NAME[55] = "Large Wreath";
             ITEM_NAME[56] = "Small Wreath";
+            ITEM_NAME[57] = "Small Cable";
+            ITEM_NAME[58] = "Battery Box";
+            ITEM_NAME[59] = "Windmill";
+            ITEM_NAME[60] = "Large Cable";
 
 
             //recipes
             ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + 0] = "Recipe: Furnace";
             ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + 1] = "Recipe: Assembler";
+            ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + 2] = "Recipe: Everwood Wand";
+            ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + 3] = "Recipe: Wire Cutter";
 
             for (int i = 0; i < SCHEMATICS_COUNT; i++)
             {

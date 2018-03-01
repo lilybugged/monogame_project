@@ -54,12 +54,12 @@ namespace Game1
         /// </summary>
         public UI(int newx, int newy, int rows, int[] itemIds, int[] itemQuants, int[] outputIds, int[] outputQuants, int type, int rowLength)
         {
-            this.uix = newx; 
+            this.uix = newx;
             this.uiy = newy;
             this.uiState = type;
             this.rowSize = rowLength;
 
-            toString = ""+type;
+            toString = "" + type;
 
             menu_0 = new Color(129, 114, 114, 255);
             menu_1 = new Color(141, 127, 127, 255);
@@ -86,19 +86,25 @@ namespace Game1
             switch (uiState)
             {
                 case 1:
-                    DragAndDrop((this.uix + 136 + 19)*Game1.zoom, (this.uiy + 17) * Game1.zoom, inventoryItemIds,inventoryItemQuantities);
+                    DragAndDrop((this.uix + 136 + 19) * Game1.zoom, (this.uiy + 17) * Game1.zoom, inventoryItemIds, inventoryItemQuantities);
                     break;
                 case 2:
-                    DragAndDrop((this.uix + 7) * Game1.zoom, (this.uiy + 7)*Game1.zoom, inventoryItemIds, inventoryItemQuantities);
+                    DragAndDrop((this.uix + 7) * Game1.zoom, (this.uiy + 7) * Game1.zoom, inventoryItemIds, inventoryItemQuantities);
                     break;
                 case 3:
-                    DragAndDrop((this.uix + 7) * Game1.zoom, (this.uiy + 7)*Game1.zoom, inventoryItemIds, inventoryItemQuantities);
+                    DragAndDrop((this.uix + 7) * Game1.zoom, (this.uiy + 7) * Game1.zoom, inventoryItemIds, inventoryItemQuantities);
                     break;
-                case 5:
                 case 4:
-                    DragAndDrop((this.uix + 7 + 24) * Game1.zoom, (this.uiy + 7 + 24)*Game1.zoom, inventoryItemIds, inventoryItemQuantities);
+                    DragAndDrop((this.uix + 7 + 24) * Game1.zoom, (this.uiy + 7 + 24) * Game1.zoom, inventoryItemIds, inventoryItemQuantities);
 
                     DragAndDrop((this.uix + 7 + 24) * Game1.zoom, (this.uiy + 7 + 24 + 144) * Game1.zoom, inventoryOutputIds, inventoryOutputQuants);
+                    break;
+                case 5:
+                    DragAndDrop((this.uix + 7 + (44 + 5) * 0 + 24 - 5) * Game1.zoom, (this.uiy + 7 + (48) * 2 + 24) * Game1.zoom, inventoryItemIds, inventoryItemQuantities);
+
+                    DragAndDrop((this.uix + 7 + 5 + (44 + 5) * 3 + 24 - 5) * Game1.zoom, (this.uiy + 7 + (48) * 2 + 5 + 24) * Game1.zoom, inventoryOutputIds, inventoryOutputQuants);
+
+                    DragAndDrop((this.uix + 7 + 5 + (44 + 5) * 2 + 24 - 5) * Game1.zoom, (this.uiy + 7 + (48) * 0 + 5 + 24) * Game1.zoom, attachment.schematic[0], attachment.schematic[1]);
                     break;
 
             }
@@ -127,7 +133,7 @@ namespace Game1
                         }
                     }
                 }
-                else if (cursorItemOrigin == 3 && selectedCarry!=cursorItemIndex) //holding an item from the carry-slots and not hovering on the slot the item is from
+                else if (cursorItemOrigin == 3 && selectedCarry != cursorItemIndex) //holding an item from the carry-slots and not hovering on the slot the item is from
                 {
                     int temp = cursorItem;
                     int temp2 = cursorQuantity;
@@ -163,10 +169,10 @@ namespace Game1
             switch (uiState)
             {
                 case 1:
-                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix-1, this.uiy-1, 514, 514), Color.Black);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix - 1, this.uiy - 1, 514, 514), Color.Black);
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix, this.uiy, 512, 512), menu_0);
-                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix+2, this.uiy+2, 508, 508), menu_3);
-                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix+4, this.uiy+4, 504, 504), menu_0);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 2, this.uiy + 2, 508, 508), menu_3);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 4, this.uiy + 4, 504, 504), menu_0);
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 6, this.uiy + 6, 500, 500), menu_2);
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 8, this.uiy + 8, 136, 172), menu_0);
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 9, this.uiy + 9, 134, 170), menu_3);
@@ -177,8 +183,8 @@ namespace Game1
                                 new Vector2(this.uix + 12, this.uiy + 12));
                     for (int i = Game1.playerEquippedItems.Length - 1; i > 0; i--)
                     {
-                        if (Game1.playerEquippedItems[i]!=-1) Game1.portrait_items.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[i]]+1, Color.White,
-                                new Vector2(this.uix + 12, this.uiy + 12));
+                        if (Game1.playerEquippedItems[i] != -1) Game1.portrait_items.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_EQUIPID[Game1.playerEquippedItems[i]] + 1, Color.White,
+                                  new Vector2(this.uix + 12, this.uiy + 12));
                     }
                     //Game1.spriteBatch.Draw(Game1.portrait, new Vector2(this.uix + 12, this.uiy + 12), Color.White*0.5f);
 
@@ -190,12 +196,12 @@ namespace Game1
                             Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 9 + (46) * a, this.uiy + 220 + (48) * i, 42, 42), menu_1);
                         }
                     }
-                    
+
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 136 + 10, this.uiy + 8, 357, 495), menu_0);
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 136 + 11, this.uiy + 9, 355, 493), menu_3);
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 136 + 14, this.uiy + 13, 349, 485), menu_0);
                     Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 136 + 15, this.uiy + 14, 347, 483), menu_1);
-                    
+
                     for (int i = 0; i < inventoryRows; i++)
                     {
                         for (int a = 0; a < rowSize; a++)
@@ -209,8 +215,8 @@ namespace Game1
                     {
                         for (int a = 0; a < 3; a++)
                         {
-                            if (Game1.playerEquippedItems[i*3+a]==-1) Game1.equip_icons.DrawTile(Game1.spriteBatch, i*3 + a, (new Color(94, 79, 79)*0.5f),
-                                new Vector2(this.uix + 12 + (49) * a, this.uiy + 225 + (48) * i));
+                            if (Game1.playerEquippedItems[i * 3 + a] == -1) Game1.equip_icons.DrawTile(Game1.spriteBatch, i * 3 + a, (new Color(94, 79, 79) * 0.5f),
+                                      new Vector2(this.uix + 12 + (49) * a, this.uiy + 225 + (48) * i));
                             else
                             {
                                 Game1.items_32.DrawTile(Game1.spriteBatch, Game1.playerEquippedItems[i * 3 + a], Color.White,
@@ -283,43 +289,6 @@ namespace Game1
                             }
                         }
                     }
-                    
-                    if (attachment == null || attachment.recipeInProgressIndex == -1 || attachment.timer<0)
-                    {
-                        Game1.ui_arrow.DrawTile(Game1.spriteBatch, 0, new Vector2(this.uix + 7 + 96, this.uiy + 5 + 96 + 24));
-                        //Debug.WriteLine("timer is "+ attachment.timer);
-                    }
-                    else
-                    {
-                        Game1.ui_arrow.DrawTile(Game1.spriteBatch, (int)((Recipes.recipeProcessingTime[attachment.recipeInProgressIndex]-attachment.timer)/ (Recipes.recipeProcessingTime[attachment.recipeInProgressIndex]*1.0) * 6), new Vector2(this.uix + 7 + 96, this.uiy + 5 + 96 + 24));
-                        //Debug.WriteLine("drawing timer: "+ (int)(attachment.timer));
-                        //Debug.WriteLine("drawing frame: " + Recipes.recipeProcessingTime[attachment.recipeInProgressIndex]);
-                    }
-
-                    DrawItems(this.uix + 7 + 5 + 24, this.uiy + 7 + 5 + 24, inventoryItemIds, inventoryItemQuantities);
-                    Hover(this.uix + 7 + 24, this.uiy + 7 + 24, inventoryItemIds);
-
-                    DrawItems(this.uix + 7 + 5 + 24, this.uiy + 7 + 5 + 24 + 144, inventoryOutputIds, inventoryOutputQuants);
-                    Hover(this.uix + 7 + 24, this.uiy + 7 + 24 + 144, inventoryOutputIds);
-                    break;
-                case 5:
-                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix - 1, this.uiy - 1, 254, 302), Color.Black);
-                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix, this.uiy, 252, 300), menu_0);
-                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 2, this.uiy + 2, 248, 296), menu_3);
-                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 4, this.uiy + 4, 244, 292), menu_0);
-                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 6, this.uiy + 6, 240, 288), menu_1);
-
-                    for (int i = 0; i < 5; i++)
-                    {
-                        if (i != 2)
-                        {
-                            for (int a = 0; a < rowSize; a++)
-                            {
-                                Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 7 + (44 + 5) * a + 24, this.uiy + 7 + (48) * i + 24, 44, 44), menu_0);
-                                Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 8 + (44 + 5) * a + 24, this.uiy + 8 + (48) * i + 24, 42, 42), menu_2);
-                            }
-                        }
-                    }
 
                     if (attachment == null || attachment.recipeInProgressIndex == -1 || attachment.timer < 0)
                     {
@@ -339,13 +308,58 @@ namespace Game1
                     DrawItems(this.uix + 7 + 5 + 24, this.uiy + 7 + 5 + 24 + 144, inventoryOutputIds, inventoryOutputQuants);
                     Hover(this.uix + 7 + 24, this.uiy + 7 + 24 + 144, inventoryOutputIds);
                     break;
+                case 5:
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix - 1, this.uiy - 1, 254 + 44 + 5, 302), Color.Black);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix, this.uiy, 252 + 44 + 5, 300), menu_0);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 2, this.uiy + 2, 248 + 44 + 5, 296), menu_3);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 4, this.uiy + 4, 244 + 44 + 5, 292), menu_0);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 6, this.uiy + 6, 240 + 44 + 5, 288), menu_1);
+
+                    for (int i = 2; i < 5; i++)
+                    {
+
+                        for (int a = 0; a < 5; a++)
+                        {
+                            if (a != 2)
+                            {
+                                Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 7 + (44 + 5) * a + 24, this.uiy + 7 + (48) * i + 24, 44, 44), menu_0);
+                                Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 8 + (44 + 5) * a + 24, this.uiy + 8 + (48) * i + 24, 42, 42), menu_2);
+                            }
+                        }
+
+                    }
+
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 7 + (44 + 5) * 2 + 24, this.uiy + 7 + (48) * 0 + 24, 44, 44), menu_0);
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(this.uix + 8 + (44 + 5) * 2 + 24, this.uiy + 8 + (48) * 0 + 24, 42, 42), menu_2);
+
+                    if (attachment == null || attachment.recipeInProgressIndex == -1 || attachment.timer < 0)
+                    {
+                        Game1.ui_arrow_right.DrawTile(Game1.spriteBatch, 0, new Vector2(this.uix + 7 + (44 + 5) * 2 + 24, this.uiy + 7 + (48) * 3 + 24));
+                        //Debug.WriteLine("timer is "+ attachment.timer);
+                    }
+                    else
+                    {
+                        Game1.ui_arrow_right.DrawTile(Game1.spriteBatch, (int)((Recipes.recipeProcessingTime[attachment.recipeInProgressIndex] - attachment.timer) / (Recipes.recipeProcessingTime[attachment.recipeInProgressIndex] * 1.0) * 6), new Vector2(this.uix + 7 + (44 + 5) * 2 + 24, this.uiy + 7 + (48) * 3 + 24));
+                        //Debug.WriteLine("drawing timer: "+ (int)(attachment.timer));
+                        //Debug.WriteLine("drawing frame: " + Recipes.recipeProcessingTime[attachment.recipeInProgressIndex]);
+                    }
+
+                    DrawItems(this.uix + 7 + 5 + 24, this.uiy + 7 + (48) * 2 + 5 + 24, inventoryItemIds, inventoryItemQuantities);
+                    Hover(this.uix + 7 + (44 + 5) * 0 + 24, this.uiy + 7 + (48) * 2 + 24, inventoryItemIds);
+
+                    DrawItems(this.uix + 7 + 5 + (44 + 5) * 3 + 24, this.uiy + 7 + (48) * 2 + 5 + 24, inventoryOutputIds, inventoryOutputQuants);
+                    Hover(this.uix + 7 + (44 + 5) * 3 + 24, this.uiy + 7 + (48) * 2 + 24, inventoryOutputIds);
+                    
+                    DrawItems(this.uix + 7 + 5 + (44 + 5) * 2 + 24, this.uiy + 7 + (48) * 0 + 5 + 24, attachment.schematic[0], attachment.schematic[1]);
+                    Hover(this.uix + 7 + (44 + 5) * 2 + 24, this.uiy + 7 + (48) * 0 + 24, attachment.schematic[0]);
+                    break;
             }
-            
+
             Game1.spriteBatch.End();
         }
         public void DrawCarry()
         {
-            if (uiState == 3 && inventoryItemIds[selectedCarry]!=-1 && Game1.itemInfo.ITEM_TOOL[inventoryItemIds[selectedCarry]])
+            if (uiState == 3 && inventoryItemIds[selectedCarry] != -1 && Game1.itemInfo.ITEM_TOOL[inventoryItemIds[selectedCarry]])
             {
                 switch (Player.currentAction)
                 {
@@ -357,16 +371,17 @@ namespace Game1
                         }
                         else
                         {
-                            Game1.items_32.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_ITEMID[inventoryItemIds[selectedCarry]], new Vector2(Player.screenPosX + 7, Player.screenPosY - 1),true);
+                            Game1.items_32.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_ITEMID[inventoryItemIds[selectedCarry]], new Vector2(Player.screenPosX + 7, Player.screenPosY - 1), true);
                         }
                         break;
                 }
-                
+
             }
         }
         public void DragUi()
         {
-            if (uiState !=3 && cursorItem == -1 && MouseKeyboardInfo.mouseClickedLeft && uiDragging==-1 && ((CountUis()==1 && WithinUi(this.uiState)) || ((uiState == 2 || uiState>3) && WithinUi(this.uiState)))) { 
+            if (uiState != 3 && cursorItem == -1 && MouseKeyboardInfo.mouseClickedLeft && uiDragging == -1 && ((CountUis() == 1 && WithinUi(this.uiState)) || ((uiState == 2 || uiState > 3) && WithinUi(this.uiState))))
+            {
                 {
                     posx = MouseKeyboardInfo.mouseState.X - uix;
                     posy = MouseKeyboardInfo.mouseState.Y - uiy;
@@ -374,16 +389,17 @@ namespace Game1
                     //if (Game1.uiObjects[1]!=null )Debug.WriteLine(""+uiState+","+(WithinUi(2)));
                 }
             }
-            if (cursorItem==-1 && MouseKeyboardInfo.mouseReleasedLeft) {
+            if (cursorItem == -1 && MouseKeyboardInfo.mouseReleasedLeft)
+            {
                 posx = 0;
                 posy = 0;
                 uiDragging = -1;
             }
-            if (cursorItem==-1 && uiDragging==uiState)
+            if (cursorItem == -1 && uiDragging == uiState)
             {
                 uix = MouseKeyboardInfo.mouseState.X - posx;
                 uiy = MouseKeyboardInfo.mouseState.Y - posy;
-                Game1.uiPosX[uiDragging-1] = MouseKeyboardInfo.mouseState.X - posx;
+                Game1.uiPosX[uiDragging - 1] = MouseKeyboardInfo.mouseState.X - posx;
                 Game1.uiPosY[uiDragging - 1] = MouseKeyboardInfo.mouseState.Y - posy;
             }
         }
@@ -393,14 +409,14 @@ namespace Game1
         public void PlaceItem()
         {
             //Game1.uiObjects[1].uix - 1, Game1.uiObjects[1].uiy - 1, 354, 396
-            if (uiState == 3 && MouseKeyboardInfo.mouseState.RightButton == ButtonState.Pressed && cursorItem!=-1 && !(!Game1.uiToggle&&MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[0].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[0].uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[0].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[0].uiy - 1 + 514) &&
+            if (uiState == 3 && MouseKeyboardInfo.mouseState.RightButton == ButtonState.Pressed && cursorItem != -1 && !(!Game1.uiToggle && MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[0].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[0].uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[0].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[0].uiy - 1 + 514) &&
                 (Game1.uiObjects[1] == null || !(MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396)))
             {
                 Debug.WriteLine("" + CanBePlaced(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16));
-                if (cursorItem>=43 && cursorItem <=46 && Game1.playerEquippedItems[5] == 42 && Game1.currentMap.mapWires[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] == -1)
+                if (cursorItem >= 43 && cursorItem <= 46 && Game1.playerEquippedItems[5] == 42 && Game1.currentMap.mapWires[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] == -1)
                 {
-                    
-                    Game1.currentMap.mapWires[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem-42;
+
+                    Game1.currentMap.mapWires[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] = cursorItem - 42;
                     foreach (BigTile tile in Game1.bigTiles)
                     {
                         if (Game1.itemInfo.ITEM_TRIGGER[tile.tileType])
@@ -597,10 +613,10 @@ namespace Game1
             {
                 Game1.globalCursor = 2;
             }
-            if (uiState == 3 && MouseKeyboardInfo.mouseClickedRight && cursorItem == -1 && CountUis()==0 && 
-                Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]!=-1 &&
-                (Player.RangeFromPoint((Player.playerx) + MouseKeyboardInfo.mouseState.X, (Player.playery) + MouseKeyboardInfo.mouseState.Y)[0]< Game1.PLAYER_RANGE_REQUIREMENT ||
-                (inventoryItemIds[selectedCarry]!=-1 && Game1.itemInfo.ITEM_TOOL[inventoryItemIds[selectedCarry]] && WithinItemRange(inventoryItemIds[selectedCarry], MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y))))
+            if (uiState == 3 && MouseKeyboardInfo.mouseClickedRight && cursorItem == -1 && CountUis() == 0 &&
+                Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] != -1 &&
+                (Player.RangeFromPoint((Player.playerx) + MouseKeyboardInfo.mouseState.X, (Player.playery) + MouseKeyboardInfo.mouseState.Y)[0] < Game1.PLAYER_RANGE_REQUIREMENT ||
+                (inventoryItemIds[selectedCarry] != -1 && Game1.itemInfo.ITEM_TOOL[inventoryItemIds[selectedCarry]] && WithinItemRange(inventoryItemIds[selectedCarry], MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y))))
             {
                 /*if (Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] >= 8 && Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))] <= 13)
                 {
@@ -629,8 +645,8 @@ namespace Game1
                     cursorItemOrigin = -1;
                 }
                 else */
-                        if (Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]] &&
-                    BigTile.FindTileId(MouseKeyboardInfo.mouseState.X + Player.playerx, MouseKeyboardInfo.mouseState.Y + Player.playery)!=-1)
+                if (Game1.itemInfo.ITEM_BIGTILE[Game1.currentMap.mapTiles[((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)), ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))]] &&
+            BigTile.FindTileId(MouseKeyboardInfo.mouseState.X + Player.playerx, MouseKeyboardInfo.mouseState.Y + Player.playery) != -1)
                 {
                     Game1.bigTiles[BigTile.FindTileId(MouseKeyboardInfo.mouseState.X + Player.playerx, MouseKeyboardInfo.mouseState.Y + Player.playery)].Trigger();
                 }
@@ -641,8 +657,8 @@ namespace Game1
         /// </summary>
         private bool WithinItemRange(int itemId, int x, int y)
         {
-            return (x > Game1.WINDOW_WIDTH / 2 - Game1.itemInfo.ITEM_TOOL_RANGE[itemId] && x < Game1.WINDOW_WIDTH / 2 +32+ Game1.itemInfo.ITEM_TOOL_RANGE[itemId] &&
-                y > Game1.WINDOW_HEIGHT / 2 - Game1.itemInfo.ITEM_TOOL_RANGE[itemId] && y < Game1.WINDOW_HEIGHT / 2 +32+ Game1.itemInfo.ITEM_TOOL_RANGE[itemId]);
+            return (x > Game1.WINDOW_WIDTH / 2 - Game1.itemInfo.ITEM_TOOL_RANGE[itemId] && x < Game1.WINDOW_WIDTH / 2 + 32 + Game1.itemInfo.ITEM_TOOL_RANGE[itemId] &&
+                y > Game1.WINDOW_HEIGHT / 2 - Game1.itemInfo.ITEM_TOOL_RANGE[itemId] && y < Game1.WINDOW_HEIGHT / 2 + 32 + Game1.itemInfo.ITEM_TOOL_RANGE[itemId]);
         }
         public static void AddToInventory(int item, int quantity)
         {
@@ -682,15 +698,16 @@ namespace Game1
             switch (uiStateVar)
             {
                 case 1:
-                    return (!Game1.uiToggle&&(MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[0].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[0].uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[0].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[0].uiy - 1 + 514));
+                    return (!Game1.uiToggle && (MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[0].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[0].uix - 1 + 514 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[0].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[0].uiy - 1 + 514));
                 case 2:
-                    return (!Game1.uiToggle&&Game1.uiObjects[1] != null && (MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396));
+                    return (!Game1.uiToggle && Game1.uiObjects[1] != null && (MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 354 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 396));
                 case 3:
                     return ((MouseKeyboardInfo.mouseState.X >= Game1.carryUi.uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.carryUi.uix + (Game1.carryUi.rowSize * (49)) && MouseKeyboardInfo.mouseState.Y >= Game1.carryUi.uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.carryUi.uiy - 1 + 42));
-                case 5:
                 case 4:
                     //254, 302
                     return ((MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 254 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 302));
+                case 5:
+                    return ((MouseKeyboardInfo.mouseState.X >= Game1.uiObjects[1].uix - 1 && MouseKeyboardInfo.mouseState.X <= Game1.uiObjects[1].uix - 1 + 254 + 49 && MouseKeyboardInfo.mouseState.Y >= Game1.uiObjects[1].uiy - 1 && MouseKeyboardInfo.mouseState.Y <= Game1.uiObjects[1].uiy - 1 + 302));
                 default:
                     return false;
             }
@@ -704,14 +721,14 @@ namespace Game1
         /// If the cursor is dragging an item, then draw it.
         /// </summary>
         public void DrawCursorItem()
-        { 
+        {
             if (cursorItem > -1)
             {
-                if (!Game1.itemInfo.ITEM_PLACEABLE[cursorItem] || CountUis()>0)
+                if (!Game1.itemInfo.ITEM_PLACEABLE[cursorItem] || CountUis() > 0)
                 {
                     Game1.spriteBatch.Begin();
                     Game1.items_32.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_ITEMID[cursorItem], new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y));
-                    if (Game1.itemInfo.ITEM_STACKABLE[cursorItem]) Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y+24), Color.White);
+                    if (Game1.itemInfo.ITEM_STACKABLE[cursorItem]) Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y + 24), Color.White);
                     Game1.spriteBatch.End();
                 }
                 else if (Game1.itemInfo.ITEM_PLACEABLE[cursorItem] && Game1.itemInfo.ITEM_BIGTILE[cursorItem])
@@ -724,8 +741,8 @@ namespace Game1
                 else if (Game1.itemInfo.ITEM_PLACEABLE[cursorItem])
                 {
                     Game1.spriteBatch.Begin();
-                    Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[cursorItem], (CanBePlaced(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16))*16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16))*16) ? Color.White:Color.Red) *0.5f, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y));
-                    if (Game1.itemInfo.ITEM_STACKABLE[cursorItem]) Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y+ 16), Color.White);
+                    Game1.tiles.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_BLOCKID[cursorItem], (CanBePlaced(((Player.playerx / 16) + ((MouseKeyboardInfo.mouseState.X + (Player.playerx % 16)) / 16)) * 16, ((Player.playery / 16) + ((MouseKeyboardInfo.mouseState.Y + (Player.playery % 16)) / 16)) * 16) ? Color.White : Color.Red) * 0.5f, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y));
+                    if (Game1.itemInfo.ITEM_STACKABLE[cursorItem]) Game1.spriteBatch.DrawString(Game1.font, "" + cursorQuantity, new Vector2(MouseKeyboardInfo.mouseState.X, MouseKeyboardInfo.mouseState.Y + 16), Color.White);
                     Game1.spriteBatch.End();
                 }
             }
@@ -735,26 +752,28 @@ namespace Game1
         /// </summary>
         private void DrawItems(int startx, int starty, int[] invIds, int[] invQuants)
         {
-            for (int i=0; i< invIds.Length; i++) {
+            for (int i = 0; i < invIds.Length; i++)
+            {
                 if (invIds[i] > -1)
                 {
                     Game1.items_32.DrawTile(Game1.spriteBatch, Game1.itemInfo.ITEM_ITEMID[invIds[i]], new Vector2(startx + 49 * (i % rowSize) + 1, starty + 48 * (i / rowSize) + 1));
-                    if (Game1.itemInfo.ITEM_STACKABLE[invIds[i]]) Game1.spriteBatch.DrawString(Game1.font, ""+ invQuants[i], new Vector2(startx + 49 * (i % rowSize) + 1, starty + 48 * (i / rowSize) + 24), Color.White);
+                    if (Game1.itemInfo.ITEM_STACKABLE[invIds[i]]) Game1.spriteBatch.DrawString(Game1.font, "" + invQuants[i], new Vector2(startx + 49 * (i % rowSize) + 1, starty + 48 * (i / rowSize) + 24), Color.White);
                 }
             }
         }
 
         private void Hover(int startx, int starty, int[] invIds)
         {
-            if (MouseKeyboardInfo.mouseState.X>=startx && MouseKeyboardInfo.mouseState.X<=startx+(rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
+            int gottenIndex = (MouseKeyboardInfo.mouseState.X - startx) / 49 + ((MouseKeyboardInfo.mouseState.Y - starty) / 48) * rowSize;
+            if (gottenIndex > -1 && (gottenIndex) < invIds.Length && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 10 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
-                int gottenIndex = (MouseKeyboardInfo.mouseState.X - startx) / 49 + ((MouseKeyboardInfo.mouseState.Y - starty) / 48) * rowSize;
-                Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(startx + 49 * ((MouseKeyboardInfo.mouseState.X - startx) / 49) + 1, starty + 48 * ((MouseKeyboardInfo.mouseState.Y-starty) / 48) + 1, 42, 42), Color.White*0.25f);
+                Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(startx + 49 * ((MouseKeyboardInfo.mouseState.X - startx) / 49) + 1, starty + 48 * ((MouseKeyboardInfo.mouseState.Y - starty) / 48) + 1, 42, 42), Color.White * 0.25f);
 
                 //tooltips
-                if (gottenIndex > -1 && (gottenIndex) < invIds.Length && invIds[gottenIndex] != -1 && cursorItem==-1) {
-                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(MouseKeyboardInfo.mouseState.X + 14, MouseKeyboardInfo.mouseState.Y + 14, Game1.itemInfo.ITEM_NAME[invIds[gottenIndex]].Length*7 + 4, 15), Color.White);
-                    Game1.spriteBatch.DrawString(Game1.font, Game1.itemInfo.ITEM_NAME[invIds[gottenIndex]], new Vector2(MouseKeyboardInfo.mouseState.X+16,MouseKeyboardInfo.mouseState.Y+16), menu_0);
+                if (gottenIndex > -1 && (gottenIndex) < invIds.Length && invIds[gottenIndex] != -1 && cursorItem == -1)
+                {
+                    Game1.spriteBatch.Draw(Game1.pixel, new Rectangle(MouseKeyboardInfo.mouseState.X + 14, MouseKeyboardInfo.mouseState.Y + 14, Game1.itemInfo.ITEM_NAME[invIds[gottenIndex]].Length * 7 + 4, 15), Color.White);
+                    Game1.spriteBatch.DrawString(Game1.font, Game1.itemInfo.ITEM_NAME[invIds[gottenIndex]], new Vector2(MouseKeyboardInfo.mouseState.X + 16, MouseKeyboardInfo.mouseState.Y + 16), menu_0);
                 }
             }
         }
@@ -762,7 +781,7 @@ namespace Game1
         {
             for (int i = 0; i < inventoryItemIds.Length; i++)
             {
-                if (inventoryItemIds[i] == -1 || (inventoryItemIds[i] != -1 && cursorItem == inventoryItemIds[i] && inventoryItemQuantities[i]+cursorQuantity<Game1.ITEM_STACK_SIZE && Game1.itemInfo.ITEM_STACKABLE[cursorItem])) return i;
+                if (inventoryItemIds[i] == -1 || (inventoryItemIds[i] != -1 && cursorItem == inventoryItemIds[i] && inventoryItemQuantities[i] + cursorQuantity < Game1.ITEM_STACK_SIZE && Game1.itemInfo.ITEM_STACKABLE[cursorItem])) return i;
             }
             return -1;
         }
@@ -781,7 +800,7 @@ namespace Game1
             //if (uiState==4 && MouseKeyboardInfo.mouseClickedLeft) Debug.WriteLine(""+((WithinUi(uiState) && (CountUis() == 1 || (uiState != 1 && uiState != 3))) && cursorItem != -1 && (gottenIndex) > -1 && (gottenIndex) < invIds.Length && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5));
             if (WithinUi(uiState) && MouseKeyboardInfo.mouseClickedLeft && (gottenIndex) < invIds.Length) Debug.WriteLine(gottenIndex);
             //pick up part of an item on right click
-            if ((CountUis() == 1 || uiState != 1 && uiState != 3) && (uiState != 3) && gottenIndex > -1 && (gottenIndex) < invIds.Length && invIds[gottenIndex] != -1 && ((cursorItem == invIds[gottenIndex] && cursorItem!=-1) || cursorItem==-1) && MouseKeyboardInfo.mouseClickedRight && WithinUiRows(uiState, startx, starty))
+            if ((CountUis() == 1 || uiState != 1 && uiState != 3) && (uiState != 3) && gottenIndex > -1 && (gottenIndex) < invIds.Length && invIds[gottenIndex] != -1 && ((cursorItem == invIds[gottenIndex] && cursorItem != -1) || cursorItem == -1) && MouseKeyboardInfo.mouseClickedRight && WithinUiRows(uiState, startx, starty))
             {
                 if (cursorItem == -1)
                 {
@@ -812,9 +831,9 @@ namespace Game1
                 Game1.globalCursor = 1;
             }
             //pick up an item
-            else if (((CountUis() == 1 || uiState != 1 && uiState != 3) || uiState == 2 || uiState>3) && uiState!=3 && cursorItem == -1 && gottenIndex>-1 && (gottenIndex) < invIds.Length && invIds[gottenIndex] > 0 && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
+            else if (((CountUis() == 1 || uiState != 1 && uiState != 3) || uiState == 2 || uiState > 3) && uiState != 3 && cursorItem == -1 && gottenIndex > -1 && (gottenIndex) < invIds.Length && invIds[gottenIndex] > 0 && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
-                Debug.WriteLine("pick up");
+                //Debug.WriteLine("pick up");
                 cursorItem = invIds[gottenIndex];
                 invIds[gottenIndex] = -1;
                 cursorItemIndex = gottenIndex;
@@ -824,12 +843,12 @@ namespace Game1
                 invQuants[gottenIndex] = -1;
             }
             //equip or unequip
-            else if ((WithinUi(this.uiState) && CountUis() == 1 && uiState == 2)  &&
+            else if ((WithinUi(this.uiState) && CountUis() == 1 && uiState == 1) &&
                 MouseKeyboardInfo.mouseState.X > this.uix + 12 && MouseKeyboardInfo.mouseState.X < this.uix + 12 + (49) * 3 &&
                 MouseKeyboardInfo.mouseState.Y > this.uiy + 225 && MouseKeyboardInfo.mouseState.Y < this.uiy + 225 + (48) * 6 &&
                 MouseKeyboardInfo.mouseClickedLeft)
             {
-                Debug.WriteLine("equip");
+                //Debug.WriteLine("equip");
                 if (cursorItem > -1 && Game1.itemInfo.ITEM_EQUIPPABLE[cursorItem])
                 {
                     if (Game1.playerEquippedItems[Game1.itemInfo.ITEM_EQUIP_SLOT[cursorItem]] == -1) //nothing in the slot
@@ -854,7 +873,7 @@ namespace Game1
                 else
                 {
                     int tempIndex = (MouseKeyboardInfo.mouseState.X - (this.uix + 12)) / 49 + ((MouseKeyboardInfo.mouseState.Y - (this.uiy + 225)) / 48) * 3;
-                    if (cursorItem == -1 && Game1.playerEquippedItems[tempIndex]!=-1)
+                    if (cursorItem == -1 && Game1.playerEquippedItems[tempIndex] != -1)
                     {
                         cursorItem = Game1.playerEquippedItems[tempIndex];
                         Game1.playerEquippedItems[tempIndex] = -1;
@@ -863,11 +882,11 @@ namespace Game1
                 }
             }
             //drop off an item
-            else if ((WithinUi(uiState)&&(CountUis() == 1 || (uiState != 1 && uiState !=3))) && cursorItem != -1 && (gottenIndex) >-1 && (gottenIndex) < invIds.Length && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
+            else if ((WithinUi(uiState) && (CountUis() == 1 || (uiState != 1 && uiState != 3))) && cursorItem != -1 && (gottenIndex) > -1 && (gottenIndex) < invIds.Length && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 10 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
-                 Debug.WriteLine("dropoff");
+                //Debug.WriteLine("dropoff");
                 //item in cursor is the same as the one in the slot
-                if (invIds[gottenIndex]==cursorItem && (uiState!=3 || selectedCarry != cursorItemIndex))
+                if (invIds[gottenIndex] == cursorItem && (uiState != 3 || selectedCarry != cursorItemIndex))
                 {
                     if (Game1.itemInfo.ITEM_STACKABLE[invIds[gottenIndex]] && cursorQuantity + invQuants[gottenIndex] > Game1.ITEM_STACK_SIZE)
                     {
@@ -878,7 +897,7 @@ namespace Game1
                         Game1.globalCursor = 1;
                         if (cursorItemOrigin == 3)
                         {
-                            Game1.uiObjects[2].inventoryItemQuantities[selectedCarry]= cursorQuantity;
+                            Game1.uiObjects[2].inventoryItemQuantities[selectedCarry] = cursorQuantity;
                             Game1.uiObjects[2].inventoryItemIds[selectedCarry] = cursorItem;
                         }
                     }
@@ -899,13 +918,13 @@ namespace Game1
                     }
                 }
                 //slot is empty
-                else if (invIds[gottenIndex]<0)
+                else if (invIds[gottenIndex] < 0)
                 {
                     if (cursorItemOrigin == 3)
                     {
                         Game1.uiObjects[2].inventoryItemQuantities[selectedCarry] = -1;
                         Game1.uiObjects[2].inventoryItemIds[selectedCarry] = -1;
-                        
+
                     }
                     invIds[gottenIndex] = cursorItem;
                     invQuants[gottenIndex] = cursorQuantity;
@@ -934,21 +953,23 @@ namespace Game1
                 }
             }
             //return an item that is dropped out of bounds
-            else if (MouseKeyboardInfo.mouseClickedLeft && cursorItemOrigin!=3){
-                if (CountUis()==0 && uiState == 1 && !(MouseKeyboardInfo.mouseState.X >= (this.uix + 136 + 19) && MouseKeyboardInfo.mouseState.X <= (this.uix + 136 + 19) + (7 * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= (this.uiy + 17) && MouseKeyboardInfo.mouseState.Y <= (this.uiy + 17) + (inventoryRows * (48)) - 5) &&
+            else if (MouseKeyboardInfo.mouseClickedLeft && cursorItemOrigin != 3)
+            {
+                if (CountUis() == 0 && uiState == 1 && !(MouseKeyboardInfo.mouseState.X >= (this.uix + 136 + 19) && MouseKeyboardInfo.mouseState.X <= (this.uix + 136 + 19) + (7 * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= (this.uiy + 17) && MouseKeyboardInfo.mouseState.Y <= (this.uiy + 17) + (inventoryRows * (48)) - 5) &&
                     (Game1.uiObjects[1] == null || !(MouseKeyboardInfo.mouseState.X >= (Game1.uiObjects[1].uix + 7) && MouseKeyboardInfo.mouseState.X <= (Game1.uiObjects[1].uix + 7) + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= (Game1.uiObjects[1].uiy + 7) && MouseKeyboardInfo.mouseState.Y <= (Game1.uiObjects[1].uiy + 7) + (inventoryRows * (48)) - 5)) &&
-                    (Game1.uiObjects[2] == null || !WithinUi(3))) {
+                    (Game1.uiObjects[2] == null || !WithinUi(3)))
+                {
                     //if item has a previous destination to return to, return it
                     int slot;
                     //Debug.WriteLine("" + uiState);
-                    if (cursorItemOrigin != -1 && cursorItemIndex != -1 && ((cursorItemOrigin>3&& Game1.uiObjects[1].inventoryItemIds[cursorItemIndex] == -1) ||(cursorItemOrigin<4 && Game1.uiObjects[cursorItemOrigin - 1].inventoryItemIds[cursorItemIndex]==-1)))
+                    if (cursorItemOrigin != -1 && cursorItemIndex != -1 && ((cursorItemOrigin > 3 && Game1.uiObjects[1].inventoryItemIds[cursorItemIndex] == -1) || (cursorItemOrigin < 4 && Game1.uiObjects[cursorItemOrigin - 1].inventoryItemIds[cursorItemIndex] == -1)))
                     {
-                        if (cursorItemOrigin >3 && cursorItem == (Game1.uiObjects[1]).inventoryItemIds[cursorItemIndex]
-                            || cursorItemOrigin<4&&cursorItem == (Game1.uiObjects[cursorItemOrigin - 1]).inventoryItemIds[cursorItemIndex])
+                        if (cursorItemOrigin > 3 && cursorItem == (Game1.uiObjects[1]).inventoryItemIds[cursorItemIndex]
+                            || cursorItemOrigin < 4 && cursorItem == (Game1.uiObjects[cursorItemOrigin - 1]).inventoryItemIds[cursorItemIndex])
                         {
-                            ((cursorItemOrigin>3)?Game1.uiObjects[1]: Game1.uiObjects[cursorItemOrigin - 1]).inventoryItemQuantities[cursorItemIndex] += cursorQuantity;
+                            ((cursorItemOrigin > 3) ? Game1.uiObjects[1] : Game1.uiObjects[cursorItemOrigin - 1]).inventoryItemQuantities[cursorItemIndex] += cursorQuantity;
                             cursorQuantity = -1;
-                             
+
                         }
                         else
                         {
@@ -957,10 +978,11 @@ namespace Game1
                         }
 
                         ((cursorItemOrigin > 3) ? Game1.uiObjects[1] : Game1.uiObjects[cursorItemOrigin - 1]).inventoryItemIds[cursorItemIndex] = cursorItem;
-                       // Debug.WriteLine("o");
+                        // Debug.WriteLine("o");
 
                     }
-                    else if (cursorItemOrigin != -1 && (Game1.uiObjects[cursorItemOrigin - 1]).FindFreeSlot()!=-1) {
+                    else if (cursorItemOrigin != -1 && (Game1.uiObjects[cursorItemOrigin - 1]).FindFreeSlot() != -1)
+                    {
                         slot = (Game1.uiObjects[cursorItemOrigin - 1]).FindFreeSlot();
 
                         if (cursorItem == (Game1.uiObjects[cursorItemOrigin - 1]).inventoryItemIds[slot])
@@ -978,9 +1000,11 @@ namespace Game1
 
                         //Debug.WriteLine("o k");
                     }
-                    else{
+                    else
+                    {
                         slot = this.FindFreeSlot();
-                        if (slot!=-1) {
+                        if (slot != -1)
+                        {
                             if (cursorItem == invIds[slot])
                             {
                                 invQuants[slot] += cursorQuantity;
@@ -993,10 +1017,10 @@ namespace Game1
                             }
 
                             invIds[slot] = cursorItem;
-                            
+
                             //Debug.WriteLine("o k o");
                         }
-                        else if (Game1.uiObjects!=null && Game1.uiObjects[1]!=null && Game1.uiObjects[1].FindFreeSlot() != -1)
+                        else if (Game1.uiObjects != null && Game1.uiObjects[1] != null && Game1.uiObjects[1].FindFreeSlot() != -1)
                         {
                             slot = Game1.uiObjects[1].FindFreeSlot();
 
@@ -1012,7 +1036,7 @@ namespace Game1
                             }
 
                             Game1.uiObjects[1].inventoryItemIds[slot] = cursorItem;
-                            
+
                             //Debug.WriteLine("o k o k");
                         }
                     }
@@ -1044,7 +1068,7 @@ namespace Game1
                     }
                 }
             }
-            if (!(Player.RangeFromPoint(x, y)[0]<Game1.PLAYER_RANGE_REQUIREMENT && Player.RangeFromPoint(x, y)[1] < Game1.PLAYER_RANGE_REQUIREMENT || (Game1.uiObjects[2].inventoryItemIds[selectedCarry]!=-1 && Game1.itemInfo.ITEM_TOOL[Game1.uiObjects[2].inventoryItemIds[selectedCarry]] && WithinItemRange(Game1.uiObjects[2].inventoryItemIds[selectedCarry], x - Player.playerx, y - Player.playery)))) return false;
+            if (!(Player.RangeFromPoint(x, y)[0] < Game1.PLAYER_RANGE_REQUIREMENT && Player.RangeFromPoint(x, y)[1] < Game1.PLAYER_RANGE_REQUIREMENT || (Game1.uiObjects[2].inventoryItemIds[selectedCarry] != -1 && Game1.itemInfo.ITEM_TOOL[Game1.uiObjects[2].inventoryItemIds[selectedCarry]] && WithinItemRange(Game1.uiObjects[2].inventoryItemIds[selectedCarry], x - Player.playerx, y - Player.playery)))) return false;
             if (Game1.itemInfo.ITEM_REQUIRE_WALL[cursorItem])
             {
                 if (MouseKeyboardInfo.mouseState.X >= 0 && MouseKeyboardInfo.mouseState.Y >= 0 && MouseKeyboardInfo.mouseState.X < GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2 && MouseKeyboardInfo.mouseState.Y < GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2 && Game1.itemInfo.ITEM_REQUIRE_WALL[cursorItem] && Game1.currentMap.mapBackTiles[x / 16, y / 16] != -1 && map[x / 16, y / 16] == -1) return true;

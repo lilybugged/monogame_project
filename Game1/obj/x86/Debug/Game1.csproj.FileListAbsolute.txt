@@ -208,3 +208,4 @@ E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\bg_fl
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\uiArrow.xnb
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\equip_slots.xnb
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\wirecursor.xnb
+E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\uiArrow_right.xnb

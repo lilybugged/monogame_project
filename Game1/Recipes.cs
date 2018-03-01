@@ -8,7 +8,7 @@ namespace Game1
 {
     public static class Recipes
     {
-        public static int RECIPES = 2;
+        public static int RECIPES = 4;
         public static int[][] recipeInputIds = new int[RECIPES][];
         public static int[][] recipeInputQuants = new int[RECIPES][];
 
@@ -35,6 +35,20 @@ namespace Game1
             Recipes.recipeTileType[1] = 29;
             Recipes.recipeProcessingTime[1] = 15;
 
+            //assembler
+            Recipes.recipeInputIds[2] = new int[] { 15, 34 };
+            Recipes.recipeInputQuants[2] = new int[] { 2, 1 };
+            Recipes.recipeOutputIds[2] = new int[] { 16 };
+            Recipes.recipeOutputQuants[2] = new int[] { 1 };
+            Recipes.recipeTileType[2] = 39;
+            Recipes.recipeProcessingTime[2] = 45;
+
+            Recipes.recipeInputIds[3] = new int[] { 28, 34 };
+            Recipes.recipeInputQuants[3] = new int[] { 1, 3 };
+            Recipes.recipeOutputIds[3] = new int[] { 48 };
+            Recipes.recipeOutputQuants[3] = new int[] { 1 };
+            Recipes.recipeTileType[3] = 39;
+            Recipes.recipeProcessingTime[3] = 200;
         }
         
 
