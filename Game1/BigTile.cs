@@ -179,6 +179,14 @@ namespace Game1
             if (timer > 0) timer--;
             switch (tileType)
             {
+                case 61:
+                    if (timer == -1) timer = 60;
+                    if (timer == 0 && state < 2 && Game1.currentMap.mapTiles[this.tilex / 16, this.tiley / 16 + 1] == 62)
+                    {
+                        timer = 120;
+                        state++;
+                    }
+                    break;
                 case 59:
                     if (timer == 0)
                     {
@@ -749,6 +757,11 @@ namespace Game1
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
             switch (tileType)
             {
+                case 61:
+                    Game1.spriteBatch.Begin();
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 233 + state, new Vector2(x, y));
+                    Game1.spriteBatch.End();
+                    break;
                 case 60:
                     Game1.spriteBatch.Begin();
                     if (map[this.tilex / 16, this.tiley / 16] == 60)

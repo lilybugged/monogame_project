@@ -209,3 +209,5 @@ E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\uiArr
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\equip_slots.xnb
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\wirecursor.xnb
 E:\monogame game1\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\uiArrow_right.xnb
+C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\uiArrow_right.xnb
+C:\Users\lily.DESKTOP-0KJ3NCB\Documents\monogame_project\Game1\bin\Windows\x86\Debug\Content\img\wirecursor.xnb

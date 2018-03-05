@@ -109,8 +109,8 @@ namespace Game1
             userInventoryQuantities = new int[70];
             for (int i = 0; i < userInventory.Length; i++)
             {
-                if (i < ItemInfo.ITEM_COUNT && !FUN_MODE) {
-                    userInventory[i] = i;
+                if (i+10 < ItemInfo.ITEM_COUNT && !FUN_MODE) {
+                    userInventory[i] = i+10;
                     userInventoryQuantities[i] = 999;
                 }
                 else
