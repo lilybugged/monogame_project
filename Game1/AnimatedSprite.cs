@@ -106,6 +106,20 @@ namespace Game1
         /// <summary>
         /// An overload which only serves to flip the tile. The parameter does nothing otherwise.
         /// </summary>
+        public void DrawTile(SpriteBatch sprBatch, int tileId, Vector2 location, float rot)
+        {
+            int width = Texture.Width / Columns;
+            int height = Texture.Height / Rows;
+            int row = tileId / Columns;
+            int column = tileId % Columns;
+
+            Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
+            Rectangle destinationRectangle = new Rectangle((int)location.X * Game1.zoom, (int)location.Y * Game1.zoom, width * Game1.zoom, height * Game1.zoom);
+
+            //sprBatch.Begin();
+            sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White,rot,new Vector2(8,8),SpriteEffects.None,0);
+            //sprBatch.End();
+        }
         public void DrawTile(SpriteBatch sprBatch, int tileId, Vector2 location, bool flip)
         {
             int width = Texture.Width / Columns;
@@ -117,7 +131,7 @@ namespace Game1
             Rectangle destinationRectangle = new Rectangle((int)location.X * Game1.zoom, (int)location.Y * Game1.zoom, width * Game1.zoom, height * Game1.zoom);
 
             //sprBatch.Begin();
-            sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White,0,new Vector2(0,0),SpriteEffects.FlipHorizontally,0);
+            sprBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
             //sprBatch.End();
         }
         public void DrawTile(SpriteBatch sprBatch, int tileId, int width, int height, Vector2 location)

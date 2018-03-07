@@ -18,7 +18,7 @@ namespace Game1
     public class ItemInfo
     {
         //item info
-        public const int ITEM_COUNT = 71;
+        public const int ITEM_COUNT = 78;
         public const int SCHEMATICS_COUNT = 4;
         public bool[] ITEM_ENDPOINT = new bool[ITEM_COUNT]; // if true, this item is an endpoint for pipes
         public String[] ITEM_NAME = new String[ITEM_COUNT];
@@ -106,6 +106,7 @@ namespace Game1
             ITEM_ENDPOINT[54] = true;
             ITEM_ENDPOINT[58] = true;
             ITEM_ENDPOINT[59] = true;
+            ITEM_ENDPOINT[63] = true;
 
             ITEM_BIGTILE[8] = true;
             ITEM_BIGTILE[9] = true;
@@ -133,6 +134,7 @@ namespace Game1
             ITEM_BIGTILE[59] = true;
             ITEM_BIGTILE[60] = true;
             ITEM_BIGTILE[61] = true;
+            ITEM_BIGTILE[63] = true;
 
             ITEM_BIGTILE_WIDTH[8] = 1;
             ITEM_BIGTILE_WIDTH[9] = 1;
@@ -160,6 +162,7 @@ namespace Game1
             ITEM_BIGTILE_WIDTH[59] = 1;
             ITEM_BIGTILE_WIDTH[60] = 1;
             ITEM_BIGTILE_WIDTH[61] = 1;
+            ITEM_BIGTILE_WIDTH[63] = 1;
 
             ITEM_BIGTILE_HEIGHT[8] = 1;
             ITEM_BIGTILE_HEIGHT[9] = 1;
@@ -187,6 +190,7 @@ namespace Game1
             ITEM_BIGTILE_HEIGHT[59] = 2;
             ITEM_BIGTILE_HEIGHT[60] = 1;
             ITEM_BIGTILE_HEIGHT[61] = 1;
+            ITEM_BIGTILE_HEIGHT[63] = 1;
 
             ITEM_EQUIPPABLE[19] = true;
             ITEM_EQUIPPABLE[22] = true;
@@ -271,6 +275,8 @@ namespace Game1
             ITEM_PLACEABLE[60] = true;
             ITEM_PLACEABLE[61] = true;
             ITEM_PLACEABLE[62] = true;
+            ITEM_PLACEABLE[63] = true;
+            ITEM_PLACEABLE[65] = true;
 
             ITEM_TOOL[14] = true;
             ITEM_TOOL[16] = true;
@@ -290,6 +296,7 @@ namespace Game1
             ITEM_REQUIRE_SURFACE[36] = true;
             ITEM_REQUIRE_SURFACE[54] = true;
             ITEM_REQUIRE_SURFACE[61] = true;
+            ITEM_REQUIRE_SURFACE[65] = true;
 
             ITEM_REQUIRE_WALL[47] = true;
             ITEM_REQUIRE_WALL[55] = true;
@@ -306,6 +313,8 @@ namespace Game1
             ITEM_SOLID[49] = true;
             ITEM_SOLID[50] = true;
             ITEM_SOLID[62] = true;
+            ITEM_SOLID[63] = true;
+            ITEM_SOLID[65] = true;
 
             ITEM_TOOL_TIER[4] = 0;
             ITEM_TOOL_TIER[5] = 1;
@@ -360,6 +369,7 @@ namespace Game1
             ITEM_BLOCKID[50] = 2;
             ITEM_BLOCKID[56] = 190;
             ITEM_BLOCKID[62] = 3;
+            ITEM_BLOCKID[65] = 243;
 
             ITEM_STACKABLE[14] = false;
             ITEM_STACKABLE[16] = false;
@@ -448,6 +458,13 @@ namespace Game1
             ITEM_NAME[60] = "Large Cable";
             ITEM_NAME[61] = "Carrot Seed";
             ITEM_NAME[62] = "Earth";
+            ITEM_NAME[63] = "Farm Controller";
+            ITEM_NAME[64] = "Square Clock";
+            ITEM_NAME[65] = "Scaffolding";
+            ITEM_NAME[66] = "Socket";
+            ITEM_NAME[67] = "AutoHopper";
+            ITEM_NAME[68] = "AutoDropper";
+            ITEM_NAME[69] = "Carrot";
 
 
             //recipes
@@ -459,7 +476,7 @@ namespace Game1
             for (int i = 0; i < SCHEMATICS_COUNT; i++)
             {
                 //blueprints
-                ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT + i] = "Blueprint: " + ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + i].Substring(8);
+                ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT + i] = "Schematic: " + ITEM_NAME[ITEM_COUNT - SCHEMATICS_COUNT * 2 + i].Substring(8);
             }
 
         }

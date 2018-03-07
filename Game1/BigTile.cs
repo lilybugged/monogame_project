@@ -13,6 +13,7 @@ namespace Game1
 {
     public class BigTile
     {
+        public int[] intVars;
         public int tileType;
         public int tilex;
         public int tiley;
@@ -61,6 +62,9 @@ namespace Game1
             Vector2 position;
             switch (tileType)
             {
+                case 63:
+                    intVars = new int[2];
+                    break;
                 case 59:
                     energyCapacity = 1000;
                     timer = 0;
@@ -179,6 +183,30 @@ namespace Game1
             if (timer > 0) timer--;
             switch (tileType)
             {
+                case 63:
+                    if (power!=1)
+                    {
+                        state = 0;
+                        intVars[0] = 0;
+                    }
+                    else if (state == 0)
+                    {
+                        //look for grass/dirt until there isn't any, and count
+                        //left
+                        for (int i=1; Game1.currentMap.mapTiles[this.tilex / 16 - i, this.tiley / 16] == 49; i++)
+                        {
+                            intVars[0]++;
+                        }
+                        Debug.WriteLine("length left: " + intVars[0]);
+                        //right
+                        for (int i = 1; Game1.currentMap.mapTiles[this.tilex / 16 + i, this.tiley / 16] == 49; i++)
+                        {
+                            intVars[1]++;
+                        }
+                        Debug.WriteLine("length right: " + intVars[1]);
+                        state = 1;
+                    }
+                    break;
                 case 61:
                     if (timer == -1) timer = 60;
                     if (timer == 0 && state < 2 && Game1.currentMap.mapTiles[this.tilex / 16, this.tiley / 16 + 1] == 62)
@@ -757,6 +785,11 @@ namespace Game1
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
             switch (tileType)
             {
+                case 63:
+                    Game1.spriteBatch.Begin();
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 243, new Vector2(x, y));
+                    Game1.spriteBatch.End();
+                    break;
                 case 61:
                     Game1.spriteBatch.Begin();
                     Game1.tiles.DrawTile(Game1.spriteBatch, 233 + state, new Vector2(x, y));
@@ -1781,8 +1814,7 @@ namespace Game1
         {
             int[,] map = Game1.currentMap.mapTiles;
             Vector2 position = new Vector2(this.tilex - Player.playerx, this.tiley - Player.playery);
-
-
+            
             {
                 if (((map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile)
                 || map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] != -1 && (map[(int)(position.X + Player.playerx) / 16 - 1, (int)(position.Y + Player.playery) / 16] == pipeTile + 1 && Game1.bigTiles[BigTile.FindTileId((int)(position.X + Player.playerx) - 16, (int)(position.Y + Player.playery))].state == 3

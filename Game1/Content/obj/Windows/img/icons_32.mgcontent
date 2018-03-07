@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/lily.DESKTOP-0KJ3NCB/Documents/monogame_project/Game1/Content/img/icons_32.png</SourceFile>
-  <SourceTime>2018-03-03T16:15:42.1455825-05:00</SourceTime>
-  <DestFile>C:/Users/lily.DESKTOP-0KJ3NCB/Documents/monogame_project/Game1/Content/bin/Windows/img/icons_32.xnb</DestFile>
-  <DestTime>2018-03-03T16:19:53.7548946-05:00</DestTime>
+  <SourceFile>E:/monogame game1/monogame_project/Game1/Content/img/icons_32.png</SourceFile>
+  <SourceTime>2018-03-07T00:12:50.870495-05:00</SourceTime>
+  <DestFile>E:/monogame game1/monogame_project/Game1/Content/bin/Windows/img/icons_32.xnb</DestFile>
+  <DestTime>2018-03-07T00:13:47.7692636-05:00</DestTime>
   <Importer>TextureImporter</Importer>
-  <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
+  <ImporterTime>2017-06-22T14:38:56-04:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
-  <ProcessorTime>2017-03-01T10:05:36-05:00</ProcessorTime>
+  <ProcessorTime>2017-06-22T14:38:56-04:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>255,0,255,255</Value>
