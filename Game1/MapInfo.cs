@@ -104,7 +104,7 @@ namespace Game1
                         if (rng.Next(0, 5) > 0)
                         {
                             int diff = rng.Next(1, 3);
-                            mapFluidIds[i,a - diff] = 2;
+                            mapFluidIds[i,a - diff] = 0;
                             mapFluids[i, a - diff] = 100;
                         }
                         mapTiles[i, a] = 49;

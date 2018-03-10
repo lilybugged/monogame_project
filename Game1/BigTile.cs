@@ -63,7 +63,7 @@ namespace Game1
             switch (tileType)
             {
                 case 63:
-                    intVars = new int[2];
+                    intVars = new int[3];
                     break;
                 case 59:
                     energyCapacity = 1000;
@@ -204,7 +204,16 @@ namespace Game1
                             intVars[1]++;
                         }
                         Debug.WriteLine("length right: " + intVars[1]);
-                        state = 1;
+                        if (intVars[0]>2 && intVars[1] > 2)
+                        {
+                            state = 2;
+                        }
+                        else state = 1;
+                    }
+                    if (state == 2 && timer < 1)
+                    {
+
+                        timer = 60;
                     }
                     break;
                 case 61:
@@ -787,7 +796,14 @@ namespace Game1
             {
                 case 63:
                     Game1.spriteBatch.Begin();
-                    Game1.tiles.DrawTile(Game1.spriteBatch, 243, new Vector2(x, y));
+                    Game1.tiles.DrawTile(Game1.spriteBatch, 242, new Vector2(x, y));
+                    //draw left pillar
+                    for (int i=0;intVars[2]>i&&i<10;i++)
+                    {
+                        Game1.tiles.DrawTile(Game1.spriteBatch, 245, new Vector2(x - intVars[0]*16, y - 16*i));
+                    }
+                    //draw right pillar
+                    //draw overhead pipe
                     Game1.spriteBatch.End();
                     break;
                 case 61:

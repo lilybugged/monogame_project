@@ -831,7 +831,7 @@ namespace Game1
                 Game1.globalCursor = 1;
             }
             //pick up an item
-            else if (((CountUis() == 1 || uiState != 1 && uiState != 3) || uiState == 2 || uiState > 3) && uiState != 3 && cursorItem == -1 && gottenIndex > -1 && (gottenIndex) < invIds.Length && invIds[gottenIndex] > 0 && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
+            else if (((CountUis() == 1 || uiState != 1 && uiState != 3) || uiState == 2 || uiState > 3) && uiState != 3 && cursorItem == -1 && gottenIndex > -1 && (gottenIndex) < invIds.Length && invIds[gottenIndex] >= 0 && MouseKeyboardInfo.mouseClickedLeft && MouseKeyboardInfo.mouseState.X >= startx && MouseKeyboardInfo.mouseState.X <= startx + (rowSize * (49)) - 20 && MouseKeyboardInfo.mouseState.Y >= starty && MouseKeyboardInfo.mouseState.Y <= starty + (inventoryRows * (48)) - 5)
             {
                 //Debug.WriteLine("pick up");
                 cursorItem = invIds[gottenIndex];
